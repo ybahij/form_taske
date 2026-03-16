@@ -1,0 +1,774 @@
+<div class="dialog-header-complex">
+  <div class="header-image-placeholder">
+    <img [src]="form.get('imageUrl')?.value" alt="Vehicle Image" *ngIf="form.get('imageUrl')?.value; else defaultIcon">
+    <ng-template #defaultIcon>
+      <mat-icon>directions_car</mat-icon>
+    </ng-template>
+  </div>
+  <div class="header-text-lines">
+    <div class="line-description-row">
+      <span class="status-dot" [class.active]="form.get('isActive')?.value"></span>
+      <div class="line-description">{{ form.get('description')?.value || 'Nouvelle Description' }}</div>
+      <button mat-icon-button class="status-toggle-btn" (click)="toggleStatus()" matTooltip="Basculer le statut">
+        <mat-icon>{{ form.get('isActive')?.value ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+      </button>
+    </div>
+    <div class="line-id">ID Véhicule: {{ form.get('idVehicule')?.value || '-' }}</div>
+    <div class="line-imei">IMEI: {{ form.get('imei')?.value || '-' }}</div>
+  </div>
+  <div class="header-actions">
+    <button mat-icon-button (click)="cancel()" class="close-btn-top">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content class="no-scroll-content">
+
+  <!-- mat-tab-group with index tracking -->
+  <mat-tab-group class="custom-tab-group" [(selectedIndex)]="activeTabIndex">
+
+    <!-- TAB 1: Informations — now has its OWN [formGroup] wrapper -->
+    <mat-tab label="Informations">
+      <div class="tab-content-wrapper">
+        <div [formGroup]="form">
+
+          <!-- 1. Horizontal Row (4 inputs) -->
+          <div class="horizontal-row-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <input matInput formControlName="description" placeholder="Description...">
+              <mat-error *ngIf="form.get('description')?.hasError('required')">Description est requis</mat-error>
+            </mat-form-field>
+
+            <div class="input-with-button">
+              <mat-form-field appearance="outline">
+                <mat-label>Marque</mat-label>
+                <input matInput formControlName="marque" readonly>
+              </mat-form-field>
+              <button type="button" mat-icon-button color="primary" class="add-btn-tiny" (click)="openAddValueDialog('Marque')">
+                <mat-icon>add_circle</mat-icon>
+              </button>
+            </div>
+
+            <div class="input-with-button">
+              <mat-form-field appearance="outline">
+                <mat-label>Modéle</mat-label>
+                <input matInput formControlName="modele" readonly>
+              </mat-form-field>
+              <button type="button" mat-icon-button color="primary" class="add-btn-tiny" (click)="openAddValueDialog('Modéle')">
+                <mat-icon>add_circle</mat-icon>
+              </button>
+            </div>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Immatriculation</mat-label>
+              <input matInput formControlName="immatriculation">
+              <mat-error *ngIf="form.get('immatriculation')?.hasError('required')">Immatriculation est requis</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- 2. Two Columns Section -->
+          <div class="two-column-grid">
+
+            <!-- Left Column: Conducteur -->
+            <div class="column">
+              <div class="column-title">Conducteur</div>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Conducteur (ID)</mat-label>
+                <input matInput formControlName="firstName" placeholder="ID Conducteur...">
+                <mat-icon matSuffix>badge</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>ID Véhicule</mat-label>
+                <input matInput formControlName="idVehicule">
+                <mat-icon matSuffix>badge</mat-icon>
+              </mat-form-field>
+
+              <div class="input-with-button">
+                <mat-form-field appearance="outline">
+                  <mat-label>Activité</mat-label>
+                  <input matInput formControlName="activite" readonly>
+                  <mat-icon matSuffix>local_activity</mat-icon>
+                </mat-form-field>
+                <button type="button" mat-icon-button color="primary" class="add-btn-tiny" (click)="openAddValueDialog('Activité')">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+
+              <mat-form-field appearance="outline">
+                <mat-label>IMEI</mat-label>
+                <input matInput formControlName="imei">
+                <mat-icon matSuffix>fingerprint</mat-icon>
+                <mat-error *ngIf="form.get('imei')?.hasError('pattern')">IMEI doit être numérique</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Initialiser l'odomètre virtuel</mat-label>
+                <input matInput formControlName="odometreVirtuel" readonly>
+                <mat-icon matSuffix>update</mat-icon>
+              </mat-form-field>
+            </div>
+
+            <!-- Right Column: Véhicule -->
+            <div class="column">
+              <div class="column-title">Véhicule</div>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Type de véhicule</mat-label>
+                <mat-select formControlName="typeVehicule">
+                  <mat-option *ngFor="let type of vehicleTypes" [value]="type">{{type}}</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>commute</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Statut d'équipement</mat-label>
+                <mat-select formControlName="statutEquipement">
+                  <mat-option *ngFor="let status of equipmentStatuses" [value]="status">{{status}}</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>settings</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Index Ignition</mat-label>
+                <mat-select formControlName="indexIgnition">
+                  <mat-option *ngFor="let index of ignitionIndices" [value]="index">{{index}}</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>vpn_key</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Nombre de sièges</mat-label>
+                <input matInput type="number" formControlName="nombreSieges">
+                <mat-icon matSuffix>group</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Notes générales</mat-label>
+                <textarea matInput formControlName="notesGenerales" rows="2"></textarea>
+                <mat-icon matSuffix>description</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- TAB 2: Administration -->
+    <mat-tab label="Administration">
+      <div class="tab-content-wrapper">
+        <div [formGroup]="adminForm">
+          <div class="two-column-grid">
+
+            <!-- Left Column -->
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>Date de sortie</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dateSortie">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Prix de véhicule</mat-label>
+                <input matInput type="number" formControlName="prixVehicule">
+                <mat-icon matSuffix>payments</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Durée de location</mat-label>
+                <input matInput type="number" formControlName="dureeLocation">
+                <mat-icon matSuffix>schedule</mat-icon>
+                <mat-hint class="unit-hint">Unité: Mois</mat-hint>
+              </mat-form-field>
+            </div>
+
+            <!-- Right Column -->
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>Odomètre sortie</mat-label>
+                <input matInput type="number" formControlName="odometreSortie">
+                <mat-icon matSuffix>speed</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Montant mensuel</mat-label>
+                <input matInput type="number" formControlName="montantMensuel">
+                <mat-icon matSuffix>calendar_today</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Montant d'avance</mat-label>
+                <input matInput type="number" formControlName="montantAvance">
+                <mat-icon matSuffix>account_balance_wallet</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- TAB 3: Couleur/Icone -->
+    <mat-tab label="Couleur/Icone">
+      <div class="tab-content-wrapper">
+        <div [formGroup]="colorIconForm">
+          <div class="two-column-grid">
+
+            <!-- Left Column: Colors -->
+            <div class="column">
+              <div class="color-picker-card">
+                <div class="color-picker-header">
+                  <mat-icon>palette</mat-icon>
+                  <span>Couleur de l'historique</span>
+                </div>
+                <div class="color-picker-body">
+                  <div class="color-picker-rectangle">
+                    <div class="inline-picker-wrapper"
+                         [colorPicker]="colorIconForm.get('historyColor')?.value"
+                         [cpDialogDisplay]="'inline'"
+                         [cpToggle]="true"
+                         [cpOutputFormat]="'hex'"
+                         [cpAlphaChannel]="'enabled'"
+                         (colorPickerChange)="colorIconForm.get('historyColor')?.setValue($event)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Icons -->
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>Personnalisation des icônes</mat-label>
+                <mat-select formControlName="customIcon">
+                  <mat-option *ngFor="let icon of customIcons" [value]="icon.value">
+                    <div class="icon-option-wrapper">
+                      <mat-icon>{{ icon.value }}</mat-icon>
+                      <span>{{ icon.label }}</span>
+                    </div>
+                  </mat-option>
+                </mat-select>
+                <mat-icon matSuffix>category</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- TAB 4: SIM / Détails -->
+    <mat-tab label="SIM / Détails">
+      <div class="tab-content-wrapper">
+        <div [formGroup]="simForm">
+          <div class="two-column-grid">
+
+            <!-- Left Column: sim1 -->
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>sim1</mat-label>
+                <input matInput formControlName="sim1" placeholder="ex:21223455667..">
+                <mat-icon matSuffix>sim_card</mat-icon>
+                <mat-error *ngIf="simForm.get('sim1')?.hasError('pattern')">Uniquement des chiffres</mat-error>
+                <mat-error *ngIf="simForm.get('sim1')?.hasError('minlength')">Trop court (min 8)</mat-error>
+                <mat-error *ngIf="simForm.get('sim1')?.hasError('maxlength')">Trop long (max 14)</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Right Column: sim2 -->
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>sim2</mat-label>
+                <input matInput formControlName="sim2" placeholder="ex:21223455667..">
+                <mat-icon matSuffix>sim_card</mat-icon>
+                <mat-error *ngIf="simForm.get('sim2')?.hasError('pattern')">Uniquement des chiffres</mat-error>
+                <mat-error *ngIf="simForm.get('sim2')?.hasError('minlength')">Trop court (min 8)</mat-error>
+                <mat-error *ngIf="simForm.get('sim2')?.hasError('maxlength')">Trop long (max 20)</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- TAB 5: Carburant / Heures -->
+    <mat-tab label="Carburant / Heures">
+      <div class="tab-content-wrapper">
+        <div [formGroup]="fuelForm">
+
+          <!-- Row 1: 2 Columns -->
+          <div class="two-column-grid" style="margin-bottom: 32px;">
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>Capacité de carburant</mat-label>
+                <input matInput type="number" formControlName="capaciteCarburant">
+                <mat-icon matSuffix>local_gas_station</mat-icon>
+                <mat-hint>Unité: Litres</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>Economie de carburant</mat-label>
+                <input matInput type="number" formControlName="economieCarburant">
+                <mat-icon matSuffix>speed</mat-icon>
+                <mat-hint>L/100km</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Row 2: 3 Columns -->
+          <div class="three-column-grid">
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>Répartition du réservoir</mat-label>
+                <mat-select formControlName="repartitionReservoir">
+                  <mat-option *ngFor="let opt of repartitionOptions" [value]="opt">{{ opt }}</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>settings_input_composite</mat-icon>
+              </mat-form-field>
+            </div>
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>Profil du réservoir</mat-label>
+                <mat-select formControlName="profilReservoir">
+                  <mat-option *ngFor="let prof of profilOptions" [value]="prof">{{ prof }}</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>account_tree</mat-icon>
+              </mat-form-field>
+            </div>
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>Coût de carburant</mat-label>
+                <input matInput type="number" formControlName="coutCarburant">
+                <mat-icon matSuffix>payments</mat-icon>
+                <mat-hint>Par Litre</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Row 3: LLS -->
+          <div class="two-column-grid" style="margin-top: 32px;">
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>LLS 1</mat-label>
+                <input matInput formControlName="lls1" readonly (click)="openImportDialog('lls1')">
+                <button mat-icon-button matSuffix (click)="openImportDialog('lls1'); $event.stopPropagation()">
+                  <mat-icon>cloud_upload</mat-icon>
+                </button>
+                <mat-hint>Cliquez pour importer un fichier</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="column">
+              <mat-form-field appearance="outline">
+                <mat-label>LLS 2</mat-label>
+                <input matInput formControlName="lls2" readonly (click)="openImportDialog('lls2')">
+                <button mat-icon-button matSuffix (click)="openImportDialog('lls2'); $event.stopPropagation()">
+                  <mat-icon>cloud_upload</mat-icon>
+                </button>
+                <mat-hint>Cliquez pour importer un fichier</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- TAB 6: Heures de travail -->
+    <mat-tab label="Heures de travail">
+      <div class="tab-content-wrapper">
+        <div [formGroup]="workHoursForm">
+
+          <!-- Header Toggle -->
+          <div class="hours-header">
+            <mat-slide-toggle formControlName="isSameSchedule" color="primary">
+              Même horaire du Lundi a Vendredi
+            </mat-slide-toggle>
+          </div>
+
+          <!-- Days List -->
+          <div class="days-list">
+
+            <div class="day-row" *ngIf="workHoursForm.get('isSameSchedule')?.value">
+              <span class="day-label">Lundi - Vendredi</span>
+              <span class="spacer"></span>
+              <mat-checkbox formControlName="monday_friday" color="primary"></mat-checkbox>
+            </div>
+
+            <ng-container *ngIf="!workHoursForm.get('isSameSchedule')?.value">
+              <div class="day-row">
+                <span class="day-label">Lundi</span>
+                <span class="spacer"></span>
+                <mat-checkbox formControlName="monday" color="primary"></mat-checkbox>
+              </div>
+              <div class="day-row">
+                <span class="day-label">Mardi</span>
+                <span class="spacer"></span>
+                <mat-checkbox formControlName="tuesday" color="primary"></mat-checkbox>
+              </div>
+              <div class="day-row">
+                <span class="day-label">Mercredi</span>
+                <span class="spacer"></span>
+                <mat-checkbox formControlName="wednesday" color="primary"></mat-checkbox>
+              </div>
+              <div class="day-row">
+                <span class="day-label">Jeudi</span>
+                <span class="spacer"></span>
+                <mat-checkbox formControlName="thursday" color="primary"></mat-checkbox>
+              </div>
+              <div class="day-row">
+                <span class="day-label">Vendredi</span>
+                <span class="spacer"></span>
+                <mat-checkbox formControlName="friday" color="primary"></mat-checkbox>
+              </div>
+            </ng-container>
+
+            <div class="day-row">
+              <span class="day-label">Samedi</span>
+              <span class="spacer"></span>
+              <mat-checkbox formControlName="saturday" color="primary"></mat-checkbox>
+            </div>
+            <div class="day-row">
+              <span class="day-label">Dimanche</span>
+              <span class="spacer"></span>
+              <mat-checkbox formControlName="sunday" color="primary"></mat-checkbox>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- TAB 7: Rapport d'infraction -->
+    <mat-tab label="Rapport d'infraction">
+      <div class="tab-content-wrapper">
+        <div [formGroup]="infractionForm">
+
+          <mat-accordion multi="true">
+
+            <!-- Panel 1: Infraction horaire de travail -->
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>Infraction horaire de travail</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div class="two-column-grid" style="margin-top: 16px;">
+
+                <!-- Left Column -->
+                <div class="column">
+                  <div class="time-field-label">1 - Début au plus tôt</div>
+                  <div class="time-picker-group">
+                    <mat-form-field appearance="outline" class="hour-select">
+                      <mat-select formControlName="debutPlusTotH">
+                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="time-separator">:</span>
+                    <mat-form-field appearance="outline" class="minute-select">
+                      <mat-select formControlName="debutPlusTotM">
+                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="time-field-label">2 - Fin au plus tôt</div>
+                  <div class="time-picker-group">
+                    <mat-form-field appearance="outline" class="hour-select">
+                      <mat-select formControlName="finPlusTotH">
+                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="time-separator">:</span>
+                    <mat-form-field appearance="outline" class="minute-select">
+                      <mat-select formControlName="finPlusTotM">
+                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="time-field-label">3 - Début de la conduite nocturne</div>
+                  <div class="time-picker-group">
+                    <mat-form-field appearance="outline" class="hour-select">
+                      <mat-select formControlName="debutNocturneH">
+                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="time-separator">:</span>
+                    <mat-form-field appearance="outline" class="minute-select">
+                      <mat-select formControlName="debutNocturneM">
+                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="column">
+                  <div class="time-field-label">1 - Début au plus tard</div>
+                  <div class="time-picker-group">
+                    <mat-form-field appearance="outline" class="hour-select">
+                      <mat-select formControlName="debutPlusTardH">
+                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="time-separator">:</span>
+                    <mat-form-field appearance="outline" class="minute-select">
+                      <mat-select formControlName="debutPlusTardM">
+                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="time-field-label">2 - Fin au plus tard</div>
+                  <div class="time-picker-group">
+                    <mat-form-field appearance="outline" class="hour-select">
+                      <mat-select formControlName="finPlusTardH">
+                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="time-separator">:</span>
+                    <mat-form-field appearance="outline" class="minute-select">
+                      <mat-select formControlName="finPlusTardM">
+                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="time-field-label">3 - Fin de la conduite nocturne</div>
+                  <div class="time-picker-group">
+                    <mat-form-field appearance="outline" class="hour-select">
+                      <mat-select formControlName="finNocturneH">
+                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="time-separator">:</span>
+                    <mat-form-field appearance="outline" class="minute-select">
+                      <mat-select formControlName="finNocturneM">
+                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+            <!-- Panel 2: Infraction maximale -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Infraction maximale</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div class="infraction-max-body" [formGroup]="infractionMaxForm">
+                <div class="two-column-grid" style="margin-top: 16px;">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Distance maximale / jour</mat-label>
+                    <input matInput type="number" formControlName="distMaxJour">
+                    <mat-hint>Entrez -1 pour illimité</mat-hint>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Seuil pour la vitesse affichée (km/h)</mat-label>
+                    <input matInput type="number" formControlName="seuilVitesse">
+                  </mat-form-field>
+                </div>
+
+                <div class="two-column-grid">
+                  <div class="column">
+                    <div class="time-field-label">Temps de travail maximale</div>
+                    <div class="time-picker-group">
+                      <mat-form-field appearance="outline" class="hour-select">
+                        <mat-select formControlName="tempsTravailH">
+                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="time-separator">:</span>
+                      <mat-form-field appearance="outline" class="minute-select">
+                        <mat-select formControlName="tempsTravailM">
+                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="column">
+                    <div class="time-field-label">Temps de conduite maximale / jour</div>
+                    <div class="time-picker-group">
+                      <mat-form-field appearance="outline" class="hour-select">
+                        <mat-select formControlName="tempsConduiteH">
+                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="time-separator">:</span>
+                      <mat-form-field appearance="outline" class="minute-select">
+                        <mat-select formControlName="tempsConduiteM">
+                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="one-column-row">
+                  <div class="time-field-label">Temps de conduite continue maximale</div>
+                  <div class="time-picker-group" style="justify-content: flex-start;">
+                    <mat-form-field appearance="outline" class="hour-select">
+                      <mat-select formControlName="tempsContinueH">
+                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="time-separator">:</span>
+                    <mat-form-field appearance="outline" class="minute-select">
+                      <mat-select formControlName="tempsContinueM">
+                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+            <!-- Panel 3: Infraction à la force G -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Infraction à la force G</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div class="infraction-max-body" [formGroup]="infractionGForm">
+                <div class="one-column-row" style="margin-top: 16px;">
+                  <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Accélération maximale (g-force)</mat-label>
+                    <input matInput type="number" formControlName="accelMaxG" step="0.1" min="0">
+                  </mat-form-field>
+                </div>
+
+                <div class="two-column-grid" style="margin-top: 16px;">
+                  <div class="column">
+                    <div class="time-field-label">Seuil pour fusionner les infractions d'accélération</div>
+                    <div class="time-picker-group">
+                      <mat-form-field appearance="outline" class="hour-select">
+                        <mat-select formControlName="fusionAccelH">
+                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="time-separator">:</span>
+                      <mat-form-field appearance="outline" class="minute-select">
+                        <mat-select formControlName="fusionAccelM">
+                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="column">
+                    <div class="time-field-label">Seuil pour fusionner les infractions de freinage</div>
+                    <div class="time-picker-group">
+                      <mat-form-field appearance="outline" class="hour-select">
+                        <mat-select formControlName="fusionFreinageH">
+                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="time-separator">:</span>
+                      <mat-form-field appearance="outline" class="minute-select">
+                        <mat-select formControlName="fusionFreinageM">
+                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+            <!-- Panel 4: Infraction Eco Conduite -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Infraction Eco Conduite</mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div class="infraction-max-body" [formGroup]="infractionEcoForm">
+                <div class="two-column-grid" style="margin-top: 16px;">
+                  <div class="column">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                      <mat-label>Vitesse maximale (km/h)</mat-label>
+                      <input matInput type="number" formControlName="vitesseMaxEco">
+                      <mat-hint>Entrez -1 pour illimité</mat-hint>
+                    </mat-form-field>
+
+                    <div class="time-field-label" style="margin-top: 16px;">Seuil pour fusionner les infractions de vitesse</div>
+                    <div class="time-picker-group">
+                      <mat-form-field appearance="outline" class="hour-select">
+                        <mat-select formControlName="vitesseFusionH">
+                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="time-separator">:</span>
+                      <mat-form-field appearance="outline" class="minute-select">
+                        <mat-select formControlName="vitesseFusionM">
+                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="time-separator">:</span>
+                      <mat-form-field appearance="outline" class="second-select">
+                        <mat-select formControlName="vitesseFusionS">
+                          <mat-option *ngFor="let s of secondOptions" [value]="s">{{s}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="column">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                      <mat-label>Eco score minimum (0.00 à 10.00)</mat-label>
+                      <input matInput type="number" formControlName="ecoScoreMin" step="0.01">
+                      <mat-hint>Entrez -1 pour ignorant</mat-hint>
+                    </mat-form-field>
+
+                    <div class="time-field-label" style="margin-top: 16px;">Seuil pour fusionner les infractions de l'eco score</div>
+                    <div class="time-picker-group">
+                      <mat-form-field appearance="outline" class="hour-select">
+                        <mat-select formControlName="ecoScoreFusionH">
+                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="time-separator">:</span>
+                      <mat-form-field appearance="outline" class="minute-select">
+                        <mat-select formControlName="ecoScoreFusionM">
+                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="time-separator">:</span>
+                      <mat-form-field appearance="outline" class="second-select">
+                        <mat-select formControlName="ecoScoreFusionS">
+                          <mat-option *ngFor="let s of secondOptions" [value]="s">{{s}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+          </mat-accordion>
+
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</mat-dialog-content>
+
+<div mat-dialog-actions align="end" class="dialog-footer">
+  <button mat-button (click)="cancel()">Annuler</button>
+  <button mat-raised-button class="save-btn" (click)="saveCurrentTab()" [disabled]="!isCurrentTabValid()">
+    <mat-icon>save</mat-icon>
+    Enregistrer
+  </button>
+</div>

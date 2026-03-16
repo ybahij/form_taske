@@ -1,0 +1,74 @@
+<div class="import-dialog-container">
+  
+  <!-- Header with step indicator -->
+  <div class="import-header">
+    <div class="step-badge">1</div>
+    <h2 class="import-title">Importer le fichier et sélectionner les lines</h2>
+  </div>
+
+  <div class="import-body" [formGroup]="importForm">
+    <!-- Centered Upload Box -->
+    <div class="upload-area">
+      <div class="upload-content">
+        <!-- Visual Icon -->
+        <mat-icon class="folder-icon">folder</mat-icon>
+
+        <!-- Dynamic Select + File Input -->
+        <div class="upload-controls">
+          <mat-form-field appearance="outline" class="extension-select">
+            <mat-select formControlName="extension">
+              <mat-option *ngFor="let ext of extensions" [value]="ext">{{ ext }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="file-button-wrapper">
+            <input type="file" #fileInput style="display: none" [accept]="getAcceptString()" (change)="onFileSelected($event)">
+            <button mat-flat-button class="choose-file-btn" (click)="fileInput.click()">
+              Choose File
+            </button>
+            <span class="file-name">{{ selectedFileName }}</span>
+          </div>
+        </div>
+
+        <!-- Line Detail Fields -->
+        <div class="line-inputs-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Début de la ligne</mat-label>
+            <input matInput type="number" formControlName="debutLigne">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fin de la ligne</mat-label>
+            <input matInput type="number" formControlName="finLigne">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Somme des lignes</mat-label>
+            <input matInput type="number" formControlName="sommeLignes">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Footer -->
+    <div class="import-footer">
+      <span class="example-text">Exemple de fichier</span>
+      <div class="format-icons">
+        <div class="format-badge xlsx">
+          <mat-icon>description</mat-icon>
+          <span>XLSX</span>
+        </div>
+        <div class="format-badge csv">
+          <mat-icon>description</mat-icon>
+          <span>CSV</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="dialog-actions">
+    <button mat-button (click)="onClose()">Annuler</button>
+    <button mat-raised-button color="primary" class="import-btn" (click)="onImport()">Importer</button>
+  </div>
+</div>

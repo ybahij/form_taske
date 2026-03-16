@@ -1,0 +1,509 @@
+/* ── Complex Header ── */
+.dialog-header-complex {
+  display: flex;
+  align-items: center;
+  padding: 24px 24px 16px;
+  gap: 20px;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-teal) 100%);
+  color: #ffffff;
+}
+
+.header-image-placeholder {
+  width: 64px;
+  height: 64px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.header-image-placeholder img {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.header-image-placeholder mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #ffffff;
+}
+
+.header-text-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.line-description-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ef4444; /* Red for off */
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+  transition: all 0.3s ease;
+}
+
+.status-dot.active {
+  background-color: #22c55e; /* Green for on */
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+
+.line-description {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+.status-toggle-btn {
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  color: #ffffff !important;
+  opacity: 0.8;
+}
+
+.status-toggle-btn:hover {
+  opacity: 1;
+}
+
+.line-id, .line-imei {
+  font-size: 13px;
+  opacity: 0.9;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.close-btn-top {
+  color: #ffffff !important;
+  opacity: 0.7;
+}
+
+.close-btn-top:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ── Content & Tabs ── */
+.no-scroll-content {
+  padding: 0 !important;
+  overflow: hidden !important; /* Disable native scroll to avoid double bars */
+}
+
+.custom-tab-group {
+  width: 100%;
+}
+
+/* Ensure the tab body has space to scroll within the 92vh dialog */
+::ng-deep .custom-tab-group .mat-tab-body-wrapper {
+  max-height: calc(92vh - 220px); 
+  overflow-y: auto !important;
+  padding: 20px 24px;
+}
+
+/* ── Form Field Styling (Thicker Borders & Icons) ── */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  stroke-width: 3px !important;
+  color: var(--primary-dark) !important; /* Use consistent color */
+  opacity: 0.2; /* Dimmier default for readability */
+  transition: opacity 0.2s ease;
+}
+
+::ng-deep .mat-form-field-appearance-outline:hover .mat-form-field-outline {
+  opacity: 0.6; /* More visible on hover */
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  stroke-width: 3px !important;
+  color: var(--primary-dark) !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  stroke-width: 3px !important;
+}
+
+::ng-deep .mat-form-field-suffix mat-icon {
+  margin-left: 8px;
+  color: var(--primary-dark);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 1em 0 1em 0 !important;
+}
+
+::ng-deep .mat-select-value {
+  padding-left: 0;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+  transform: translateY(0);
+}
+
+.tab-content-wrapper {
+  padding: 10px 0 80px 0; /* Added 80px bottom padding for floating button space */
+}
+
+/* ── Form Layout ── */
+.horizontal-row-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.two-column-grid, .three-column-grid {
+  display: grid;
+  gap: 32px;
+}
+
+.two-column-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.three-column-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.column-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary-light);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Helper Classes ── */
+.input-with-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.add-btn-tiny {
+  margin-bottom: 22px;
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+}
+
+.add-btn-tiny mat-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.blurred-placeholder {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+.blurred-placeholder mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+.main-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tab-footer {
+  position: sticky;
+  bottom: 20px;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
+  margin-top: 20px; /* Space from the content above */
+  pointer-events: none;
+  z-index: 10;
+}
+
+.save-btn {
+  background: var(--primary-dark) !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  padding: 0 32px !important;
+  border-radius: 50px !important; /* Pill style */
+  height: 48px !important;
+  pointer-events: auto; /* Re-enable clicks for the button */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.save-btn:hover:not([disabled]) {
+  transform: translateY(-4px) scale(1.05); /* "Fly" up effect */
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
+  filter: brightness(1.1);
+}
+
+.save-btn:active:not([disabled]) {
+  transform: translateY(0) scale(0.98);
+}
+
+.unit-hint {
+  font-size: 11px;
+  color: var(--primary-dark);
+  font-weight: 500;
+  display: block;
+  margin-top: 2px;
+}
+
+.color-option-wrapper, .icon-option-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-preview {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.icon-option-wrapper mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* ── Advanced Color Picker (Inline Card) ── */
+.color-picker-card {
+  border: 3px solid var(--front-border);
+  border-radius: 12px;
+  background: white;
+  overflow: hidden;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.color-picker-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--front-border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.02);
+}
+
+.color-picker-header mat-icon {
+  font-size: 20px;
+  color: var(--primary-dark);
+}
+
+.color-picker-header span {
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.color-picker-body {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f5f9; /* Light contrast background */
+}
+
+.color-picker-rectangle {
+  background: white;
+  border: 1px solid var(--front-border);
+  border-radius: 4px;
+  padding: 0;
+  width: 100%;
+  max-width: 224px; /* Reduced by 20% from 280px */
+  margin: 0 auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Soft shadow for the box */
+}
+
+.inline-picker-wrapper {
+  width: 100% !important;
+}
+
+/* Force ngx-color-picker internal sizing for a premium centered look */
+::ng-deep .color-picker {
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 12px !important; /* Reduced padding */
+  background: transparent !important;
+}
+
+/* Work Hours Tab Styles */
+.hours-header {
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.days-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.day-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.day-row:hover {
+  background: #f9f9f9;
+  border-color: #e0e0e0;
+}
+
+.day-label {
+  font-weight: 500;
+  color: #455a64;
+  font-size: 15px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+::ng-deep .day-row .mat-checkbox-inner-container {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+/* Infraction Tab Styles */
+mat-accordion {
+  display: block;
+  margin-bottom: 24px;
+}
+
+mat-expansion-panel {
+  box-shadow: none !important;
+  border: 1px solid #f0f0f0 !important;
+  margin-bottom: 12px !important;
+  border-radius: 8px !important;
+}
+
+mat-expansion-panel-header {
+  padding: 0 16px !important;
+}
+
+.mat-expansion-panel-header-title {
+  color: #455a64;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.placeholder-text {
+  color: #90a4ae;
+  font-style: italic;
+  padding: 16px;
+  margin: 0;
+}
+
+.infraction-max-body {
+  padding-bottom: 8px;
+}
+
+.one-column-row {
+  margin-top: 8px;
+}
+
+.time-picker-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.time-field-label {
+  font-size: 13px;
+  color: #607d8b;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.hour-select, .minute-select, .second-select {
+  width: 60px;
+}
+
+.time-separator {
+  font-weight: bold;
+  font-size: 18px;
+  color: #455a64;
+  margin-bottom: 20px;
+}
+
+::ng-deep .time-picker-group .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+::ng-deep .color-picker .saturation-lightness {
+  height: 144px !important; /* Reduced by 20% from 180px */
+  border-radius: 4px !important;
+  margin-bottom: 16px !important; /* Reduced margin */
+}
+
+/* Ensure sliders match the box design */
+::ng-deep .color-picker .hue,
+::ng-deep .color-picker .alpha {
+  height: 10px !important; /* Reduced height */
+  border-radius: 4px !important;
+  margin-bottom: 10px !important; /* Reduced margin */
+}
+
+/* Consistent internal inputs */
+::ng-deep .color-picker .hex-text input {
+  border: 1px solid var(--front-border) !important;
+  border-radius: 4px !important;
+  height: 28px !important; /* Sligtly more compact */
+  font-family: 'Roboto Mono', monospace !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+::ng-deep .color-picker .box {
+  padding: 0 !important;
+}

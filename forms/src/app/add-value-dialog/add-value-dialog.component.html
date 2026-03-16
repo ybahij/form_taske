@@ -1,0 +1,25 @@
+<h2 mat-dialog-title class="dialog-header">
+  <span class="title-icon">
+    <mat-icon>add_circle</mat-icon>
+  </span>
+  {{ title }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Ajouter</mat-label>
+        <input matInput formControlName="newValue" placeholder="Valeur..." required>
+        <mat-error *ngIf="form.get('newValue')?.hasError('required')">Cette valeur est requise</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button class="save-btn" (click)="onSave()" [disabled]="form.invalid">
+    Ajouter
+  </button>
+</mat-dialog-actions>

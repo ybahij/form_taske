@@ -1,0 +1,81 @@
+<div class="page-container">
+  
+  <header class="main-header">
+    <div class="header-content">
+      <div class="logo-area">
+        <mat-icon class="logo-icon">directions_car</mat-icon>
+        <h1>Vehicle Manager</h1>
+      </div>
+      <button mat-raised-button class="add-vehicle-btn" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        Nouveau Véhicule
+      </button>
+    </div>
+  </header>
+
+  <main class="content-area">
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Liste des Véhicules</h2>
+        <span class="count-badge" *ngIf="vehicles$ | async as vehicles">{{ vehicles.length }} Véhicules</span>
+      </div>
+
+      <div class="table-responsive">
+        <table mat-table [dataSource]="(vehicles$ | async) || []" class="mat-elevation-z0">
+
+          <!-- Immatriculation Column -->
+          <ng-container matColumnDef="immatriculation">
+            <th mat-header-cell *matHeaderCellDef> Immatriculation </th>
+            <td mat-cell *matCellDef="let v"> 
+              <span class="plate-badge">{{ v.immatriculation }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Marque Column -->
+          <ng-container matColumnDef="marque">
+            <th mat-header-cell *matHeaderCellDef> Marque </th>
+            <td mat-cell *matCellDef="let v"> {{ v.marque }} </td>
+          </ng-container>
+
+          <!-- Modéle Column -->
+          <ng-container matColumnDef="modele">
+            <th mat-header-cell *matHeaderCellDef> Modéle </th>
+            <td mat-cell *matCellDef="let v"> {{ v.modele }} </td>
+          </ng-container>
+
+          <!-- Description Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let v" class="dimmed-text"> {{ v.description }} </td>
+          </ng-container>
+
+          <!-- Owner Column -->
+          <ng-container matColumnDef="owner">
+            <th mat-header-cell *matHeaderCellDef> Propriétaire </th>
+            <td mat-cell *matCellDef="let v">
+              <div class="owner-info" *ngIf="v.firstName || v.lastName">
+                <mat-icon>person</mat-icon>
+                {{ v.firstName }} {{ v.lastName }}
+              </div>
+              <span *ngIf="!v.firstName && !v.lastName" class="dimmed-text">-</span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="actions-header"> Actions </th>
+            <td mat-cell *matCellDef="let v">
+              <button mat-icon-button (click)="editVehicle(v)" class="edit-action-btn" matTooltip="Modifier">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>

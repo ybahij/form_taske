@@ -1,0 +1,153 @@
+.import-dialog-container {
+  padding: 12px;
+  background: white;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.import-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.step-badge {
+  background: #00897b;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.import-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #455a64;
+}
+
+.import-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.upload-area {
+  border: 1px dashed #cfd8dc;
+  border-radius: 8px;
+  padding: 20px 16px;
+  margin-bottom: 16px;
+  background: rgba(0,0,0,0.01);
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.folder-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #ffb300;
+  margin-bottom: 4px;
+}
+
+.upload-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.extension-select {
+  width: 120px;
+}
+
+.file-button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.choose-file-btn {
+  background: #f1f1f1 !important;
+  color: #333 !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  height: 32px !important;
+  padding: 0 12px !important;
+}
+
+.file-name {
+  color: #607d8b;
+  font-size: 13px;
+}
+
+.line-inputs-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.line-inputs-row mat-form-field {
+  flex: 1;
+}
+
+.import-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.example-text {
+  color: #607d8b;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.format-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.format-badge mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.format-badge span {
+  font-size: 9px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+
+.import-btn {
+  background: #00897b !important;
+  color: white !important;
+}
+
+::ng-deep .import-dialog-container .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #cfd8dc !important;
+}
+
+::ng-deep .import-dialog-container .mat-form-field-flex {
+  padding: 0 0.75em 0 0.75em !important;
+}
