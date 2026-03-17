@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class VehicleHeaderComponent {
   @Input() form!: FormGroup;
+  @Input() customIcon?: string;
   @Output() close = new EventEmitter<void>();
 
   toggleStatus(): void {

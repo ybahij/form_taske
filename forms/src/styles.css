@@ -91,6 +91,27 @@ html, body {
     0 8px 24px rgba(26,26,46,0.08) !important;
   display: flex !important;
   flex-direction: column !important;
+
+  /* Premium Animation: Slide in from Right */
+  animation: slideRightIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideRightIn {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Premium Backdrop Blur */
+.pro-dialog-backdrop {
+  background-color: rgba(9, 99, 126, 0.15) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
 }
 
 .pro-dialog-panel .mat-dialog-container > * {

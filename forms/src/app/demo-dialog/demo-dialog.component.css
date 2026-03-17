@@ -74,11 +74,11 @@
 }
 
 ::ng-deep .mat-form-field-suffix mat-icon {
-  margin-left: 8px;
+  margin-left: 6px;
   color: var(--primary-dark);
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
   vertical-align: middle;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .tab-content-wrapper {
-  padding: 16px 20px 80px 20px; /* Increased padding */
+  padding: 14px 18px 72px 18px; /* Slightly reduced */
   background-color: transparent; /* Very light neutral grey background */
   min-height: 100%;
 }
@@ -127,7 +127,7 @@
 
 .two-column-grid, .three-column-grid {
   display: grid;
-  gap: 24px; /* Reduced from 32px to compact everything */
+  gap: 20px; /* Reduced from 24px */
 }
 
 .two-column-grid {
@@ -141,16 +141,16 @@
 .column {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Reduced from 16px to compact everything */
+  gap: 8px; /* Reduced from 10px */
 }
 
 /* ── Section Cards ── */
 .section-card {
   background: #ffffff;
   border-radius: 12px;
-  padding: 12px 14px; /* Minimized padding to maximize horizontal space */
+  padding: 8px 12px; /* Reduced vertical padding */
   box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
-  margin-bottom: 24px;
+  margin-bottom: 16px; /* Reduced margin */
   border: 1px solid rgba(0,0,0,0.05); /* Slightly darker border */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
@@ -175,24 +175,24 @@
 }
 
 .column-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--primary-dark);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: 0;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
+  margin-bottom: 12px; /* Reduced margin */
+  padding-bottom: 6px; /* Reduced padding */
   border-bottom: 1px solid rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
-  gap: 10px; /* Space for icon */
+  gap: 8px; /* Space for icon */
 }
 
 .column-title mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
   color: var(--primary-dark);
 }
 
@@ -211,7 +211,7 @@
 }
 
 .field-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--primary-dark);
   margin-bottom: 2px;
@@ -274,7 +274,7 @@
   font-weight: 500;
   padding: 0 32px !important;
   border-radius: 50px !important; /* Pill style */
-  height: 48px !important;
+  height: 42px !important;
   pointer-events: auto; /* Re-enable clicks for the button */
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -294,7 +294,7 @@
 }
 
 .unit-hint {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--primary-dark);
   font-weight: 500;
   display: block;
@@ -314,49 +314,105 @@
   border: 1px solid rgba(0,0,0,0.1);
 }
 
-.icon-option-wrapper mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+.icon-grid-item mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
 }
 
-/* ── Advanced Color Picker (Inline Card) ── */
-.color-picker-card {
-  border: 3px solid var(--front-border);
+.icon-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: rgba(0,0,0,0.02);
   border-radius: 12px;
-  background: white;
-  overflow: hidden;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
+  border: 1px solid rgba(0,0,0,0.05);
+  max-height: 250px; /* Reduced from 300px */
+  overflow-y: auto;
 }
 
-.color-picker-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--front-border);
+.icon-grid-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(0,0,0,0.02);
+  justify-content: center;
+  padding: 16px;
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-.color-picker-header mat-icon {
-  font-size: 20px;
+.icon-grid-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  border-color: rgba(9, 99, 126, 0.2);
+}
+
+.icon-grid-item.selected {
+  border-color: var(--primary-dark);
+  background: rgba(9, 99, 126, 0.05);
+  box-shadow: 0 0 0 1px var(--primary-dark);
+}
+
+.icon-grid-item.selected mat-icon {
+  color: var(--primary-dark);
+  transform: scale(1.1);
+}
+
+.icon-grid-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.icon-grid-item.selected .icon-grid-img {
+  transform: scale(1.1);
+}
+
+/* ── Advanced Color Picker (Legend on Border Design) ── */
+.color-picker-border-container {
+  border: 1px dashed var(--primary-teal);
+  border-radius: 4px;
+  background: transparent;
+  padding: 16px;
+  position: relative;
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+
+.color-picker-legend {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: transparent; /* Transparent background as requested */
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary-dark); /* Same color as other labels */
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-picker-legend mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
   color: var(--primary-dark);
 }
 
-.color-picker-header span {
-  font-weight: 500;
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
 .color-picker-body {
-  padding: 24px;
+  padding: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f1f5f9; /* Light contrast background */
 }
 
 .color-picker-rectangle {
@@ -364,10 +420,9 @@
   border: 1px solid var(--front-border);
   border-radius: 4px;
   padding: 0;
-  width: 100%;
-  max-width: 224px; /* Reduced by 20% from 280px */
+  width: 180px; /* Fixed width matching cpWidth */
   margin: 0 auto;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Soft shadow for the box */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .inline-picker-wrapper {
@@ -379,11 +434,12 @@
   position: relative !important;
   top: 0 !important;
   left: 0 !important;
-  width: 100% !important;
+  width: 180px !important; /* Fixed width */
   box-shadow: none !important;
   border: none !important;
-  padding: 12px !important; /* Reduced padding */
+  padding: 12px !important;
   background: transparent !important;
+  overflow: visible !important;
 }
 
 /* Work Hours Tab Styles */
@@ -406,8 +462,8 @@
   align-items: center;
   justify-content: center;
   min-width: 60px;
-  height: 40px;
-  border-radius: 20px;
+  height: 36px;
+  border-radius: 18px;
   background: white;
   border: 1px solid #e0e0e0;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -447,7 +503,7 @@
 
 ::ng-deep .day-chip .mat-checkbox-label {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
   color: #455a64;
   transition: color 0.2s ease;
 }
@@ -459,7 +515,7 @@
 .day-label {
   font-weight: 500;
   color: #455a64;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .spacer {
@@ -481,9 +537,9 @@ mat-accordion {
 .fuel-card {
   background: #ffffff;
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 8px 12px; /* Reduced vertical padding */
   box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
-  margin-bottom: 24px;
+  margin-bottom: 16px; /* Reduced margin */
   border: 1px solid rgba(0,0,0,0.05);
   transition: all 0.2s ease;
   width: 100%;
@@ -550,13 +606,13 @@ mat-expansion-panel:nth-of-type(4) { background-color: rgba(0, 77, 64, 0.03) !im
 
 mat-expansion-panel-header {
   padding: 0 16px !important;
-  height: 48px !important; /* Shorter header */
+  height: 42px !important; /* Shorter header */
 }
 
 .mat-expansion-panel-header-title {
   color: #455a64;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .placeholder-text {
@@ -582,7 +638,7 @@ mat-expansion-panel-header {
 }
 
 .time-field-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--primary-dark);
   margin-bottom: 2px;
@@ -607,9 +663,9 @@ mat-expansion-panel-header {
 }
 
 ::ng-deep .color-picker .saturation-lightness {
-  height: 144px !important; /* Reduced by 20% from 180px */
+  height: 115px !important; /* Reduced by another 20% from 144px */
   border-radius: 4px !important;
-  margin-bottom: 16px !important; /* Reduced margin */
+  margin-bottom: 12px !important; /* Reduced margin */
 }
 
 /* Ensure sliders match the box design */
@@ -656,6 +712,6 @@ mat-expansion-panel-header {
 .section-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix,
 .fuel-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix,
 .inner-panel-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding-top: 0.5em !important;
-  padding-bottom: 0.5em !important;
+  padding-top: 0.4em !important;
+  padding-bottom: 0.4em !important;
 }

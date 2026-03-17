@@ -33,11 +33,14 @@ export class DemoDialogComponent implements OnInit {
   ignitionIndices: string[] = ['0', '50', '100', '150', '200'];
   historyColors: string[] = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#6b7280'];
   customIcons: any[] = [
-    { value: 'directions_car', label: 'Voiture' },
-    { value: 'local_shipping', label: 'Camion' },
-    { value: 'motorcycle', label: 'Moto' },
-    { value: 'directions_bus', label: 'Bus' },
-    { value: 'agriculture', label: 'Tracteur' }
+    { value: 'assets/balck_car.png', label: 'Voiture Noire' },
+    { value: 'assets/bleu_car.png', label: 'Voiture Bleue' },
+    { value: 'assets/gray_car.png', label: 'Voiture Grise' },
+    { value: 'assets/grean_car.png', label: 'Voiture Verte' },
+    { value: 'assets/ornge_car.png', label: 'Voiture Orange' },
+    { value: 'assets/red_car.jpg', label: 'Voiture Rouge' },
+    { value: 'assets/sky_car.png', label: 'Voiture Ciel' },
+    { value: 'assets/yallow_car.png', label: 'Voiture Jaune' }
   ];
 
   repartitionOptions: string[] = ['Standard', 'Double Réservoir', 'Personnalisé'];
@@ -230,6 +233,11 @@ export class DemoDialogComponent implements OnInit {
         this.infractionForm.patchValue({ finNocturneH: h, finNocturneM: m });
       }
     }
+  }
+
+  selectIcon(value: string): void {
+    this.colorIconForm.get('customIcon')?.setValue(value);
+    this.colorIconForm.get('customIcon')?.markAsDirty();
   }
 
   saveAdmin(): void {

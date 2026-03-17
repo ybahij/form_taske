@@ -1,15 +1,15 @@
 .dialog-header-complex {
   display: flex;
   align-items: center;
-  padding: 24px 24px 16px;
-  gap: 20px;
+  padding: 16px 20px 12px;
+  gap: 16px;
   background-color: transparent; /* Transparent background as requested */
   color: var(--primary-dark);
 }
 
 .header-image-placeholder {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   background-color: rgb(255, 255, 255);
   border-radius: 12px;
   display: flex;
@@ -21,14 +21,14 @@
 .header-image-placeholder img {
   width: 50%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 .header-image-placeholder mat-icon {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
   color: var(--primary-dark);
 }
 
@@ -60,15 +60,15 @@
 }
 
 .line-description {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.3px;
 }
 
 .status-toggle-btn {
-  width: 32px !important;
-  height: 32px !important;
-  line-height: 32px !important;
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 28px !important;
   color: var(--primary-dark) !important;
   opacity: 0.8;
 }
@@ -78,7 +78,7 @@
 }
 
 .line-id, .line-imei {
-  font-size: 13px;
+  font-size: 12px;
   opacity: 0.9;
   font-family: 'JetBrains Mono', monospace;
 }

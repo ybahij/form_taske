@@ -1,6 +1,8 @@
 <mat-dialog-content class="no-scroll-content">
 
-  <app-vehicle-header [form]="form" (close)="cancel()"></app-vehicle-header>
+  <app-vehicle-header [form]="form" 
+                      [customIcon]="colorIconForm.get('customIcon')?.value"
+                      (close)="cancel()"></app-vehicle-header>
 
   <!-- mat-tab-group with index tracking -->
   <mat-tab-group class="custom-tab-group" [(selectedIndex)]="activeTabIndex">
@@ -263,10 +265,10 @@
 
             <!-- Left Column: Colors -->
             <div class="column">
-              <div class="color-picker-card">
-                <div class="color-picker-header">
+              <div class="color-picker-border-container">
+                <div class="color-picker-legend">
                   <mat-icon>palette</mat-icon>
-                  <span>Couleur de l'historique</span>
+                  Couleur de l'historique
                 </div>
                 <div class="color-picker-body">
                   <div class="color-picker-rectangle">
@@ -274,6 +276,7 @@
                          [colorPicker]="colorIconForm.get('historyColor')?.value"
                          [cpDialogDisplay]="'inline'"
                          [cpToggle]="true"
+                         [cpWidth]="'180px'"
                          [cpOutputFormat]="'hex'"
                          [cpAlphaChannel]="'enabled'"
                          (colorPickerChange)="colorIconForm.get('historyColor')?.setValue($event)">
@@ -287,17 +290,20 @@
             <div class="column">
               <div class="field-group">
                 <div class="field-label">Personnalisation des icônes</div>
-                <mat-form-field appearance="outline">
-                  <mat-select formControlName="customIcon">
-                    <mat-option *ngFor="let icon of customIcons" [value]="icon.value">
-                      <div class="icon-option-wrapper">
-                        <mat-icon>{{ icon.value }}</mat-icon>
-                        <span>{{ icon.label }}</span>
-                      </div>
-                    </mat-option>
-                  </mat-select>
-                  <mat-icon matSuffix>category</mat-icon>
-                </mat-form-field>
+                <div class="icon-selection-grid">
+                  <div *ngFor="let icon of customIcons" 
+                       class="icon-grid-item"
+                       [class.selected]="colorIconForm.get('customIcon')?.value === icon.value"
+                       (click)="selectIcon(icon.value)"
+                       [attr.title]="icon.label">
+                    <ng-container *ngIf="icon.value.startsWith('assets/'); else matIconGrid">
+                      <img [src]="icon.value" class="icon-grid-img">
+                    </ng-container>
+                    <ng-template #matIconGrid>
+                      <mat-icon>{{ icon.value }}</mat-icon>
+                    </ng-template>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

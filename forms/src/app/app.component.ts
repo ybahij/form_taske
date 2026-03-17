@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
       width: '900px',
       maxHeight: '92vh',
       panelClass: 'pro-dialog-panel',
+      backdropClass: 'pro-dialog-backdrop',
       disableClose: false
     });
   }
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
       width: '900px',
       maxHeight: '92vh',
       panelClass: 'pro-dialog-panel',
+      backdropClass: 'pro-dialog-backdrop',
       disableClose: false,
       data: vehicle
     });
