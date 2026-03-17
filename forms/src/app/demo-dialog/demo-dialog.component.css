@@ -1,103 +1,25 @@
-/* ── Complex Header ── */
-.dialog-header-complex {
-  display: flex;
-  align-items: center;
-  padding: 24px 24px 16px;
-  gap: 20px;
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-teal) 100%);
-  color: #ffffff;
-}
-
-.header-image-placeholder {
-  width: 64px;
-  height: 64px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.header-image-placeholder img {
-  width: 50%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.header-image-placeholder mat-icon {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-  color: #ffffff;
-}
-
-.header-text-lines {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.line-description-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ef4444; /* Red for off */
-  box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
-  transition: all 0.3s ease;
-}
-
-.status-dot.active {
-  background-color: #22c55e; /* Green for on */
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
-}
-
-.line-description {
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-}
-
-.status-toggle-btn {
-  width: 32px !important;
-  height: 32px !important;
-  line-height: 32px !important;
-  color: #ffffff !important;
-  opacity: 0.8;
-}
-
-.status-toggle-btn:hover {
-  opacity: 1;
-}
-
-.line-id, .line-imei {
-  font-size: 13px;
-  opacity: 0.9;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.close-btn-top {
-  color: #ffffff !important;
-  opacity: 0.7;
-}
-
-.close-btn-top:hover {
-  opacity: 1;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-}
 
 /* ── Content & Tabs ── */
 .no-scroll-content {
   padding: 0 !important;
-  overflow: hidden !important; /* Disable native scroll to avoid double bars */
+  height: 92vh; /* Use the full dialog height */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto !important; /* Single scrollbar at this level */
+}
+
+/* Ensure seamless background behind scrollbar - Absolute Transparency */
+::ng-deep .mat-dialog-content::-webkit-scrollbar {
+  width: 4px !important;
+  background-color: transparent !important;
+}
+
+
+::ng-deep .mat-dialog-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12) !important;
+  border-radius: 10px;
+  border: 3px solid transparent; /* padding effect */
+  background-clip: content-box;
 }
 
 .custom-tab-group {
@@ -106,9 +28,27 @@
 
 /* Ensure the tab body has space to scroll within the 92vh dialog */
 ::ng-deep .custom-tab-group .mat-tab-body-wrapper {
-  max-height: calc(92vh - 220px); 
-  overflow-y: auto !important;
-  padding: 20px 24px;
+  overflow: visible !important;
+  background-color: transparent !important;
+}
+
+/* Active Tab Styling Refinement */
+::ng-deep .custom-tab-group .mat-tab-label.mat-tab-label-active,
+::ng-deep .custom-tab-group .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: var(--primary-dark) !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .custom-tab-group .mat-tab-label.mat-tab-label-active,
+::ng-deep .custom-tab-group .mat-mdc-tab.mdc-tab--active {
+  background-color: rgba(9, 99, 126, 0.04) !important;
+  border-radius: 8px 8px 0 0;
+}
+
+::ng-deep .custom-tab-group .mat-ink-bar {
+  background-color: var(--primary-dark) !important;
+  height: 3px !important;
 }
 
 /* ── Form Field Styling (Thicker Borders & Icons) ── */
@@ -143,7 +83,12 @@
 }
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 1em 0 1em 0 !important;
+  padding: 0.8em 0 0.8em 0 !important; /* Slightly more compact */
+}
+
+/* Hide internal labels when we use external .field-label */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-label-wrapper {
+  display: none !important;
 }
 
 ::ng-deep .mat-select-value {
@@ -155,20 +100,34 @@
 }
 
 .tab-content-wrapper {
-  padding: 10px 0 80px 0; /* Added 80px bottom padding for floating button space */
+  padding: 16px 20px 80px 20px; /* Increased padding */
+  background-color: transparent; /* Very light neutral grey background */
+  min-height: 100%;
 }
 
 /* ── Form Layout ── */
 .horizontal-row-4 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* Force fields to stay in one row */
+  gap: 4px; /* Extreme compression to fit everything */
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.horizontal-row-4 .field-group {
+  min-width: 0; /* Allow shrinkage */
+}
+
+.horizontal-row-4 .field-label {
+  font-size: 11px; /* Smaller labels for this compressed row */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .two-column-grid, .three-column-grid {
   display: grid;
-  gap: 32px;
+  gap: 24px; /* Reduced from 32px to compact everything */
 }
 
 .two-column-grid {
@@ -182,30 +141,87 @@
 .column {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 12px; /* Reduced from 16px to compact everything */
+}
+
+/* ── Section Cards ── */
+.section-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px 14px; /* Minimized padding to maximize horizontal space */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+  margin-bottom: 24px;
+  border: 1px solid rgba(0,0,0,0.05); /* Slightly darker border */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  box-sizing: border-box; /* Crucial for padding to stay inside width */
+  overflow: visible; /* Changed to visible to ensure mat-error or buttons aren't cut */
+}
+
+.section-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-conducteur {
+  background-color: rgba(255, 235, 59, 0.03) !important; /* Pale Yellow Tint */
+}
+ 
+.card-info-general {
+  background-color: rgba(9, 99, 126, 0.03) !important; /* Pale Theme Teal Tint */
+}
+
+.card-vehicule-type {
+  background-color: rgba(76, 175, 80, 0.03) !important; /* Pale Green Tint */
 }
 
 .column-title {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: var(--primary-dark);
   text-transform: uppercase;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--primary-light);
+  letter-spacing: 0.5px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
+  gap: 10px; /* Space for icon */
+}
+
+.column-title mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: var(--primary-dark);
 }
 
 /* ── Helper Classes ── */
 .input-with-button {
   display: flex;
-  align-items: center;
+  align-items: flex-end; /* Align button with input field, not label */
   gap: 6px;
 }
 
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Space between label and field */
+  width: 100%;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary-dark);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .add-btn-tiny {
-  margin-bottom: 22px;
+  margin-bottom: 2px; /* Adjusted since labels moved up */
   width: 28px !important;
   height: 28px !important;
   line-height: 28px !important;
@@ -268,7 +284,7 @@
 }
 
 .save-btn:hover:not([disabled]) {
-  transform: translateY(-4px) scale(1.05); /* "Fly" up effect */
+  transform: translateY(-2px) scale(1.05); /* "Fly" up effect */
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
   filter: brightness(1.1);
 }
@@ -377,25 +393,67 @@
   margin-bottom: 20px;
 }
 
-.days-list {
+.days-list-horizontal {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 0;
 }
 
-.day-row {
+.day-chip {
+  position: relative;
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  justify-content: center;
+  min-width: 60px;
+  height: 40px;
+  border-radius: 20px;
   background: white;
-  border: 1px solid #f0f0f0;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border: 1px solid #e0e0e0;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
 }
 
-.day-row:hover {
-  background: #f9f9f9;
-  border-color: #e0e0e0;
+.day-chip:hover {
+  border-color: var(--primary-dark);
+  background: rgba(9, 99, 126, 0.02);
+}
+
+.day-chip.active {
+  background: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+  box-shadow: 0 4px 8px rgba(9, 99, 126, 0.15);
+}
+
+::ng-deep .day-chip .mat-checkbox {
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep .day-chip .mat-checkbox-layout {
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 12px;
+}
+
+::ng-deep .day-chip .mat-checkbox-inner-container {
+  display: none !important; /* Hide the actual checkbox square */
+}
+
+::ng-deep .day-chip .mat-checkbox-label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #455a64;
+  transition: color 0.2s ease;
+}
+
+.day-chip.active ::ng-deep .mat-checkbox-label {
+  color: white !important;
 }
 
 .day-label {
@@ -419,15 +477,80 @@ mat-accordion {
   margin-bottom: 24px;
 }
 
+/* Fuel Tab Cards */
+.fuel-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+  margin-bottom: 24px;
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fuel-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.fuel-card:last-child {
+  margin-bottom: 0;
+}
+
+.fuel-card-teal { 
+  background-color: rgba(0, 188, 212, 0.03) !important; 
+}
+.fuel-card-slate { 
+  background-color: rgba(103, 58, 183, 0.03) !important; 
+}
+.fuel-card-blue { 
+  background-color: rgba(0, 150, 136, 0.03) !important; 
+}
+.fuel-card-purple { 
+  background-color: rgba(103, 58, 183, 0.03) !important; 
+}
+.fuel-card-amber { 
+  background-color: rgba(255, 179, 0, 0.03) !important; 
+}
+.fuel-card-deep-orange { 
+  background-color: rgba(255, 87, 34, 0.03) !important; 
+}
+
 mat-expansion-panel {
   box-shadow: none !important;
-  border: 1px solid #f0f0f0 !important;
-  margin-bottom: 12px !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  margin-bottom: 10px !important;
   border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+/* Thematic Coloring for Expansion Panels */
+mat-expansion-panel:nth-of-type(1) { background-color: rgba(9, 99, 126, 0.03) !important; } /* Theme Teal Tint */
+mat-expansion-panel:nth-of-type(2) { background-color: rgba(69, 90, 100, 0.03) !important; } /* Theme Slate Tint */
+mat-expansion-panel:nth-of-type(3) { background-color: rgba(13, 71, 161, 0.03) !important; } /* Theme Blue Tint */
+mat-expansion-panel:nth-of-type(4) { background-color: rgba(0, 77, 64, 0.03) !important; }    /* Theme Dark Green Tint */
+
+.inner-panel-card {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tab-content-wrapper {
+  padding: 16px 20px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 mat-expansion-panel-header {
   padding: 0 16px !important;
+  height: 48px !important; /* Shorter header */
 }
 
 .mat-expansion-panel-header-title {
@@ -454,15 +577,18 @@ mat-expansion-panel-header {
 .time-picker-group {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 4px; /* Reduced gap */
+  margin-bottom: 8px; /* Further reduced margin */
 }
 
 .time-field-label {
   font-size: 13px;
-  color: #607d8b;
-  margin-bottom: 4px;
   font-weight: 500;
+  color: var(--primary-dark);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .hour-select, .minute-select, .second-select {
@@ -471,9 +597,9 @@ mat-expansion-panel-header {
 
 .time-separator {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px; /* Slightly smaller */
   color: #455a64;
-  margin-bottom: 20px;
+  margin-bottom: 16px; /* Reduced margin */
 }
 
 ::ng-deep .time-picker-group .mat-form-field-wrapper {
@@ -506,4 +632,30 @@ mat-expansion-panel-header {
 
 ::ng-deep .color-picker .box {
   padding: 0 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Final Polish: Input Contrast
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* High Contrast Inputs - Perfectly flush within borders */
+.section-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex,
+.fuel-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex,
+.inner-panel-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  background-color: #ffffff !important;
+  border-radius: 5px !important; /* Match outline radius */
+  margin-top: 0 !important;
+}
+
+.section-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline,
+.fuel-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline,
+.inner-panel-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  top: 0 !important;
+}
+
+.section-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix,
+.fuel-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix,
+.inner-panel-card ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding-top: 0.5em !important;
+  padding-bottom: 0.5em !important;
 }

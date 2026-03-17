@@ -13,7 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -23,6 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemoDialogComponent } from './demo-dialog/demo-dialog.component';
 import { AddValueDialogComponent } from './add-value-dialog/add-value-dialog.component';
+import { VehicleHeaderComponent } from './vehicle-header/vehicle-header.component';
 import { ImportFileDialogComponent } from './import-file-dialog/import-file-dialog.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ImportFileDialogComponent } from './import-file-dialog/import-file-dial
     AppComponent,
     DemoDialogComponent,
     AddValueDialogComponent,
+    VehicleHeaderComponent,
     ImportFileDialogComponent
   ],
   imports: [
@@ -53,7 +55,9 @@ import { ImportFileDialogComponent } from './import-file-dialog/import-file-dial
     MatExpansionModule,
     ColorPickerModule
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

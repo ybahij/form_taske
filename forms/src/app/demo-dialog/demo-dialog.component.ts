@@ -67,7 +67,7 @@ export class DemoDialogComponent implements OnInit {
       typeVehicule: [''],
       statutEquipement: [''],
       indexIgnition: [''],
-      nombreSieges: [null],
+      nombreSieges: [null, [Validators.min(0)]],
       notesGenerales: [''],
       isActive: [true],
       imageUrl: ['assets/red_car.jpg'],
@@ -80,12 +80,12 @@ export class DemoDialogComponent implements OnInit {
     });
 
     this.adminForm = this.fb.group({
-      dateSortie: [null],
-      prixVehicule: [null],
-      dureeLocation: [null],
-      odometreSortie: [null],
-      montantMensuel: [null],
-      montantAvance: [null]
+      dateSortie: [null, Validators.required],
+      prixVehicule: [null, [Validators.min(0)]],
+      dureeLocation: [null, [Validators.min(0)]],
+      odometreSortie: [null, [Validators.min(0)]],
+      montantMensuel: [null, [Validators.min(0)]],
+      montantAvance: [null, [Validators.min(0)]]
     });
 
     this.colorIconForm = this.fb.group({
@@ -99,11 +99,11 @@ export class DemoDialogComponent implements OnInit {
     });
 
     this.fuelForm = this.fb.group({
-      capaciteCarburant: [null],
-      economieCarburant: [null],
+      capaciteCarburant: [null, [Validators.min(0)]],
+      economieCarburant: [null, [Validators.min(0)]],
       repartitionReservoir: ['Standard'],
       profilReservoir: ['Mixte'],
-      coutCarburant: [null],
+      coutCarburant: [null, [Validators.min(0)]],
       lls1: ['Non importé'],
       lls2: ['Non importé']
     });
@@ -121,33 +121,33 @@ export class DemoDialogComponent implements OnInit {
     });
 
     this.infractionForm = this.fb.group({
-      debutPlusTotH: ['07'], debutPlusTotM: ['00'],
-      finPlusTotH: ['16'], finPlusTotM: ['00'],
-      debutNocturneH: ['22'], debutNocturneM: ['00'],
-      debutPlusTardH: ['09'], debutPlusTardM: ['00'],
-      finPlusTardH: ['18'], finPlusTardM: ['00'],
-      finNocturneH: ['06'], finNocturneM: ['00']
+      debutPlusTotH: ['07', Validators.required], debutPlusTotM: ['00', Validators.required],
+      finPlusTotH: ['16', Validators.required], finPlusTotM: ['00', Validators.required],
+      debutNocturneH: ['22', Validators.required], debutNocturneM: ['00', Validators.required],
+      debutPlusTardH: ['09', Validators.required], debutPlusTardM: ['00', Validators.required],
+      finPlusTardH: ['18', Validators.required], finPlusTardM: ['00', Validators.required],
+      finNocturneH: ['06', Validators.required], finNocturneM: ['00', Validators.required]
     });
 
     this.infractionMaxForm = this.fb.group({
       distMaxJour: [-1],
-      seuilVitesse: [null],
-      tempsTravailH: ['08'], tempsTravailM: ['00'],
-      tempsConduiteH: ['09'], tempsConduiteM: ['00'],
-      tempsContinueH: ['04'], tempsContinueM: ['30']
+      seuilVitesse: [null, [Validators.min(0)]],
+      tempsTravailH: ['08', Validators.required], tempsTravailM: ['00', Validators.required],
+      tempsConduiteH: ['09', Validators.required], tempsConduiteM: ['00', Validators.required],
+      tempsContinueH: ['04', Validators.required], tempsContinueM: ['30', Validators.required]
     });
 
     this.infractionGForm = this.fb.group({
       accelMaxG: [0.3],
-      fusionAccelH: ['00'], fusionAccelM: ['03'],
-      fusionFreinageH: ['00'], fusionFreinageM: ['03']
+      fusionAccelH: ['00', Validators.required], fusionAccelM: ['03', Validators.required],
+      fusionFreinageH: ['00', Validators.required], fusionFreinageM: ['03', Validators.required]
     });
 
     this.infractionEcoForm = this.fb.group({
       vitesseMaxEco: [-1],
-      vitesseFusionH: ['00'], vitesseFusionM: ['00'], vitesseFusionS: ['10'],
+      vitesseFusionH: ['00', Validators.required], vitesseFusionM: ['00', Validators.required], vitesseFusionS: ['10', Validators.required],
       ecoScoreMin: [-1],
-      ecoScoreFusionH: ['00'], ecoScoreFusionM: ['00'], ecoScoreFusionS: ['10']
+      ecoScoreFusionH: ['00', Validators.required], ecoScoreFusionM: ['00', Validators.required], ecoScoreFusionS: ['10', Validators.required]
     });
   }
 
@@ -317,6 +317,28 @@ export class DemoDialogComponent implements OnInit {
     };
   }
 
+  private getUpdatedVehicleData(extraValues: any = {}): Vehicle {
+    const combinedInfractions = this.getCombinedInfractions();
+    const combinedMaxLimits = this.getCombinedMaxLimits();
+    const combinedGForceLimits = this.getCombinedGForceLimits();
+    const combinedEcoLimits = this.getCombinedEcoLimits();
+    
+    return { 
+      ...this.data, 
+      ...this.form.getRawValue(), 
+      ...this.adminForm.getRawValue(), 
+      ...this.colorIconForm.getRawValue(),
+      ...this.simForm.getRawValue(),
+      ...this.fuelForm.getRawValue(),
+      ...this.workHoursForm.getRawValue(),
+      ...combinedMaxLimits,
+      ...combinedInfractions,
+      ...combinedGForceLimits,
+      ...combinedEcoLimits,
+      ...extraValues 
+    };
+  }
+
   openImportDialog(field: 'lls1' | 'lls2'): void {
     const dialogRef = this.dialog.open(ImportFileDialogComponent, {
       width: '800px',
@@ -331,36 +353,19 @@ export class DemoDialogComponent implements OnInit {
   }
 
   private saveFullVehicle(extraData: any): void {
-    const combinedInfractions = this.getCombinedInfractions();
-    const combinedMaxLimits = this.getCombinedMaxLimits();
-    const combinedGForceLimits = this.getCombinedGForceLimits();
-    const combinedEcoLimits = this.getCombinedEcoLimits();
-    const updatedVehicle = { 
-      ...this.data, 
-      ...this.form.getRawValue(), 
-      ...this.adminForm.getRawValue(), 
-      ...this.colorIconForm.getRawValue(),
-      ...this.simForm.getRawValue(),
-      ...this.fuelForm.getRawValue(),
-      ...this.workHoursForm.getRawValue(),
-      ...combinedMaxLimits,
-      ...combinedInfractions,
-      ...combinedGForceLimits,
-      ...combinedEcoLimits,
-      ...extraData 
-    };
+    const updatedVehicle = this.getUpdatedVehicleData(extraData);
+    
     if (this.isEdit) {
       this.vehicleService.updateVehicle(this.data.immatriculation, updatedVehicle);
     } else {
       this.vehicleService.addVehicle(updatedVehicle);
+      // Transition to edit mode for subsequent saves in the same session
+      this.isEdit = true;
     }
+    this.data = updatedVehicle;
     this.dialogRef.close(updatedVehicle);
   }
 
-  toggleStatus(): void {
-    const current = this.form.get('isActive')?.value;
-    this.form.get('isActive')?.setValue(!current);
-  }
 
   openAddValueDialog(type: 'Marque' | 'Modéle' | 'Activité'): void {
     const dialogRef = this.dialog.open(AddValueDialogComponent, {
@@ -379,12 +384,16 @@ export class DemoDialogComponent implements OnInit {
 
   save() {
     if (this.form.valid) {
+      const updatedVehicle = this.getUpdatedVehicleData();
       if (this.isEdit) {
-        this.vehicleService.updateVehicle(this.data.immatriculation, this.form.value);
+        this.vehicleService.updateVehicle(this.data.immatriculation, updatedVehicle);
       } else {
-        this.vehicleService.addVehicle(this.form.value);
+        this.vehicleService.addVehicle(updatedVehicle);
+        // Important: transition to EDIT mode so next tabs click don't create duplicates
+        this.isEdit = true;
       }
-      // this.dialogRef.close(this.form.value);
+      this.data = updatedVehicle;
+      // Note: we don't close the dialog here to allow switching tabs
     } else {
       this.form.markAllAsTouched();
     }

@@ -73,13 +73,13 @@ html, body {
   --rdu: 12px; /* Slightly more subtle radius */
 }
 
-.pro-dialog-panel {
+/* .pro-dialog-panel {
   border-radius: var(--rdu) !important;
-}
+} */
 
  .pro-dialog-panel .mat-dialog-container {
   border-radius: var(--rdu) !important;
-  background: linear-gradient(to bottom right, #EBF4F699 50%, #05868666) !important;
+  background: linear-gradient(to bottom right, var(--primary-light) 80%, var(--primary-teal)) !important;
   backdrop-filter: blur(15px) !important;
   -webkit-backdrop-filter: blur(15px) !important;
   padding: 0 !important;

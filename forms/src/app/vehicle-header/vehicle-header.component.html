@@ -1,0 +1,24 @@
+<div class="dialog-header-complex">
+  <div class="header-image-placeholder">
+    <img [src]="form.get('imageUrl')?.value" alt="Vehicle Image" *ngIf="form.get('imageUrl')?.value; else defaultIcon">
+    <ng-template #defaultIcon>
+      <mat-icon>directions_car</mat-icon>
+    </ng-template>
+  </div>
+  <div class="header-text-lines">
+    <div class="line-description-row">
+      <span class="status-dot" [class.active]="form.get('isActive')?.value"></span>
+      <div class="line-description">{{ form.get('description')?.value || 'Nouvelle Description' }}</div>
+      <button mat-icon-button class="status-toggle-btn" (click)="toggleStatus()" matTooltip="Basculer le statut">
+        <mat-icon>{{ form.get('isActive')?.value ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+      </button>
+    </div>
+    <div class="line-id">ID Véhicule: {{ form.get('idVehicule')?.value || '-' }}</div>
+    <div class="line-imei">IMEI: {{ form.get('imei')?.value || '-' }}</div>
+  </div>
+  <div class="header-actions">
+    <button mat-icon-button (click)="onClose()" class="close-btn-top">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
