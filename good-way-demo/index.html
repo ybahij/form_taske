@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="gwm">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Good Way Management — Conseil · Formation · Communication | Marrakech</title>
+  <meta name="description" content="Good Way Management est un cabinet de conseil, formation et communication basé à Marrakech. Nous accompagnons les entreprises marocaines dans leur transformation digitale et leur croissance stratégique." />
+
+  <!-- Tailwind CSS CDN (Play) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FlyonUI CSS & JS via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flyonui@1.2.5/dist/flyonui.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/flyonui@1.2.5/dist/flyonui.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            brand: {
+              50:  '#f0f4ff',
+              100: '#dce7ff',
+              200: '#b9ceff',
+              300: '#7ea6ff',
+              400: '#4a7bff',
+              500: '#1a4fff',
+              600: '#0036e8',
+              700: '#0028ba',
+              800: '#001f96',
+              900: '#001278',
+              950: '#000b52',
+            },
+            gold: {
+              400: '#f5c842',
+              500: '#e6b800',
+              600: '#c09a00',
+            }
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.6s ease forwards',
+            'float': 'float 6s ease-in-out infinite',
+            'shimmer': 'shimmer 2s linear infinite',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            float: {
+              '0%,100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --brand: #1a4fff;
+      --gold: #f5c842;
+    }
+    * { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #1a4fff 0%, #00c2ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-gold {
+      background: linear-gradient(135deg, #f5c842 0%, #ff9500 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Hero section */
+    .hero-bg {
+      background: linear-gradient(135deg, #001278 0%, #0028ba 40%, #1a4fff 70%, #00aaff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+    }
+
+    /* Cards */
+    .service-card {
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(26,79,255,0.12);
+    }
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px rgba(26,79,255,0.18);
+      border-color: rgba(26,79,255,0.4);
+    }
+
+    /* Stat counter */
+    .stat-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* Process steps line */
+    .process-line::after {
+      content: '';
+      position: absolute;
+      top: 2rem;
+      left: calc(50% + 2.5rem);
+      width: calc(100% - 5rem);
+      height: 2px;
+      background: linear-gradient(90deg, #1a4fff, #00c2ff);
+      opacity: 0.3;
+    }
+
+    /* Navbar */
+    .navbar-glass {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(26,79,255,0.1);
+    }
+
+    /* CTA button */
+    .btn-hero {
+      background: linear-gradient(135deg, #f5c842 0%, #ff9500 100%);
+      color: #001278;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 32px rgba(245,200,66,0.4);
+    }
+    .btn-hero:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(245,200,66,0.6);
+    }
+
+    /* Section divider */
+    .wave-divider {
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    /* Testimonial card */
+    .testimonial-card {
+      background: linear-gradient(135deg, #f8faff 0%, #eef2ff 100%);
+      border-left: 4px solid #1a4fff;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 antialiased">
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar-glass fixed top-0 left-0 right-0 z-50 shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-700 to-brand-400 flex items-center justify-center">
+          <span class="text-white font-black text-sm">GW</span>
+        </div>
+        <div>
+          <div class="font-bold text-brand-900 text-sm leading-tight">Good Way</div>
+          <div class="text-[10px] text-brand-500 uppercase tracking-widest leading-tight">Management</div>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <ul class="hidden md:flex items-center gap-8">
+        <li><a href="#services" class="text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">Services</a></li>
+        <li><a href="#about" class="text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">À propos</a></li>
+        <li><a href="#process" class="text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">Notre approche</a></li>
+        <li><a href="#contact" class="text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">Contact</a></li>
+      </ul>
+
+      <!-- CTA -->
+      <a href="tel:+212661209520" class="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-700 text-white text-sm font-semibold hover:bg-brand-800 transition-all shadow-lg shadow-brand-700/20">
+        <i class="ri-phone-line text-base"></i>
+        Nous contacter
+      </a>
+
+      <!-- Mobile menu toggle -->
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100" onclick="toggleMenu()">
+        <i class="ri-menu-3-line text-xl"></i>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pb-4">
+      <ul class="space-y-2 pt-2">
+        <li><a href="#services" onclick="toggleMenu()" class="block py-2 text-sm font-medium text-gray-700 hover:text-brand-600">Services</a></li>
+        <li><a href="#about" onclick="toggleMenu()" class="block py-2 text-sm font-medium text-gray-700 hover:text-brand-600">À propos</a></li>
+        <li><a href="#process" onclick="toggleMenu()" class="block py-2 text-sm font-medium text-gray-700 hover:text-brand-600">Notre approche</a></li>
+        <li><a href="#contact" onclick="toggleMenu()" class="block py-2 text-sm font-medium text-gray-700 hover:text-brand-600">Contact</a></li>
+        <li><a href="tel:+212661209520" class="block py-2.5 px-4 rounded-xl bg-brand-700 text-white text-sm font-semibold text-center mt-2">Appeler maintenant</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero-bg min-h-screen flex items-center pt-16">
+    <!-- Blobs -->
+    <div class="hero-blob w-96 h-96 bg-blue-400 top-10 -right-20"></div>
+    <div class="hero-blob w-72 h-72 bg-purple-500 bottom-20 -left-10"></div>
+    <div class="hero-blob w-56 h-56 bg-cyan-400 top-1/2 left-1/2"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <!-- Left copy -->
+        <div>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white/90 text-sm font-medium mb-8" data-aos="fade-down">
+            <span class="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></span>
+            Cabinet basé à Marrakech, Maroc
+          </div>
+
+          <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6" data-aos="fade-up" data-aos-delay="100">
+            Votre partenaire
+            <span class="block text-gold-400">stratégique</span>
+            au Maroc
+          </h1>
+
+          <p class="text-blue-100 text-lg leading-relaxed mb-10 max-w-lg" data-aos="fade-up" data-aos-delay="200">
+            Conseil en management, formation professionnelle et communication digitale — Good Way Management accompagne les entreprises marocaines vers l'excellence.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="300">
+            <a href="#contact" class="btn-hero px-8 py-4 rounded-2xl text-base inline-flex items-center gap-2 justify-center">
+              <i class="ri-arrow-right-circle-line text-xl"></i>
+              Démarrer un projet
+            </a>
+            <a href="#services" class="px-8 py-4 rounded-2xl text-base border border-white/30 text-white font-semibold hover:bg-white/10 transition-all inline-flex items-center gap-2 justify-center">
+              <i class="ri-eye-line text-xl"></i>
+              Nos services
+            </a>
+          </div>
+
+          <!-- Trust badges -->
+          <div class="flex flex-wrap items-center gap-6 mt-12" data-aos="fade-up" data-aos-delay="400">
+            <div class="flex items-center gap-2 text-white/70 text-sm">
+              <i class="ri-shield-check-line text-gold-400 text-lg"></i>
+              Qualité certifiée
+            </div>
+            <div class="flex items-center gap-2 text-white/70 text-sm">
+              <i class="ri-map-pin-line text-gold-400 text-lg"></i>
+              Marrakech, Maroc
+            </div>
+            <div class="flex items-center gap-2 text-white/70 text-sm">
+              <i class="ri-customer-service-2-line text-gold-400 text-lg"></i>
+              Accompagnement personnalisé
+            </div>
+          </div>
+        </div>
+
+        <!-- Right — Stats cards -->
+        <div class="grid grid-cols-2 gap-4" data-aos="fade-left" data-aos-delay="200">
+          <div class="stat-card rounded-2xl p-6 col-span-2">
+            <div class="flex items-center gap-4">
+              <div class="w-14 h-14 rounded-2xl bg-gold-400/20 flex items-center justify-center">
+                <i class="ri-lightbulb-flash-line text-gold-400 text-2xl"></i>
+              </div>
+              <div>
+                <div class="text-white font-bold text-lg">Conseil Stratégique</div>
+                <div class="text-blue-200 text-sm">Analyse, diagnostic & recommandations</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card rounded-2xl p-6">
+            <i class="ri-bar-chart-grouped-line text-gold-400 text-3xl mb-3 block"></i>
+            <div class="text-white font-bold text-2xl">360°</div>
+            <div class="text-blue-200 text-sm mt-1">Approche globale</div>
+          </div>
+
+          <div class="stat-card rounded-2xl p-6">
+            <i class="ri-team-line text-gold-400 text-3xl mb-3 block"></i>
+            <div class="text-white font-bold text-2xl">PME</div>
+            <div class="text-blue-200 text-sm mt-1">& grands comptes</div>
+          </div>
+
+          <div class="stat-card rounded-2xl p-6">
+            <i class="ri-global-line text-gold-400 text-3xl mb-3 block"></i>
+            <div class="text-white font-bold text-2xl">Digital</div>
+            <div class="text-blue-200 text-sm mt-1">Transformation</div>
+          </div>
+
+          <div class="stat-card rounded-2xl p-6">
+            <i class="ri-graduation-cap-line text-gold-400 text-3xl mb-3 block"></i>
+            <div class="text-white font-bold text-2xl">Formation</div>
+            <div class="text-blue-200 text-sm mt-1">Continue & certifiée</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave bottom -->
+    <div class="wave-divider absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 80L60 74.7C120 69 240 59 360 58.7C480 58 600 68 720 72C840 77 960 76 1080 66.7C1200 58 1320 42 1380 34L1440 26V80H0Z" fill="white"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section id="services" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="text-center mb-16" data-aos="fade-up">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 text-brand-600 text-sm font-semibold mb-4">Nos Expertises</span>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Des services complets pour
+          <span class="gradient-text"> votre croissance</span>
+        </h2>
+        <p class="text-gray-500 max-w-xl mx-auto text-lg">Nous couvrons l'intégralité de vos besoins stratégiques, opérationnels et communicationnels.</p>
+      </div>
+
+      <!-- Service cards grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <!-- Card 1 -->
+        <div class="service-card rounded-2xl p-7 bg-white" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-14 h-14 rounded-2xl bg-brand-50 flex items-center justify-center mb-5">
+            <i class="ri-organization-chart text-brand-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Conseil en Management</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Diagnostic organisationnel, restructuration, accompagnement stratégique et optimisation des performances.</p>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-brand-500"></i> Audit organisationnel</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-brand-500"></i> Stratégie d'entreprise</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-brand-500"></i> Gestion du changement</li>
+          </ul>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-card rounded-2xl p-7 bg-white" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center mb-5">
+            <i class="ri-bar-chart-2-line text-amber-500 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Études & Recherche</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Études de marché approfondies, analyse concurrentielle, études de faisabilité pour des décisions éclairées.</p>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-amber-500"></i> Études de marché</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-amber-500"></i> Analyse concurrentielle</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-amber-500"></i> Études de faisabilité</li>
+          </ul>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card rounded-2xl p-7 bg-white" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center mb-5">
+            <i class="ri-graduation-cap-line text-green-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Formation Professionnelle</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Programmes de formation sur mesure, développement des compétences et accompagnement pédagogique certifié.</p>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-green-600"></i> Formation continue</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-green-600"></i> Coaching individuel</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-green-600"></i> Séminaires & ateliers</li>
+          </ul>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="service-card rounded-2xl p-7 bg-white" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center mb-5">
+            <i class="ri-megaphone-line text-purple-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Communication</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Stratégie de communication, identité visuelle, relations presse et événementiel professionnel.</p>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-purple-600"></i> Stratégie de marque</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-purple-600"></i> Design graphique</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-purple-600"></i> Événementiel</li>
+          </ul>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="service-card rounded-2xl p-7 bg-white" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-14 h-14 rounded-2xl bg-cyan-50 flex items-center justify-center mb-5">
+            <i class="ri-global-line text-cyan-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Marketing Digital</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">SEO, réseaux sociaux, campagnes payantes et création de sites web pour booster votre visibilité en ligne.</p>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-cyan-600"></i> Référencement SEO</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-cyan-600"></i> Social media management</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><i class="ri-check-line text-cyan-600"></i> Création de site web</li>
+          </ul>
+        </div>
+
+        <!-- Card 6 - Highlighted -->
+        <div class="service-card rounded-2xl p-7 bg-gradient-to-br from-brand-700 to-brand-900 text-white border-brand-700" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-5">
+            <i class="ri-shield-star-line text-gold-400 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Pack 360°</h3>
+          <p class="text-blue-100 text-sm leading-relaxed mb-5">Une solution intégrée combinant conseil, formation et communication pour une transformation complète de votre organisation.</p>
+          <a href="#contact" class="btn-hero inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold">
+            <i class="ri-arrow-right-line"></i>
+            Demander un devis
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <!-- Left -->
+        <div data-aos="fade-right">
+          <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 text-brand-600 text-sm font-semibold mb-4">Qui sommes-nous</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            Un cabinet ancré dans
+            <span class="gradient-text"> la réalité marocaine</span>
+          </h2>
+          <p class="text-gray-500 leading-relaxed mb-6">
+            Good Way Management est un cabinet multi-disciplinaire basé à Marrakech, spécialisé dans le conseil stratégique, la formation professionnelle et la communication. Nous accompagnons les PME, grandes entreprises et institutions dans leurs défis de croissance et de transformation.
+          </p>
+          <p class="text-gray-500 leading-relaxed mb-8">
+            Notre équipe d'experts marocains combine expertise locale et standards internationaux pour vous offrir des solutions adaptées à votre contexte et à vos ambitions.
+          </p>
+
+          <!-- Values -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-focus-3-line text-brand-600"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 text-sm">Excellence</div>
+                <div class="text-gray-500 text-xs mt-1">Qualité à chaque étape</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-handshake-line text-green-600"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 text-sm">Confiance</div>
+                <div class="text-gray-500 text-xs mt-1">Partenariat durable</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-flashlight-line text-amber-500"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 text-sm">Innovation</div>
+                <div class="text-gray-500 text-xs mt-1">Solutions créatives</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-user-heart-line text-purple-600"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 text-sm">Sur-mesure</div>
+                <div class="text-gray-500 text-xs mt-1">Adapté à vos besoins</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right - stats -->
+        <div data-aos="fade-left">
+          <div class="grid grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
+              <div class="text-4xl font-black gradient-text mb-2">100+</div>
+              <div class="text-gray-500 text-sm font-medium">Clients accompagnés</div>
+            </div>
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
+              <div class="text-4xl font-black gradient-text mb-2">50+</div>
+              <div class="text-gray-500 text-sm font-medium">Formations réalisées</div>
+            </div>
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
+              <div class="text-4xl font-black gradient-text-gold mb-2">360°</div>
+              <div class="text-gray-500 text-sm font-medium">Approche intégrée</div>
+            </div>
+            <div class="bg-brand-700 rounded-2xl p-8 text-center">
+              <div class="text-4xl font-black text-gold-400 mb-2">✓</div>
+              <div class="text-white text-sm font-medium">Qualité assurée</div>
+            </div>
+          </div>
+
+          <!-- Location badge -->
+          <div class="mt-6 bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center flex-shrink-0">
+              <i class="ri-map-pin-2-line text-brand-600 text-xl"></i>
+            </div>
+            <div>
+              <div class="font-semibold text-gray-800 text-sm">Av. Allal El Fassi, Dar El Hamra</div>
+              <div class="text-gray-500 text-xs mt-0.5">Marrakech, Maroc — 3ème étage, Appt N°14</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROCESS ===== -->
+  <section id="process" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 text-brand-600 text-sm font-semibold mb-4">Notre Méthodologie</span>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Une approche <span class="gradient-text">structurée en 4 étapes</span>
+        </h2>
+        <p class="text-gray-500 max-w-xl mx-auto">De l'analyse initiale à la mise en œuvre, nous vous accompagnons à chaque étape avec rigueur et expertise.</p>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-8">
+        <!-- Step 1 -->
+        <div class="text-center" data-aos="fade-up" data-aos-delay="0">
+          <div class="w-16 h-16 rounded-2xl bg-brand-600 text-white flex items-center justify-center mx-auto mb-5 text-2xl font-black shadow-lg shadow-brand-500/30">01</div>
+          <h3 class="font-bold text-gray-900 mb-2">Analyse</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Diagnostic approfondi de votre situation, identification des enjeux et opportunités.</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-16 h-16 rounded-2xl bg-brand-500 text-white flex items-center justify-center mx-auto mb-5 text-2xl font-black shadow-lg shadow-brand-400/30">02</div>
+          <h3 class="font-bold text-gray-900 mb-2">Design</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Élaboration de la solution optimale, co-construction avec vos équipes.</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-16 h-16 rounded-2xl bg-brand-400 text-white flex items-center justify-center mx-auto mb-5 text-2xl font-black shadow-lg shadow-brand-300/30">03</div>
+          <h3 class="font-bold text-gray-900 mb-2">Mise en œuvre</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Déploiement opérationnel avec accompagnement des équipes sur le terrain.</p>
+        </div>
+        <!-- Step 4 -->
+        <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+          <div class="w-16 h-16 rounded-2xl bg-gold-500 text-brand-900 flex items-center justify-center mx-auto mb-5 text-2xl font-black shadow-lg shadow-gold-400/30">04</div>
+          <h3 class="font-bold text-gray-900 mb-2">Suivi & Résultats</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Mesure des impacts, ajustements et accompagnement dans la durée.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 text-brand-600 text-sm font-semibold mb-4">Témoignages</span>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-gray-900">
+          Ce que disent <span class="gradient-text">nos clients</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="testimonial-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="0">
+          <div class="flex items-center gap-1 text-gold-400 mb-4">
+            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed mb-5 italic">"Good Way Management a transformé notre approche stratégique. Leur diagnostic a révélé des leviers de croissance que nous n'avions pas identifiés. Des résultats concrets en moins de 6 mois."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center font-bold text-brand-700 text-sm">MK</div>
+            <div>
+              <div class="font-semibold text-gray-800 text-sm">Mohammed K.</div>
+              <div class="text-gray-400 text-xs">Directeur Général, PME Marrakech</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-center gap-1 text-gold-400 mb-4">
+            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed mb-5 italic">"La formation proposée par Good Way a réellement changé la dynamique de notre équipe. Approche pratique, formateurs compétents et suivi post-formation exemplaire."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center font-bold text-green-700 text-sm">SA</div>
+            <div>
+              <div class="font-semibold text-gray-800 text-sm">Salma A.</div>
+              <div class="text-gray-400 text-xs">DRH, Groupe Hôtelier</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card rounded-2xl p-7" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-center gap-1 text-gold-400 mb-4">
+            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed mb-5 italic">"Leur rebranding complet a repositionné notre entreprise sur le marché. Identité visuelle, digital, réseaux sociaux — une cohérence parfaite et un vrai retour sur investissement."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center font-bold text-purple-700 text-sm">YB</div>
+            <div>
+              <div class="font-semibold text-gray-800 text-sm">Youssef B.</div>
+              <div class="text-gray-400 text-xs">Fondateur, Startup Tech</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="py-20 bg-gradient-to-br from-brand-800 to-brand-950 relative overflow-hidden">
+    <div class="hero-blob w-64 h-64 bg-blue-400 -top-10 -right-10"></div>
+    <div class="hero-blob w-48 h-48 bg-purple-500 bottom-0 left-20"></div>
+    <div class="max-w-4xl mx-auto px-4 text-center relative z-10" data-aos="fade-up">
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+        Prêt à passer à la vitesse supérieure ?
+      </h2>
+      <p class="text-blue-200 text-lg mb-10 max-w-2xl mx-auto">Discutons de votre projet lors d'un entretien gratuit et sans engagement. Notre équipe est disponible pour vous accompagner.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="tel:+212661209520" class="btn-hero px-8 py-4 rounded-2xl text-base inline-flex items-center gap-3 justify-center">
+          <i class="ri-phone-fill text-xl"></i>
+          +212 661 209 520
+        </a>
+        <a href="mailto:adgmanagement@yahoo.fr" class="px-8 py-4 rounded-2xl text-base border border-white/30 text-white font-semibold hover:bg-white/10 transition-all inline-flex items-center gap-3 justify-center">
+          <i class="ri-mail-line text-xl"></i>
+          adgmanagement@yahoo.fr
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <!-- Left info -->
+        <div data-aos="fade-right">
+          <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 text-brand-600 text-sm font-semibold mb-4">Contactez-nous</span>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            Parlons de votre
+            <span class="gradient-text"> projet</span>
+          </h2>
+          <p class="text-gray-500 leading-relaxed mb-10">Remplissez le formulaire ou contactez-nous directement. Nous répondons sous 24h.</p>
+
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-brand-50 flex items-center justify-center flex-shrink-0">
+                <i class="ri-map-pin-line text-brand-600 text-xl"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 mb-1">Adresse</div>
+                <div class="text-gray-500 text-sm">Immeuble C, 3ème Étage, Appt N°14<br>Dar El Hamra, Av. Allal El Fassi<br>Marrakech, Maroc</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-brand-50 flex items-center justify-center flex-shrink-0">
+                <i class="ri-phone-line text-brand-600 text-xl"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 mb-1">Téléphone</div>
+                <a href="tel:+212661209520" class="text-brand-600 text-sm font-medium hover:underline block">+212 661 209 520 (Mobile)</a>
+                <a href="tel:+212524302783" class="text-gray-500 text-sm hover:underline block">+212 524 302 783 (Fixe)</a>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-brand-50 flex items-center justify-center flex-shrink-0">
+                <i class="ri-mail-line text-brand-600 text-xl"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800 mb-1">Email</div>
+                <a href="mailto:adgmanagement@yahoo.fr" class="text-brand-600 text-sm font-medium hover:underline">adgmanagement@yahoo.fr</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right - contact form -->
+        <div data-aos="fade-left">
+          <form onsubmit="handleFormSubmit(event)" class="bg-gray-50 rounded-3xl p-8 border border-gray-100">
+            <div class="grid grid-cols-2 gap-5 mb-5">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Prénom</label>
+                <input type="text" placeholder="Mohamed" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-white transition" required />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Nom</label>
+                <input type="text" placeholder="Alami" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-white transition" required />
+              </div>
+            </div>
+
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+              <input type="email" placeholder="vous@email.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-white transition" required />
+            </div>
+
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Téléphone</label>
+              <input type="tel" placeholder="+212 6XX XXX XXX" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-white transition" />
+            </div>
+
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Service souhaité</label>
+              <select class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-white transition text-gray-600">
+                <option value="">Sélectionner un service...</option>
+                <option>Conseil en management</option>
+                <option>Études & Recherche</option>
+                <option>Formation professionnelle</option>
+                <option>Communication & Marketing</option>
+                <option>Marketing Digital</option>
+                <option>Pack 360°</option>
+              </select>
+            </div>
+
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Votre message</label>
+              <textarea rows="4" placeholder="Décrivez votre projet ou vos besoins..." class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-white transition resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full btn-hero py-4 rounded-2xl text-base font-bold flex items-center justify-center gap-2">
+              <i class="ri-send-plane-line text-xl"></i>
+              Envoyer ma demande
+            </button>
+
+            <div id="formSuccess" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium text-center">
+              ✅ Message envoyé ! Nous vous répondons sous 24h.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-brand-950 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid md:grid-cols-4 gap-10 mb-12">
+        <!-- Brand -->
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center">
+              <span class="text-white font-black text-sm">GW</span>
+            </div>
+            <div>
+              <div class="font-bold text-white">Good Way Management</div>
+              <div class="text-blue-400 text-xs">Cabinet de Conseil · Formation · Communication</div>
+            </div>
+          </div>
+          <p class="text-blue-300 text-sm leading-relaxed mb-6 max-w-sm">Votre partenaire de confiance pour la croissance et la transformation de votre entreprise au Maroc.</p>
+          <div class="flex items-center gap-3">
+            <a href="tel:+212661209520" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center hover:bg-brand-600 transition-colors">
+              <i class="ri-phone-line text-sm"></i>
+            </a>
+            <a href="mailto:adgmanagement@yahoo.fr" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center hover:bg-brand-600 transition-colors">
+              <i class="ri-mail-line text-sm"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center hover:bg-brand-600 transition-colors">
+              <i class="ri-linkedin-line text-sm"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center hover:bg-brand-600 transition-colors">
+              <i class="ri-facebook-line text-sm"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div>
+          <h4 class="font-semibold text-white mb-5">Nos services</h4>
+          <ul class="space-y-3">
+            <li><a href="#services" class="text-blue-300 text-sm hover:text-white transition-colors">Conseil en management</a></li>
+            <li><a href="#services" class="text-blue-300 text-sm hover:text-white transition-colors">Études & Recherche</a></li>
+            <li><a href="#services" class="text-blue-300 text-sm hover:text-white transition-colors">Formation professionnelle</a></li>
+            <li><a href="#services" class="text-blue-300 text-sm hover:text-white transition-colors">Communication</a></li>
+            <li><a href="#services" class="text-blue-300 text-sm hover:text-white transition-colors">Marketing Digital</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 class="font-semibold text-white mb-5">Contact</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-2 text-blue-300 text-sm">
+              <i class="ri-map-pin-line mt-0.5 flex-shrink-0"></i>
+              Av. Allal El Fassi, Dar El Hamra, Marrakech
+            </li>
+            <li class="flex items-center gap-2 text-blue-300 text-sm">
+              <i class="ri-phone-line"></i>
+              <a href="tel:+212661209520" class="hover:text-white transition-colors">+212 661 209 520</a>
+            </li>
+            <li class="flex items-center gap-2 text-blue-300 text-sm">
+              <i class="ri-mail-line"></i>
+              <a href="mailto:adgmanagement@yahoo.fr" class="hover:text-white transition-colors">adgmanagement@yahoo.fr</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-blue-400 text-sm">© 2026 Good Way Management. Tous droits réservés.</p>
+        <p class="text-blue-500 text-xs">Marrakech, Maroc · Cabinet de Conseil & Communication</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== FLOATING WHATSAPP BUTTON ===== -->
+  <a href="https://wa.me/212661209520" target="_blank"
+     class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-green-500 hover:bg-green-400 text-white flex items-center justify-center shadow-xl shadow-green-500/40 transition-all hover:scale-110 group">
+    <i class="ri-whatsapp-line text-2xl"></i>
+    <span class="absolute right-16 bg-gray-800 text-white text-xs font-medium px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">WhatsApp</span>
+  </a>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // Init AOS animations
+    AOS.init({ duration: 700, easing: 'ease-out-cubic', once: true, offset: 60 });
+
+    // Mobile menu toggle
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('header');
+      if (window.scrollY > 20) {
+        navbar.classList.add('shadow-lg');
+      } else {
+        navbar.classList.remove('shadow-lg');
+      }
+    });
+
+    // Form submit handler
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.innerHTML = '<i class="ri-loader-4-line animate-spin text-xl"></i> Envoi en cours...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = '<i class="ri-check-line text-xl"></i> Envoyé !';
+        document.getElementById('formSuccess').classList.remove('hidden');
+        e.target.reset();
+      }, 1500);
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href !== '#') {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            const navH = document.querySelector('header').offsetHeight;
+            window.scrollTo({ top: target.offsetTop - navH, behavior: 'smooth' });
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
