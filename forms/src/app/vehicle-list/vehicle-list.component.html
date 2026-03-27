@@ -1,0 +1,152 @@
+<main class="content-area">
+  <div class="table-card">
+    <div class="table-header">
+      <h2>Liste des Véhicules</h2>
+      <div class="header-actions">
+        <span class="count-badge" *ngIf="vehicles$ | async as vehicles">{{ vehicles.length }} Véhicules</span>
+        <button mat-raised-button class="add-vehicle-btn" (click)="openDialog()">
+            <mat-icon>add</mat-icon>
+            Nouveau Véhicule
+          </button>
+          <!-- The input selection field -->
+<mat-form-field appearance="outline" style="width: 300px; margin-right: 16px;">
+  <mat-label>Choisissez le type de rapport</mat-label>
+  <mat-select [(ngModel)]="selectedReportType">
+    <mat-option value="Trajets">Rapport de Trajets</mat-option>
+    <mat-option value="Consommation">Rapport de Consommation</mat-option>
+    <mat-option value="Vitesse">Rapport de Vitesse</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- The Open Button -->
+<button mat-raised-button 
+        color="primary" 
+        class="btn-add-pro"
+        (click)="openReportDialog()"
+        [disabled]="!selectedReportType"> <!-- If selectedReportType is empty, button is disabled -->
+  <mat-icon>add</mat-icon>
+  New Report
+</button>
+
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table mat-table [dataSource]="(vehicles$ | async) || []" class="mat-elevation-z0">
+
+        <!-- Immatriculation Column -->
+        <ng-container matColumnDef="immatriculation">
+          <th mat-header-cell *matHeaderCellDef> Immatriculation </th>
+          <td mat-cell *matCellDef="let v"> 
+            <span class="plate-badge">{{ v.immatriculation }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Marque Column -->
+        <ng-container matColumnDef="marque">
+          <th mat-header-cell *matHeaderCellDef> Marque </th>
+          <td mat-cell *matCellDef="let v"> {{ v.marque }} </td>
+        </ng-container>
+
+        <!-- Modéle Column -->
+        <ng-container matColumnDef="modele">
+          <th mat-header-cell *matHeaderCellDef> Modéle </th>
+          <td mat-cell *matCellDef="let v"> {{ v.modele }} </td>
+        </ng-container>
+
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let v" class="dimmed-text"> {{ v.description }} </td>
+        </ng-container>
+
+        <!-- Owner Column -->
+        <ng-container matColumnDef="owner">
+          <th mat-header-cell *matHeaderCellDef> Propriétaire </th>
+          <td mat-cell *matCellDef="let v">
+            <div class="owner-info" *ngIf="v.firstName || v.lastName">
+              <mat-icon>person</mat-icon>
+              {{ v.firstName }} {{ v.lastName }}
+            </div>
+            <span *ngIf="!v.firstName && !v.lastName" class="dimmed-text">-</span>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-header"> Actions </th>
+          <td mat-cell *matCellDef="let v">
+            <button mat-icon-button (click)="editVehicle(v)" class="edit-action-btn" matTooltip="Modifier">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Merged Maintenance Section -->
+  <div class="maintenance-view-container" style="padding: 32px 0 0 0;">
+    <div class="page-header">
+      <div class="header-text">
+          <h1>Historique de Maintenance</h1>
+          <p>Suivez les interventions et réparations effectuées sur votre flotte</p>
+      </div>
+      <button mat-raised-button class="btn-add-pro" (click)="openAddMaintenanceDialog()">
+        <mat-icon>add</mat-icon>
+        Enregistrer une Maintenance
+      </button>
+    </div>
+
+    <div class="maintenance-grid" *ngIf="maintenanceRecords$ | async as records">
+      <div class="no-records" *ngIf="records.length === 0">
+          <mat-icon>history</mat-icon>
+          <p>Aucun enregistrement de maintenance pour le moment.</p>
+      </div>
+
+      <!-- Maintenance Cards -->
+      <div class="maintenance-card-styled" *ngFor="let record of records">
+        <div class="card-accent"></div>
+        
+        <div class="card-top">
+          <div class="vehicle-info">
+            <div class="vehicle-icon-bg">
+              <mat-icon>directions_car</mat-icon>
+            </div>
+            <div class="id-wrap">
+              <span class="plate-mini">{{ record.vehicleImmatriculation }}</span>
+              <span class="type-badge">{{ record.maintenanceType }}</span>
+            </div>
+          </div>
+          <div class="cost-badge" *ngIf="record.cost">
+              {{ record.cost | number:'1.2-2' }} €
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="info-row">
+            <mat-icon>person</mat-icon>
+            <span>{{ record.conductorName }}</span>
+          </div>
+          <div class="info-row">
+            <mat-icon>calendar_today</mat-icon>
+            <span>{{ record.date | date:'longDate':'':'fr-FR' }}</span>
+          </div>
+          <div class="notes-section" *ngIf="record.notes">
+            <mat-icon>notes</mat-icon>
+            <p>{{ record.notes }}</p>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button mat-icon-button (click)="editRecord(record)" class="btn-action-small"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button (click)="deleteRecord(record)" class="btn-action-small delete"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>

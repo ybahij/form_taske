@@ -1,0 +1,97 @@
+<div class="pro-dialog-header">
+  <div class="header-main">
+    <mat-icon class="header-icon">build</mat-icon>
+    <div class="header-titles">
+      <h2>{{ data ? 'Modifier' : 'Nouvelle' }} Maintenance</h2>
+      <p>{{ data ? 'Mettre à jour les détails de l\'intervention' : 'Enregistrer une activité d\'entretien pour un véhicule' }}</p>
+    </div>
+  </div>
+  <button mat-icon-button (click)="onCancel()" class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content-styled">
+  <form [formGroup]="maintenanceForm" class="maintenance-form-inner">
+    <div class="form-grid">
+      
+      <!-- Vehicle Selection -->
+      <div class="field-container">
+        <label class="field-label">Véhicule</label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="vehicle" placeholder="Choisir un véhicule">
+            <mat-option *ngFor="let v of vehicles$ | async" [value]="v.immatriculation">
+              {{ v.immatriculation }} - {{ v.marque }} {{ v.modele }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>directions_car</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Conductor Selection -->
+      <div class="field-container">
+        <label class="field-label">Conducteur</label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="conductor" placeholder="Choisir un conducteur">
+            <mat-option *ngFor="let c of conducteurs$ | async" [value]="c">
+              {{ c }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Maintenance Type -->
+      <div class="field-container">
+        <label class="field-label">Type de Maintenance</label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="type" placeholder="Type d'intervention">
+            <mat-option *ngFor="let type of maintenanceTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>build</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Date -->
+      <div class="field-container">
+        <label class="field-label">Date</label>
+        <mat-form-field appearance="outline">
+          <input matInput [matDatepicker]="picker" formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!-- Cost -->
+      <div class="field-container">
+        <label class="field-label">Coût (€)</label>
+        <mat-form-field appearance="outline">
+          <input matInput type="number" formControlName="cost" placeholder="0.00">
+          <mat-icon matSuffix>payments</mat-icon>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!-- Notes -->
+    <div class="field-container full-width">
+      <label class="field-label">Notes & Observations</label>
+      <mat-form-field appearance="outline">
+        <textarea matInput formControlName="notes" rows="3" placeholder="Détails supplémentaires..."></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="dialog-actions-styled">
+  <button mat-button (click)="onCancel()" class="btn-cancel">Annuler</button>
+  <button mat-flat-button color="primary" 
+          (click)="onSubmit()" 
+          [disabled]="maintenanceForm.invalid" 
+          class="btn-save">
+    <mat-icon>check</mat-icon>
+    Enregistrer
+  </button>
+</div>

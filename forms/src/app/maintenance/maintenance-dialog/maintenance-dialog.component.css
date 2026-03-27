@@ -1,0 +1,124 @@
+.pro-dialog-header {
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.5); /* Semi-transparent */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+  flex-shrink: 0;
+  backdrop-filter: blur(5px);
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  color: var(--primary-dark);
+}
+
+.header-titles h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.header-titles p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.close-btn {
+  color: var(--text-secondary);
+}
+
+.dialog-content-styled {
+  padding: 24px !important;
+  margin: 0 !important;
+  background: transparent !important; /* Let panel gradient show */
+  overflow-y: auto !important;
+}
+
+.maintenance-form-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.dialog-actions-styled {
+  padding: 12px 24px 16px !important;
+  background: rgba(255, 255, 255, 0.3);
+  justify-content: flex-end !important;
+  gap: 10px;
+  border-top: 1px solid rgba(0,0,0,0.03);
+}
+
+.btn-cancel {
+  border-radius: 6px;
+  padding: 0 16px;
+  height: 34px !important;
+  line-height: 34px !important;
+  font-size: 13px;
+}
+
+.btn-save {
+  background-color: var(--primary-dark) !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 0 16px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  font-size: 13px;
+}
+
+.btn-save mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 !important;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .full-width {
+    grid-column: span 1;
+  }
+}

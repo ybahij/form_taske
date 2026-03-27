@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,17 +22,31 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemoDialogComponent } from './demo-dialog/demo-dialog.component';
-import { AddValueDialogComponent } from './add-value-dialog/add-value-dialog.component';
-import { VehicleHeaderComponent } from './vehicle-header/vehicle-header.component';
-import { ImportFileDialogComponent } from './import-file-dialog/import-file-dialog.component';
+import { AddValueDialogComponent } from './demo-dialog/components/add-value-dialog/add-value-dialog.component';
+import { VehicleHeaderComponent } from './demo-dialog/components/vehicle-header/vehicle-header.component';
+import { ImportFileDialogComponent } from './demo-dialog/components/import-file-dialog/import-file-dialog.component';
+import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
+import { MaintenanceDialogComponent } from './maintenance/maintenance-dialog/maintenance-dialog.component';
+import { MAT_SELECT_CONFIG } from '@angular/material/select';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { RaportDialogComponent } from './Reports/raport-dialog/raport-dialog.component';
+
+
+registerLocaleData(localeFr);
 
 @NgModule({
+
   declarations: [
     AppComponent,
     DemoDialogComponent,
     AddValueDialogComponent,
     VehicleHeaderComponent,
-    ImportFileDialogComponent
+    ImportFileDialogComponent,
+    VehicleListComponent,
+    MaintenanceDialogComponent,
+    RaportDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -53,10 +67,12 @@ import { ImportFileDialogComponent } from './import-file-dialog/import-file-dial
     MatCheckboxModule,
     MatSlideToggleModule,
     MatExpansionModule,
+    FormsModule,
     ColorPickerModule
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+    { provide: MAT_SELECT_CONFIG, useValue:  { disableOptionCentering: true } },
+    { provide: LOCALE_ID, useValue: 'fr-FR' }
   ],
   bootstrap: [AppComponent]
 })

@@ -1,90 +1,11 @@
-/* ── Layout ── */
-.page-container {
-  min-height: 100vh;
-  background-color: var(--bg-5);
-  display: flex;
-  flex-direction: column;
-}
-
-.main-header {
-  background-color: #ffffff;
-  border-bottom: 1px solid var(--front-border);
-  padding: 16px 32px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.header-content {
+.content-area {
+  flex: 1;
+  padding: 32px;
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-icon {
-  color: var(--primary-dark);
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-}
-
-.logo-area h1 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  color: var(--text-primary);
-}
-
-.add-vehicle-btn {
-  background-color: var(--primary-dark) !important;
-  color: #ffffff !important;
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-  padding: 0 20px !important;
-  box-shadow: 0 4px 12px rgba(9, 99, 126, 0.2) !important;
-}
-
-.content-area-main {
-  flex: 1;
   width: 100%;
 }
 
-.main-nav {
-  display: flex;
-  gap: 16px;
-  margin-left: 40px;
-}
-
-.main-nav a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.main-nav a mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-}
-
-.active-link {
-  color: var(--primary-dark) !important;
-  background-color: var(--primary-light) !important;
-}
-
-/* ── Table Card ── */
 .table-card {
   background: #ffffff;
   border-radius: 16px;
@@ -98,6 +19,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .table-header h2 {
@@ -115,7 +42,15 @@
   font-weight: 600;
 }
 
-/* ── Mat Table ── */
+.add-vehicle-btn {
+  background-color: var(--primary-dark) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  padding: 0 20px !important;
+  box-shadow: 0 4px 12px rgba(9, 99, 126, 0.2) !important;
+}
+
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -146,7 +81,6 @@ td.mat-cell {
   color: var(--text-secondary);
 }
 
-/* ── Custom Indicators ── */
 .plate-badge {
   background-color: #f1f5f9;
   border: 1px solid #e2e8f0;

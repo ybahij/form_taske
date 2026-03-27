@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AddValueDialogComponent } from '../add-value-dialog/add-value-dialog.component';
-import { ImportFileDialogComponent } from '../import-file-dialog/import-file-dialog.component';
+import { AddValueDialogComponent } from './components/add-value-dialog/add-value-dialog.component';
+import { ImportFileDialogComponent } from './components/import-file-dialog/import-file-dialog.component';
 import { VehicleService, Vehicle } from '../services/vehicle.service';
 
 @Component({

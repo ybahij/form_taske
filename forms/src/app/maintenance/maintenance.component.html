@@ -1,0 +1,61 @@
+<div class="maintenance-view-container">
+  
+  <div class="page-header">
+    <div class="header-text">
+        <h1>Historique de Maintenance</h1>
+        <p>Suivez les interventions et réparations effectuées sur votre flotte</p>
+    </div>
+    <button mat-raised-button class="btn-add-pro" (click)="openAddMaintenanceDialog()">
+      <mat-icon>add</mat-icon>
+      Enregistrer une Maintenance
+    </button>
+  </div>
+
+  <div class="maintenance-grid" *ngIf="maintenanceRecords$ | async as records">
+    <div class="no-records" *ngIf="records.length === 0">
+        <mat-icon>history</mat-icon>
+        <p>Aucun enregistrement de maintenance pour le moment.</p>
+    </div>
+
+    <!-- Maintenance Cards -->
+    <div class="maintenance-card-styled" *ngFor="let record of records">
+      <div class="card-accent"></div>
+      
+      <div class="card-top">
+        <div class="vehicle-info">
+          <div class="vehicle-icon-bg">
+            <mat-icon>directions_car</mat-icon>
+          </div>
+          <div class="id-wrap">
+            <span class="plate-mini">{{ record.vehicleImmatriculation }}</span>
+            <span class="type-badge">{{ record.maintenanceType }}</span>
+          </div>
+        </div>
+        <div class="cost-badge" *ngIf="record.cost">
+            {{ record.cost | number:'1.2-2' }} €
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="info-row">
+          <mat-icon>person</mat-icon>
+          <span>{{ record.conductorName }}</span>
+        </div>
+        <div class="info-row">
+          <mat-icon>calendar_today</mat-icon>
+          <span>{{ record.date | date:'longDate':'':'fr-FR' }}</span>
+        </div>
+        <div class="notes-section" *ngIf="record.notes">
+          <mat-icon>notes</mat-icon>
+          <p>{{ record.notes }}</p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button mat-icon-button (click)="editRecord(record)" class="btn-action-small"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button (click)="deleteRecord(record)" class="btn-action-small delete"><mat-icon>delete</mat-icon></button>
+      </div>
+    </div>
+  </div>
+
+</div>
