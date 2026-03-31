@@ -1,19 +1,78 @@
-<!-- <div class="pro-dialog-header">
+<div class="pro-dialog-header">
   <div class="header-main">
-    <div class="header-icon">
-      <mat-icon>report</mat-icon>
-    </div>
+    <mat-icon class="header-icon">assessment</mat-icon>
     <div class="header-titles">
-      <h2>Add Custom Report</h2>
+      <h2>Nouveau Rapport Personnalisé</h2>
+      <p>Configurez les paramètres de votre rapport</p>
     </div>
   </div>
   <button mat-icon-button class="close-btn" (click)="onCancel()">
     <mat-icon>close</mat-icon>
   </button>
 </div>
- <mat-dialog-content class="dialog-content-styled">
-    <form [formGroup]="form" class="maintenance-form-inner">
-        <div class="form-grid">
-            <div class="field-container">
-                <label class="field-label">Report Name</label>
-                 -->
+
+<mat-dialog-content class="dialog-content-styled">
+  <form [formGroup]="form" class="maintenance-form-inner">
+    <div class="form-grid">
+
+      <div class="field-container">
+        <label class="field-label">Nom du rapport *</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="baseReportName" placeholder="Ex: Rapport mensuel trajets">
+          <mat-icon matSuffix>title</mat-icon>
+          <mat-error *ngIf="form.get('baseReportName')?.hasError('required')">
+            Le nom du rapport est requis
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="field-container">
+        <label class="field-label">Description</label>
+        <mat-form-field appearance="outline">
+          <textarea matInput formControlName="descriptionOfReport" rows="2"
+                    placeholder="Description du rapport..."></textarea>
+          <mat-icon matSuffix>description</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="field-container">
+        <label class="field-label">Partager avec</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="shareWithUsers" placeholder="Ex: user@email.com">
+          <mat-icon matSuffix>share</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="field-container">
+        <label class="field-label">Conduite hors pays</label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="drivingOutsideCountry">
+            <mat-option value="oui">Oui</mat-option>
+            <mat-option value="non">Non</mat-option>
+          </mat-select>
+          <mat-icon matSuffix>public_off</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="field-container">
+        <label class="field-label">Colonnes du rapport</label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="listOfColumns" placeholder="Ex: date, véhicule, distance">
+          <mat-icon matSuffix>view_column</mat-icon>
+        </mat-form-field>
+      </div>
+
+    </div>
+  </form>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="dialog-actions-styled">
+  <button mat-button (click)="onCancel()" class="btn-cancel">Annuler</button>
+  <button mat-flat-button color="primary"
+          (click)="onSubmit()"
+          [disabled]="form.invalid"
+          class="btn-save">
+    <mat-icon>check</mat-icon>
+    Générer Rapport
+  </button>
+</div>

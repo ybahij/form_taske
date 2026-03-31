@@ -429,3 +429,38 @@ html, body {
 .btn-action-small.delete:hover mat-icon {
   color: #ef4444;
 }
+
+/* ── Snackbar — Success ── */
+.snack-success {
+  background: var(--primary-dark) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  font-family: 'Sora', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 8px 24px rgba(9, 99, 126, 0.30) !important;
+}
+
+.snack-success .mat-simple-snackbar-action .mat-button {
+  color: var(--primary-light) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+}
+
+.snack-success .mat-simple-snackbar-action .mat-button:hover {
+  color: #ffffff !important;
+}
+
+/* ── Confirm Dialog Panel (small dialogs — no height:100% stretch) ── */
+.confirm-dialog-panel .mat-dialog-container {
+  border-radius: var(--rdu) !important;
+  background: linear-gradient(to bottom right, var(--primary-light) 80%, var(--primary-teal)) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  font-family: 'Sora', sans-serif;
+  box-shadow:
+    0 0 0 1px rgba(26,26,46,0.06),
+    0 24px 64px rgba(26,26,46,0.14),
+    0 8px 24px rgba(26,26,46,0.08) !important;
+  animation: slideRightIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

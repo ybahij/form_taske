@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-raport-dialog',
@@ -9,19 +10,21 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class RaportDialogComponent implements OnInit {
   form!: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<RaportDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: MatSnackBar
   ) {
     this.form = this.fb.group({
-      baseReportName: [''],
+      baseReportName: ['', Validators.required],
       descriptionOfReport: [''],
       shareWithUsers: [''],
-      Driving_outside_country: [''],
-      list_of_columns: [''],
-    })
-   }
+      drivingOutsideCountry: [''],
+      listOfColumns: [''],
+    });
+  }
 
   ngOnInit(): void {
     if (this.data) {
@@ -29,12 +32,16 @@ export class RaportDialogComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.dialogRef.close(this.form.value);
-    console.log(this.form.value);
+    this.snackBar.open('Rapport créé avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'] });
   }
 
-  onCancel() {
+  onCancel(): void {
     this.dialogRef.close();
   }
 }

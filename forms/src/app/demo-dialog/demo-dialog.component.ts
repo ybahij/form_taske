@@ -1,6 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AddValueDialogComponent } from './components/add-value-dialog/add-value-dialog.component';
 import { ImportFileDialogComponent } from './components/import-file-dialog/import-file-dialog.component';
 import { VehicleService, Vehicle } from '../services/vehicle.service';
@@ -10,7 +13,7 @@ import { VehicleService, Vehicle } from '../services/vehicle.service';
   templateUrl: './demo-dialog.component.html',
   styleUrls: ['./demo-dialog.component.css']
 })
-export class DemoDialogComponent implements OnInit {
+export class DemoDialogComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   adminForm: FormGroup;
@@ -24,10 +27,9 @@ export class DemoDialogComponent implements OnInit {
   infractionEcoForm!: FormGroup;
   activeTabIndex: number = 0;
   isEdit: boolean;
+  private destroy$ = new Subject<void>();
 
 
-  marqueOptions: string[] = ['Renault', 'Peugeot', 'Citroën'];
-  modeleOptions: string[] = ['Clio', '208', 'C3'];
   vehicleTypes: string[] = ['Berline', 'SUV', 'Utilitaire', 'Camion', 'Moto', 'Autre'];
   equipmentStatuses: string[] = ['Actif', 'Maintenance', 'HORS SERVICE', 'En Attente'];
   ignitionIndices: string[] = ['0', '50', '100', '150', '200'];
@@ -55,7 +57,8 @@ export class DemoDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<DemoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Vehicle,
     private vehicleService: VehicleService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
     this.isEdit = !!data;
     this.form = this.fb.group({
@@ -271,7 +274,7 @@ export class DemoDialogComponent implements OnInit {
   }
 
   saveInfraction(): void {
-    if (this.infractionForm.valid || this.infractionMaxForm.valid || this.infractionGForm.valid || this.infractionEcoForm.valid) {
+    if (this.infractionForm.valid && this.infractionMaxForm.valid && this.infractionGForm.valid && this.infractionEcoForm.valid) {
       const combinedData = {
         ...this.getCombinedInfractions(),
         ...this.getCombinedMaxLimits(),
@@ -353,7 +356,7 @@ export class DemoDialogComponent implements OnInit {
       maxWidth: '90vw'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe(result => {
       if (result) {
         this.fuelForm.patchValue({ [field]: result.fileName });
       }
@@ -362,16 +365,15 @@ export class DemoDialogComponent implements OnInit {
 
   private saveFullVehicle(extraData: any): void {
     const updatedVehicle = this.getUpdatedVehicleData(extraData);
-    
+
     if (this.isEdit) {
       this.vehicleService.updateVehicle(this.data.immatriculation, updatedVehicle);
     } else {
       this.vehicleService.addVehicle(updatedVehicle);
-      // Transition to edit mode for subsequent saves in the same session
       this.isEdit = true;
     }
     this.data = updatedVehicle;
-    this.dialogRef.close(updatedVehicle);
+    this.snackBar.open('Enregistré avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'] });
   }
 
 
@@ -381,7 +383,7 @@ export class DemoDialogComponent implements OnInit {
       data: { title: `Ajouter ${type}` }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe(result => {
       if (result) {
         if (type === 'Marque') this.form.patchValue({ marque: result });
         if (type === 'Modéle') this.form.patchValue({ modele: result });
@@ -397,11 +399,10 @@ export class DemoDialogComponent implements OnInit {
         this.vehicleService.updateVehicle(this.data.immatriculation, updatedVehicle);
       } else {
         this.vehicleService.addVehicle(updatedVehicle);
-        // Important: transition to EDIT mode so next tabs click don't create duplicates
         this.isEdit = true;
       }
       this.data = updatedVehicle;
-      // Note: we don't close the dialog here to allow switching tabs
+      this.snackBar.open('Enregistré avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'] });
     } else {
       this.form.markAllAsTouched();
     }
@@ -409,6 +410,11 @@ export class DemoDialogComponent implements OnInit {
 
   cancel() {
     this.dialogRef.close(null);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   isCurrentTabValid(): boolean {
@@ -419,8 +425,8 @@ export class DemoDialogComponent implements OnInit {
       case 3: return this.simForm.valid;
       case 4: return this.fuelForm.valid;
       case 5: return this.workHoursForm.valid;
-      case 6: return this.infractionForm.valid || this.infractionMaxForm.valid || 
-                     this.infractionGForm.valid || this.infractionEcoForm.valid;
+      case 6: return this.infractionForm.valid && this.infractionMaxForm.valid &&
+                     this.infractionGForm.valid && this.infractionEcoForm.valid;
       default: return true;
     }
   }

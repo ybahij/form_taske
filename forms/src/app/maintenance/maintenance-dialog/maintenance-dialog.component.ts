@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { VehicleService, Vehicle, MaintenanceRecord } from '../../services/vehicle.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,6 +15,7 @@ export class MaintenanceDialogComponent implements OnInit {
   maintenanceForm: FormGroup;
   vehicles$: Observable<Vehicle[]>;
   conducteurs$: Observable<string[]>;
+  isLoading = false;
   maintenanceTypes: string[] = [
     'Vidange moteur',
     'Changement de freins',
@@ -28,7 +30,8 @@ export class MaintenanceDialogComponent implements OnInit {
     private fb: FormBuilder,
     private vehicleService: VehicleService,
     public dialogRef: MatDialogRef<MaintenanceDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: MaintenanceRecord | null,
+    private snackBar: MatSnackBar
   ) {
     this.vehicles$ = this.vehicleService.getVehicles();
     
@@ -65,25 +68,30 @@ export class MaintenanceDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.maintenanceForm.valid) {
-      const formVal = this.maintenanceForm.value;
-      const recordData: MaintenanceRecord = {
-        id: this.data ? this.data.id : Math.random().toString(36).substr(2, 9),
-        vehicleImmatriculation: formVal.vehicle,
-        conductorName: formVal.conductor,
-        maintenanceType: formVal.type,
-        date: formVal.date,
-        cost: formVal.cost,
-        notes: formVal.notes
-      };
-      
-      if (this.data) {
-        this.vehicleService.updateMaintenanceRecord(recordData);
-      } else {
-        this.vehicleService.addMaintenanceRecord(recordData);
-      }
-      this.dialogRef.close(true);
+    if (this.maintenanceForm.invalid) {
+      this.maintenanceForm.markAllAsTouched();
+      return;
     }
+    this.isLoading = true;
+    const formVal = this.maintenanceForm.value;
+    const recordData: MaintenanceRecord = {
+      id: this.data ? this.data.id : Date.now().toString(36) + Math.random().toString(36).substring(2, 7),
+      vehicleImmatriculation: formVal.vehicle,
+      conductorName: formVal.conductor,
+      maintenanceType: formVal.type,
+      date: formVal.date,
+      cost: formVal.cost,
+      notes: formVal.notes
+    };
+
+    if (this.data) {
+      this.vehicleService.updateMaintenanceRecord(recordData);
+    } else {
+      this.vehicleService.addMaintenanceRecord(recordData);
+    }
+    this.isLoading = false;
+    this.snackBar.open('Maintenance enregistrée avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'] });
+    this.dialogRef.close(true);
   }
 
   onCancel(): void {

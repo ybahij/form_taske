@@ -13,7 +13,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -32,6 +34,7 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { RaportDialogComponent } from './Reports/raport-dialog/raport-dialog.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog.component';
 
 
 registerLocaleData(localeFr);
@@ -46,7 +49,8 @@ registerLocaleData(localeFr);
     ImportFileDialogComponent,
     VehicleListComponent,
     MaintenanceDialogComponent,
-    RaportDialogComponent
+    RaportDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +71,8 @@ registerLocaleData(localeFr);
     MatCheckboxModule,
     MatSlideToggleModule,
     MatExpansionModule,
+    MatSnackBarModule,
+    MatTooltipModule,
     FormsModule,
     ColorPickerModule
   ],

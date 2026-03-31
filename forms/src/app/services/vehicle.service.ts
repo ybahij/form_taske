@@ -192,6 +192,11 @@ export class VehicleService {
     this.maintenanceRecordsSubject.next(current.filter(m => m.id !== id));
   }
 
+  deleteVehicle(immatriculation: string): void {
+    const current = this.vehiclesSubject.value;
+    this.vehiclesSubject.next(current.filter(v => v.immatriculation !== immatriculation));
+  }
+
   updateVehicle(originalImmatriculation: string, updatedVehicle: Vehicle): void {
     const currentVehicles = this.vehiclesSubject.value;
     const index = currentVehicles.findIndex(v => v.immatriculation === originalImmatriculation);
