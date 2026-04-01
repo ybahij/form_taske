@@ -6,7 +6,8 @@
       "Bash(npx tsc:*)",
       "Bash(npx next:*)",
       "Bash(nvm --version)",
-      "Bash(where node:*)"
+      "Bash(where node:*)",
+      "Bash(node_modules/.bin/ng build:*)"
     ]
   }
 }

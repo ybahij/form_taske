@@ -48,7 +48,7 @@ html, body {
   --bg-3: #7ab2b2;
   --bg-4: #ebf4f6;
   --bg-5: #f9fafb; /* Front Sidenav light gray */
-  --bg-5-rgb: 249, 250, 251; 
+  --bg-5-rgb: 249, 250, 251;
   --bg-3-rgb: 122, 178, 178;
 
   /* Front Theme Colors */
@@ -60,86 +60,17 @@ html, body {
   --front-accent: #3b82f6; /* Professional blue for active states */
 
   /* Complementary Colors (Opposl) */
-  --complement-dark: #7e2409;   
-  --complement-teal: #951a08; 
-  --complement-muted: #b27a7a;  
-  --complement-light: #f6f0eb;  
-  --error : #e53935; 
+  --complement-dark: #7e2409;
+  --complement-teal: #951a08;
+  --complement-muted: #b27a7a;
+  --complement-light: #f6f0eb;
+  --error : #e53935;
 
-  --text-primary: #111827;   
-  --text-secondary: #4b5563; 
-  --text-on-dark: #ffffff;   
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-on-dark: #ffffff;
   --text-on-light: #111827;
   --rdu: 12px; /* Slightly more subtle radius */
-}
-
-/* .pro-dialog-panel {
-  border-radius: var(--rdu) !important;
-} */
-
- .pro-dialog-panel .mat-dialog-container {
-  border-radius: var(--rdu) !important;
-  background: linear-gradient(to bottom right, var(--primary-light) 80%, var(--primary-teal)) !important;
-  backdrop-filter: blur(15px) !important;
-  -webkit-backdrop-filter: blur(15px) !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  font-family: 'Sora', sans-serif;
-  box-shadow:
-    0 0 0 1px rgba(26,26,46,0.06),
-    0 24px 64px rgba(26,26,46,0.14),
-    0 8px 24px rgba(26,26,46,0.08) !important;
-  display: flex !important;
-  flex-direction: column !important;
-
-  /* Premium Animation: Slide in from Right */
-  animation: slideRightIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideRightIn {
-  from {
-    transform: translateX(100px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* Premium Backdrop Blur */
-.pro-dialog-backdrop {
-  background-color: rgba(9, 99, 126, 0.15) !important;
-  backdrop-filter: blur(3px) !important;
-  -webkit-backdrop-filter: blur(3px) !important;
-}
-
-.pro-dialog-panel .mat-dialog-container > * {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-.pro-dialog-panel .mat-dialog-title {
-  padding: 20px 20px 0 20px !important;
-  margin: 0 !important;
-  flex-shrink: 0;
-}
-
-.pro-dialog-panel .mat-dialog-content {
-  flex: 1 !important;
-  overflow-y: auto !important;
-  padding: 16px 20px !important;
-  margin: 0 !important;
-  max-height: unset !important;
-}
-
-.pro-dialog-panel .mat-dialog-actions {
-  padding: 12px 20px !important;
-  margin: 0 !important;
-  flex-shrink: 0;
-  border-top: 1px solid rgba(0,0,0,0.06);
 }
 
 /* ── Form Field Focus Color ── */
@@ -169,7 +100,74 @@ html, body {
 .mat-form-field-appearance-outline:not(.mat-form-field-disabled):hover .mat-form-field-outline-thick {
   opacity: 1 !important;
 }
-/* ── Maintenance View Styles (Global for fast loading) ── */
+
+/* ── Select Panel ── */
+.mat-select-panel {
+  margin-top: 5px;
+  min-width: 100% !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--front-border) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  background: white !important;
+  padding: 0 !important;
+}
+
+.mat-select-panel .mat-option {
+  height: 44px !important;
+  font-size: 14px !important;
+  color: var(--text-primary) !important;
+  transition: background 0.2s ease;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(0,0,0,0.02);
+}
+
+.mat-select-panel .mat-option:hover:not(.mat-option-disabled),
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
+  background: rgba(9, 99, 126, 0.05) !important;
+}
+
+.mat-select-content {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* ── Shared Button Styles ── */
+.btn-add-pro {
+  background-color: var(--primary-dark) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 0 24px !important;
+  height: 44px !important;
+  box-shadow: 0 4px 12px rgba(9, 99, 126, 0.2) !important;
+}
+
+.btn-add-pro[disabled] {
+  background-color: #cbd5e1 !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+}
+
+.btn-action-small {
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+}
+
+.btn-action-small mat-icon {
+  font-size: 18px;
+  color: var(--text-secondary);
+}
+
+.btn-action-small:hover mat-icon {
+  color: var(--primary-dark);
+}
+
+.btn-action-small.delete:hover mat-icon {
+  color: #ef4444;
+}
+
+/* ── Maintenance View Styles ── */
 .maintenance-view-container {
   padding: 32px;
   max-width: 1200px;
@@ -324,36 +322,6 @@ html, body {
   gap: 8px;
 }
 
-.mat-select-panel {
-  margin-top: 5px; /* Tiny gap for clean air */
-  min-width: 100% !important; /* Force it to match the input width */
-  border-radius: 8px !important; /* Match your input's roundness */
-  border: 1px solid var(--front-border) !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-  background: white !important;
-  padding: 0 !important;
-}
-/* 2. Styling the list items inside */
-.mat-select-panel .mat-option {
-  height: 44px !important; /* More vertical space as in image 2 */
-  font-size: 14px !important;
-  color: var(--text-primary) !important;
-  transition: background 0.2s ease;
-  margin: 0 !important;
-  border-bottom: 1px solid rgba(0,0,0,0.02); /* Subtle separation */
-}
-/* 3. Hover and Active states */
-.mat-select-panel .mat-option:hover:not(.mat-option-disabled),
-.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
-  background: rgba(9, 99, 126, 0.05) !important; /* Soft theme color highlight */
-}
-/* Remove the default Material's inner padding/gaps */
-.mat-select-content {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* ── Remaining Maintenance Styles ── */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -372,22 +340,6 @@ html, body {
   margin: 4px 0 0;
   color: var(--text-secondary);
   font-size: 14px;
-}
-
-.btn-add-pro {
-  background-color: var(--primary-dark) !important;
-  color: white !important;
-  border-radius: 8px !important;
-  padding: 0 24px !important;
-  height: 44px !important;
-  box-shadow: 0 4px 12px rgba(9, 99, 126, 0.2) !important;
-}
-
-.btn-add-pro[disabled] {
-  background-color: #cbd5e1 !important;
-  color: #f8fafc !important;
-  box-shadow: none !important;
-  cursor: not-allowed !important;
 }
 
 .no-records {
@@ -411,25 +363,6 @@ html, body {
   opacity: 0.5;
 }
 
-.btn-action-small {
-  width: 32px !important;
-  height: 32px !important;
-  line-height: 32px !important;
-}
-
-.btn-action-small mat-icon {
-  font-size: 18px;
-  color: var(--text-secondary);
-}
-
-.btn-action-small:hover mat-icon {
-  color: var(--primary-dark);
-}
-
-.btn-action-small.delete:hover mat-icon {
-  color: #ef4444;
-}
-
 /* ── Snackbar — Success ── */
 .snack-success {
   background: var(--primary-dark) !important;
@@ -451,7 +384,79 @@ html, body {
   color: #ffffff !important;
 }
 
-/* ── Confirm Dialog Panel (small dialogs — no height:100% stretch) ── */
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   DIALOG PANEL STYLES
+   Everything below controls the Material Dialog overlay (container, backdrop,
+   animations). This is the ONE place to change dialog look & feel globally.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Slide-in animation shared by all dialogs ── */
+@keyframes slideRightIn {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ── Shared backdrop blur ── */
+.pro-dialog-backdrop {
+  background-color: rgba(9, 99, 126, 0.15) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+}
+
+/* ── Main vehicle dialog container (.pro-dialog-panel) ── */
+.pro-dialog-panel .mat-dialog-container {
+  border-radius: var(--rdu) !important;
+  background: linear-gradient(to bottom right, var(--primary-light) 80%, var(--primary-teal)) !important;
+  backdrop-filter: blur(15px) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  font-family: 'Sora', sans-serif;
+  box-shadow:
+    0 0 0 1px rgba(26,26,46,0.06),
+    0 24px 64px rgba(26,26,46,0.14),
+    0 8px 24px rgba(26,26,46,0.08) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  animation: slideRightIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pro-dialog-panel .mat-dialog-container > * {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pro-dialog-panel .mat-dialog-title {
+  padding: 20px 20px 0 20px !important;
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+.pro-dialog-panel .mat-dialog-content {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding: 16px 20px !important;
+  margin: 0 !important;
+  max-height: unset !important;
+}
+
+.pro-dialog-panel .mat-dialog-actions {
+  padding: 12px 20px !important;
+  margin: 0 !important;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ── Confirm / small dialogs container (.confirm-dialog-panel) ── */
 .confirm-dialog-panel .mat-dialog-container {
   border-radius: var(--rdu) !important;
   background: linear-gradient(to bottom right, var(--primary-light) 80%, var(--primary-teal)) !important;
