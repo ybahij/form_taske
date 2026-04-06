@@ -1,0 +1,251 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   PARTAGE LIST — sharing links table with expiration badges
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pl-container {
+  padding:   32px;
+  max-width: 1100px;
+  margin:    0 auto;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.pl-header {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  margin-bottom:   28px;
+}
+
+.pl-header-left {
+  display:     flex;
+  align-items: center;
+  gap:         16px;
+}
+
+.pl-header-icon {
+  width:           48px;
+  height:          48px;
+  border-radius:   var(--radius);
+  background:      var(--primary-light);
+  border:          1px solid rgba(14, 116, 144, 0.15);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  box-shadow:      var(--shadow-xs);
+
+  mat-icon {
+    font-size: 24px;
+    width:     24px;
+    height:    24px;
+    color:     var(--primary-dark);
+  }
+}
+
+.pl-title {
+  margin:         0;
+  font-size:      22px;
+  font-weight:    700;
+  color:          var(--text-primary);
+  letter-spacing: -0.4px;
+}
+
+.pl-subtitle {
+  margin:    3px 0 0;
+  font-size: 13px;
+  color:     var(--text-secondary);
+}
+
+/* ── New button ─────────────────────────────────────────────────────────── */
+
+.btn-new-partage {
+  background:   var(--primary-dark) !important;
+  color:        #ffffff !important;
+  border-radius: var(--radius) !important;
+  padding:      0 22px !important;
+  height:       44px !important;
+  font-weight:  600 !important;
+  font-size:    14px !important;
+  letter-spacing: 0.01em !important;
+  box-shadow:   0 4px 14px rgba(14, 116, 144, 0.3) !important;
+  display:      inline-flex !important;
+  align-items:  center;
+  gap:          6px;
+  transition:   all 0.2s ease !important;
+
+  &:hover {
+    box-shadow: 0 6px 22px rgba(14, 116, 144, 0.42) !important;
+    transform:  translateY(-1px);
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width:     18px;
+    height:    18px;
+  }
+}
+
+/* ── Table wrapper ──────────────────────────────────────────────────────── */
+
+.pl-table-wrapper {
+  background:    var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border:        1px solid var(--front-border);
+  overflow:      hidden;
+  box-shadow:    var(--shadow-sm);
+}
+
+.pl-table {
+  width: 100%;
+}
+
+/* Header row */
+::ng-deep .pl-table .mat-header-row {
+  background:    var(--bg-elevated);
+  border-bottom: 1px solid var(--front-border);
+}
+
+::ng-deep .pl-table .mat-header-cell {
+  font-size:      11px;
+  font-weight:    700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color:          var(--text-secondary);
+  padding:        0 18px !important;
+  border-bottom:  none;
+  font-family:    'Sora', sans-serif !important;
+}
+
+/* Data rows */
+::ng-deep .pl-table .mat-cell {
+  padding:       0 18px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  font-size:     14px;
+  color:         var(--text-primary);
+  font-family:   'Sora', sans-serif !important;
+}
+
+::ng-deep .pl-table .mat-row:last-child .mat-cell {
+  border-bottom: none;
+}
+
+.pl-row {
+  height:     60px;
+  transition: background 0.15s ease;
+  cursor:     default;
+
+  &:hover {
+    background: rgba(14, 116, 144, 0.03);
+  }
+}
+
+/* ── Cell content ───────────────────────────────────────────────────────── */
+
+.cell-main {
+  font-weight: 600;
+  color:       var(--text-primary);
+}
+
+.cell-muted {
+  color:     var(--text-secondary);
+  font-size: 13px;
+}
+
+/* ── Expiration badge ───────────────────────────────────────────────────── */
+
+.exp-badge {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           5px;
+  background:    rgba(14, 116, 144, 0.07);
+  color:         var(--primary-dark);
+  border-radius: 20px;
+  padding:       4px 12px 4px 8px;
+  font-size:     12px;
+  font-weight:   600;
+  border:        1px solid rgba(14, 116, 144, 0.12);
+  letter-spacing: 0.01em;
+
+  mat-icon {
+    font-size: 13px;
+    width:     13px;
+    height:    13px;
+  }
+}
+
+/* ── Vehicle count badge ────────────────────────────────────────────────── */
+
+.count-badge {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           4px;
+  background:    rgba(16, 185, 129, 0.07);
+  color:         #059669;
+  border-radius: 20px;
+  padding:       4px 12px;
+  font-size:     12px;
+  font-weight:   700;
+  border:        1px solid rgba(16, 185, 129, 0.15);
+}
+
+/* ── Actions column ─────────────────────────────────────────────────────── */
+
+::ng-deep .pl-table .mat-column-actions {
+  width:      96px;
+  text-align: right;
+}
+
+.actions-wrap {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             2px;
+  justify-content: flex-end;
+  width:           100%;
+}
+
+/* ── Empty state ────────────────────────────────────────────────────────── */
+
+.pl-empty {
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  padding:         80px 40px;
+  text-align:      center;
+  color:           var(--text-secondary);
+
+  mat-icon {
+    font-size:     52px;
+    width:         52px;
+    height:        52px;
+    opacity:       0.2;
+    margin-bottom: 16px;
+    color:         var(--primary-dark);
+  }
+
+  h3 {
+    margin:      0 0 8px;
+    font-size:   18px;
+    font-weight: 600;
+    color:       var(--text-primary);
+  }
+
+  p {
+    margin:    0 0 24px;
+    font-size: 14px;
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .pl-container {
+    padding: 16px;
+  }
+
+  .pl-header {
+    flex-direction: column;
+    align-items:    flex-start;
+    gap:            16px;
+  }
+}

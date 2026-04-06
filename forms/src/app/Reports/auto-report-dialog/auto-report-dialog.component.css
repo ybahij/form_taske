@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   RAPORT DIALOG — report generation form
+   AUTO REPORT DIALOG — scheduled report creation form
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Dialog header */
@@ -62,18 +62,95 @@
   overflow-y: auto !important;
 }
 
-.maintenance-form-inner {
+/* Step Indicator */
+
+.step-indicator {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  margin-bottom:   28px;
+  padding:         8px 0;
+}
+
+.step {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            8px;
+  opacity:        0.5;
+  transition:     opacity 0.3s ease;
+}
+
+.step.active,
+.step.completed {
+  opacity: 1;
+}
+
+.step .circle {
+  width:         36px;
+  height:        36px;
+  border-radius: 50%;
+  background:    var(--bg-elevated);
+  color:         var(--text-secondary);
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  font-weight:   600;
+  font-size:     14px;
+  border:        2px solid var(--front-border);
+  transition:    all 0.3s ease;
+}
+
+.step.active .circle {
+  background:  var(--primary-dark);
+  color:       white;
+  border-color: var(--primary-dark);
+  box-shadow:  0 4px 12px rgba(14, 116, 144, 0.3);
+}
+
+.step.completed .circle {
+  background:   transparent;
+  border-color: var(--primary-dark);
+  color:        var(--primary-dark);
+}
+
+.step .label {
+  font-size:   13px;
+  font-weight: 500;
+  color:       var(--text-secondary);
+}
+
+.step.active .label {
+  color:       var(--primary-dark);
+  font-weight: 600;
+}
+
+.line {
+  height:      2px;
+  flex:        1;
+  max-width:   100px;
+  background:  var(--front-border);
+  margin:      0 16px;
+  margin-bottom: 20px;
+  transition:  background 0.3s ease;
+}
+
+.line.active {
+  background: var(--primary-dark);
+}
+
+/* Step content */
+
+.step-content {
   display:        flex;
   flex-direction: column;
   gap:            20px;
+  animation:      fadeIn 0.35s ease-out;
 }
 
-/* Grid */
-
-.form-grid {
-  display:               grid;
-  grid-template-columns: 1fr 1fr;
-  gap:                   16px 24px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .field-container {
@@ -89,20 +166,43 @@
   letter-spacing: 0.01em;
 }
 
-.full-width {
-  grid-column: span 2;
-}
-
 mat-form-field {
   width: 100%;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
-  margin: 0 !important;
+.prefix-icon {
+  margin-right: 8px;
+  color:        var(--text-secondary);
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 0.65em 0 0.85em 0 !important;
+.grid-2-col {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   16px;
+}
+
+/* Radio section */
+
+.radio-section {
+  display:        flex;
+  flex-direction: column;
+  gap:            12px;
+  background:     var(--bg-elevated);
+  padding:        16px;
+  border-radius:  var(--radius);
+  border:         1px solid var(--front-border);
+}
+
+.section-label {
+  font-weight: 600;
+  font-size:   13px;
+  color:       var(--text-secondary);
+}
+
+.pro-radio-group {
+  display:        flex;
+  flex-direction: column;
+  gap:            10px;
 }
 
 /* Actions footer */
@@ -124,6 +224,9 @@ mat-form-field {
   line-height:   38px !important;
   font-size:     14px !important;
   font-weight:   500 !important;
+  display:       flex !important;
+  align-items:   center;
+  gap:           4px;
 }
 
 .btn-cancel:hover {
@@ -160,12 +263,26 @@ mat-form-field {
   box-shadow: none !important;
 }
 
-@media (max-width: 600px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
+/* Material overrides */
 
-  .full-width {
-    grid-column: span 1;
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.65em 0 0.85em 0 !important;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: var(--primary-dark) !important;
+}
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: var(--primary-dark) !important;
+}
+
+@media (max-width: 600px) {
+  .grid-2-col {
+    grid-template-columns: 1fr;
   }
 }

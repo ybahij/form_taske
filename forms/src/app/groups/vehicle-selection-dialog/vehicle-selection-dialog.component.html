@@ -1,0 +1,38 @@
+<div class="pro-dialog-header">
+  <div class="header-main">
+    <mat-icon class="header-icon">directions_car</mat-icon>
+    <div class="header-titles">
+      <h2>Assigner des Véhicules</h2>
+      <p>Sélectionnez les véhicules à inclure dans ce groupe</p>
+    </div>
+  </div>
+  <button mat-icon-button class="close-btn" (click)="onCancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content-styled">
+  <div class="vehicle-list">
+    <div *ngFor="let vehicle of vehicles" class="vehicle-item">
+      <mat-checkbox color="primary"
+                    [checked]="isSelected(vehicle.immatriculation)"
+                    (change)="toggleSelection(vehicle.immatriculation)">
+        <div class="vehicle-info">
+          <span class="immat">{{ vehicle.immatriculation }}</span>
+          <span class="model">{{ vehicle.marque }} {{ vehicle.modele }}</span>
+        </div>
+      </mat-checkbox>
+    </div>
+
+    <div *ngIf="vehicles.length === 0" class="no-data">
+      Aucun véhicule disponible.
+    </div>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="dialog-actions-styled">
+  <button mat-button (click)="onCancel()" class="btn-cancel">Annuler</button>
+  <button mat-flat-button color="primary" (click)="onSave()" class="btn-save">
+    <mat-icon>check</mat-icon> Confirmer
+  </button>
+</div>

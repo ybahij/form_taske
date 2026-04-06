@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   RAPORT DIALOG — report generation form
+   GROUP DIALOG — vehicle group create/edit form
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Dialog header */
@@ -62,18 +62,10 @@
   overflow-y: auto !important;
 }
 
-.maintenance-form-inner {
+.group-form {
   display:        flex;
   flex-direction: column;
   gap:            20px;
-}
-
-/* Grid */
-
-.form-grid {
-  display:               grid;
-  grid-template-columns: 1fr 1fr;
-  gap:                   16px 24px;
 }
 
 .field-container {
@@ -89,10 +81,6 @@
   letter-spacing: 0.01em;
 }
 
-.full-width {
-  grid-column: span 2;
-}
-
 mat-form-field {
   width: 100%;
 }
@@ -103,6 +91,43 @@ mat-form-field {
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 0.65em 0 0.85em 0 !important;
+}
+
+/* Vehicle assignment section */
+
+.vehicle-assignment-section {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  padding:         14px 18px;
+  background:      var(--bg-elevated);
+  border-radius:   var(--radius);
+  border:          1px solid var(--front-border);
+  transition:      border-color 0.2s ease;
+}
+
+.vehicle-assignment-section:hover {
+  border-color: rgba(14, 116, 144, 0.25);
+}
+
+.vehicle-count {
+  font-size:   14px;
+  font-weight: 500;
+  color:       var(--text-secondary);
+}
+
+.vehicle-count strong {
+  color:       var(--text-primary);
+  font-weight: 700;
+}
+
+.btn-manage-vehicles {
+  border-color:  var(--primary-dark) !important;
+  color:         var(--primary-dark) !important;
+  border-radius: var(--radius-sm) !important;
+  font-size:     13px !important;
+  font-weight:   500 !important;
+  height:        36px !important;
 }
 
 /* Actions footer */
@@ -158,14 +183,4 @@ mat-form-field {
 .btn-save[disabled] {
   background: #cbd5e1 !important;
   box-shadow: none !important;
-}
-
-@media (max-width: 600px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .full-width {
-    grid-column: span 1;
-  }
 }

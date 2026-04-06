@@ -38,9 +38,24 @@ import { MatTooltipModule }       from '@angular/material/tooltip';
 import { MatCheckboxModule }      from '@angular/material/checkbox';
 import { MatSlideToggleModule }   from '@angular/material/slide-toggle';
 import { MatExpansionModule }     from '@angular/material/expansion';
+import { MatButtonToggleModule }  from '@angular/material/button-toggle';
+import { MatMenuModule }          from '@angular/material/menu';
+import { MatRadioModule }         from '@angular/material/radio';
 
 // ── Third-party ───────────────────────────────────────────────────────────────
 import { ColorPickerModule } from 'ngx-color-picker';
+/*
+ * @angular-material-components/datetime-picker  (v7 → Angular 13)
+ *
+ * NgxMatTimepickerModule  → registers the <ngx-mat-timepicker> component and
+ *                           the [ngxMatTimepicker] input directive.
+ * NgxMatNativeDateModule  → provides the date adapter that makes the library
+ *                           work with plain JS Date objects (no moment.js).
+ */
+import {
+  NgxMatTimepickerModule,
+  NgxMatNativeDateModule,
+} from '@angular-material-components/datetime-picker';
 
 // ── Components ────────────────────────────────────────────────────────────────
 import { DemoDialogComponent }       from './demo-dialog/demo-dialog.component';
@@ -50,7 +65,16 @@ import { ImportFileDialogComponent } from './demo-dialog/components/import-file-
 import { VehicleListComponent }      from './vehicle-list/vehicle-list.component';
 import { MaintenanceDialogComponent} from './maintenance/maintenance-dialog/maintenance-dialog.component';
 import { RaportDialogComponent }     from './Reports/raport-dialog/raport-dialog.component';
+import { AutoReportDialogComponent } from './Reports/auto-report-dialog/auto-report-dialog.component';
 import { ConfirmDialogComponent }    from './shared/confirm-dialog.component';
+import { PartageListComponent }          from './partage/partage-list/partage-list.component';
+import { PartageDialogComponent }        from './partage/partage-dialog/partage-dialog.component';
+import { PartageDetailsDialogComponent } from './partage/partage-details-dialog/partage-details-dialog.component';
+
+// Group
+import { GroupDialogComponent } from './groups/group-dialog/group-dialog.component';
+import { VehicleSelectionDialogComponent } from './groups/vehicle-selection-dialog/vehicle-selection-dialog.component';
+import { ReportListComponent } from './Reports/report-list/report-list.component';
 
 registerLocaleData(localeFr);
 
@@ -71,6 +95,9 @@ const MATERIAL_MODULES = [
   MatCheckboxModule,
   MatSlideToggleModule,
   MatExpansionModule,
+  MatButtonToggleModule,
+  MatMenuModule,
+  MatRadioModule,
 ];
 
 const FEATURE_COMPONENTS = [
@@ -81,7 +108,14 @@ const FEATURE_COMPONENTS = [
   VehicleListComponent,
   MaintenanceDialogComponent,
   RaportDialogComponent,
+  AutoReportDialogComponent,
   ConfirmDialogComponent,
+  PartageListComponent,
+  PartageDialogComponent,
+  PartageDetailsDialogComponent,
+  GroupDialogComponent,
+  VehicleSelectionDialogComponent,
+  ReportListComponent,
 ];
 
 @NgModule({
@@ -93,9 +127,13 @@ const FEATURE_COMPONENTS = [
     RouterModule,
     ...MATERIAL_MODULES,
     ColorPickerModule,
+    NgxMatTimepickerModule,   // provides <ngx-mat-timepicker> component
+    NgxMatNativeDateModule,   // provides native-Date adapter (no moment needed)
   ],
   exports: [
-    VehicleListComponent,   // the entry-point component used in routing
+    VehicleListComponent,   // used in routing
+    PartageListComponent,   // used in routing
+    ReportListComponent,    // used in routing
     MatIconModule,          // used in AppComponent template
   ],
   providers: [

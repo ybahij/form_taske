@@ -1,0 +1,67 @@
+<div class="pro-dialog-header">
+  <div class="header-main">
+    <mat-icon class="header-icon">group</mat-icon>
+    <div class="header-titles">
+      <h2>{{ isEditMode ? 'Modifier le Groupe' : 'Nouveau Groupe' }}</h2>
+      <p>{{ isEditMode ? 'Modifiez les informations du groupe' : 'Créez un nouveau groupe de véhicules' }}</p>
+    </div>
+  </div>
+  <button mat-icon-button class="close-btn" (click)="onCancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content-styled">
+  <form [formGroup]="form" class="group-form">
+
+    <div class="field-container">
+      <label class="field-label">Nom du Groupe *</label>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="name" placeholder="Ex: Logistique Paris">
+        <mat-icon matSuffix>label</mat-icon>
+        <mat-error *ngIf="form.get('name')?.hasError('required')">Le nom est requis</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="field-container">
+      <label class="field-label">Description *</label>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="description" placeholder="Description ou adresse">
+        <mat-icon matSuffix>description</mat-icon>
+        <mat-error *ngIf="form.get('description')?.hasError('required')">La description est requise</mat-error>
+      </mat-form-field>
+    </div>
+
+    <ng-container *ngIf="isEditMode">
+      <ng-container *ngIf="groups.length > 0">
+        <div class="field-container">
+          <label class="field-label">Groupe Parent (Optionnel)</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="parentGroupId">
+              <mat-option *ngFor="let g of groups" [value]="g.id">{{ g.name }}</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>account_tree</mat-icon>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <div class="vehicle-assignment-section">
+        <div class="vehicle-count">
+          Véhicules assignés: <strong>{{ form.value.vehicleIds?.length || 0 }}</strong>
+        </div>
+        <button mat-stroked-button type="button" class="btn-manage-vehicles" (click)="openVehicleSelection()">
+          <mat-icon>directions_car</mat-icon> Gérer les Véhicules
+        </button>
+      </div>
+    </ng-container>
+
+  </form>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="dialog-actions-styled">
+  <button mat-button (click)="onCancel()" class="btn-cancel">Annuler</button>
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="form.invalid" class="btn-save">
+    <mat-icon>{{ isEditMode ? 'save' : 'add_circle' }}</mat-icon>
+    {{ isEditMode ? 'Enregistrer' : 'Créer le Groupe' }}
+  </button>
+</div>

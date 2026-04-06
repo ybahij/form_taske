@@ -1,0 +1,101 @@
+<div class="rl-container">
+
+  <!-- ── Page Header ── -->
+  <div class="rl-header">
+    <div class="rl-header-left">
+      <div class="rl-header-icon">
+        <mat-icon>assessment</mat-icon>
+      </div>
+      <div>
+        <h1 class="rl-title">Rapports</h1>
+        <p class="rl-subtitle">Créez et gérez vos rapports personnalisés</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button class="btn-auto-report" (click)="openAutoReport()">
+        <mat-icon>auto_graph</mat-icon>
+        Rapports Automatiques
+      </button>
+      <button mat-raised-button class="btn-new-report" (click)="openNew()">
+        <mat-icon>add</mat-icon>
+        Nouveau rapport
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Table ── -->
+  <div class="rl-table-wrapper">
+
+    <!-- Empty state -->
+    <div *ngIf="reports.length === 0" class="rl-empty">
+      <mat-icon>assessment</mat-icon>
+      <h3>Aucun rapport créé</h3>
+      <p>Cliquez sur <strong>Nouveau rapport</strong> pour commencer.</p>
+      <button mat-raised-button class="btn-new-report" (click)="openNew()">
+        <mat-icon>add</mat-icon>
+        Nouveau rapport
+      </button>
+    </div>
+
+    <!-- Table with data -->
+    <table mat-table [dataSource]="reports" class="rl-table" *ngIf="reports.length > 0">
+
+      <!-- Nom -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nom du rapport</th>
+        <td mat-cell *matCellDef="let r">
+          <div class="cell-main">{{ r.baseReportName }}</div>
+        </td>
+      </ng-container>
+
+      <!-- Description -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let r">
+          <span class="cell-muted">{{ r.descriptionOfReport || '—' }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Base report -->
+      <ng-container matColumnDef="baseReport">
+        <th mat-header-cell *matHeaderCellDef>Partagé avec</th>
+        <td mat-cell *matCellDef="let r">
+          <span class="share-badge" *ngIf="r.shareWithUsers">
+            <mat-icon>person</mat-icon>
+            {{ r.shareWithUsers }}
+          </span>
+          <span class="cell-muted" *ngIf="!r.shareWithUsers">—</span>
+        </td>
+      </ng-container>
+
+      <!-- Date création -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Créé le</th>
+        <td mat-cell *matCellDef="let r">
+          <span class="cell-muted">{{ r.createdAt | date:'dd/MM/yyyy HH:mm':'':'fr' }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let r">
+          <div class="actions-wrap">
+            <button mat-icon-button class="btn-action-small" (click)="openEdit(r)"
+                    matTooltip="Modifier">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="btn-action-small delete" (click)="confirmDelete(r)"
+                    matTooltip="Supprimer">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="rl-row"></tr>
+    </table>
+  </div>
+
+</div>

@@ -1,58 +1,83 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   VEHICLE LIST — page layout, table, groups tree, maintenance section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .content-area {
-  flex: 1;
-  padding: 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+  flex:      1;
+  padding:   32px;
+  max-width: 1280px;
+  margin:    0 auto;
+  width:     100%;
 }
 
+/* ── Table Card ─────────────────────────────────────────────────────────── */
+
 .table-card {
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid var(--front-border);
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  background:    var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border:        1px solid var(--front-border);
+  overflow:      hidden;
+  box-shadow:    var(--shadow-sm);
 }
 
 .table-header {
-  padding: 24px 24px 16px;
-  display: flex;
+  padding:         20px 24px 16px;
+  display:         flex;
   justify-content: space-between;
-  align-items: center;
+  align-items:     center;
+  border-bottom:   1px solid var(--front-border);
 }
 
 .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  display:     flex;
+  align-items: center;
+  gap:         12px;
 }
 
 .table-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  margin:         0;
+  font-size:      17px;
+  font-weight:    600;
+  color:          var(--text-primary);
+  letter-spacing: -0.2px;
 }
 
+/* ── Count Badge ────────────────────────────────────────────────────────── */
+
 .count-badge {
-  background-color: var(--primary-light);
-  color: var(--primary-dark);
-  padding: 4px 12px;
+  background:    var(--primary-light);
+  color:         var(--primary-dark);
+  padding:       3px 12px;
   border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size:     12px;
+  font-weight:   700;
+  letter-spacing: 0.01em;
+  border:        1px solid rgba(14, 116, 144, 0.15);
 }
+
+/* ── Add Button ─────────────────────────────────────────────────────────── */
 
 .add-vehicle-btn {
   background-color: var(--primary-dark) !important;
-  color: #ffffff !important;
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-  padding: 0 20px !important;
-  box-shadow: 0 4px 12px rgba(9, 99, 126, 0.2) !important;
+  color:            #ffffff !important;
+  border-radius:    var(--radius) !important;
+  font-weight:      600 !important;
+  font-size:        14px !important;
+  padding:          0 20px !important;
+  height:           40px !important;
+  box-shadow:       0 4px 14px rgba(14, 116, 144, 0.3) !important;
+  transition:       all 0.2s ease !important;
+
+  &:hover {
+    box-shadow:    0 6px 20px rgba(14, 116, 144, 0.4) !important;
+    transform:     translateY(-1px);
+  }
 }
 
+/* ── Table ──────────────────────────────────────────────────────────────── */
+
 .table-responsive {
-  width: 100%;
+  width:      100%;
   overflow-x: auto;
 }
 
@@ -61,59 +86,226 @@ table {
 }
 
 th.mat-header-cell {
-  background-color: #f8fafc;
-  color: var(--text-secondary);
-  font-weight: 600;
-  padding: 16px !important;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  background-color: var(--bg-elevated);
+  color:            var(--text-secondary);
+  font-weight:      700;
+  padding:          14px 16px !important;
+  font-size:        11px;
+  text-transform:   uppercase;
+  letter-spacing:   0.06em;
+  border-bottom:    2px solid var(--front-border) !important;
+  white-space:      nowrap;
 }
 
 td.mat-cell {
-  padding: 16px !important;
-  color: var(--text-primary);
-  font-size: 14px;
-  border-bottom: 1px solid #f1f5f9;
+  padding:       14px 16px !important;
+  color:         var(--text-primary);
+  font-size:     14px;
+  border-bottom: 1px solid var(--bg-elevated) !important;
 }
+
+.mat-row {
+  transition: background 0.15s ease;
+  cursor:     default;
+
+  &:last-child td.mat-cell {
+    border-bottom: none !important;
+  }
+
+  &:hover {
+    background: rgba(14, 116, 144, 0.03);
+  }
+}
+
+/* ── Cell content helpers ───────────────────────────────────────────────── */
 
 .dimmed-text {
   color: var(--text-secondary);
 }
 
 .plate-badge {
-  background-color: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  color: var(--text-primary);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  font-size: 13px;
+  background:    #f1f5f9;
+  border:        1px solid var(--front-border);
+  color:         var(--text-primary);
+  padding:       3px 9px;
+  border-radius: var(--radius-xs);
+  font-family:   'JetBrains Mono', monospace;
+  font-weight:   600;
+  font-size:     12px;
+  letter-spacing: 0.04em;
+  display:       inline-block;
 }
 
 .owner-info {
-  display: flex;
+  display:     flex;
   align-items: center;
-  gap: 8px;
+  gap:         8px;
   font-weight: 500;
-}
 
-.owner-info mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  color: var(--primary-muted);
+  mat-icon {
+    font-size: 17px;
+    width:     17px;
+    height:    17px;
+    color:     var(--primary-muted);
+  }
 }
 
 .actions-header {
   text-align: center !important;
 }
 
-.edit-action-btn {
-  color: var(--primary-dark) !important;
+.actions-cell {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             4px;
 }
 
-.edit-action-btn:hover {
-  background-color: var(--primary-light) !important;
+.edit-action-btn {
+  color:         var(--primary-dark) !important;
+  border-radius: var(--radius-sm) !important;
+  width:         32px !important;
+  height:        32px !important;
+  line-height:   32px !important;
+
+  &:hover {
+    background: var(--primary-light) !important;
+  }
+}
+
+/* ── Report selector row ────────────────────────────────────────────────── */
+
+.report-row {
+  display:     flex;
+  align-items: center;
+  gap:         12px;
+  padding:     16px 24px;
+  border-top:  1px solid var(--front-border);
+  background:  var(--bg-elevated);
+}
+
+/* ── Section separator ──────────────────────────────────────────────────── */
+
+.section-separator {
+  padding:        32px 0 20px;
+  display:        flex;
+  align-items:    center;
+  gap:            12px;
+
+  h3 {
+    margin:         0;
+    font-size:      15px;
+    font-weight:    700;
+    color:          var(--text-primary);
+    white-space:    nowrap;
+    letter-spacing: -0.1px;
+  }
+}
+
+.separator-line {
+  flex:         1;
+  height:       1px;
+  background:   var(--front-border);
+}
+
+/* ── Groups Tree ────────────────────────────────────────────────────────── */
+
+.groups-section {
+  background:    var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border:        1px solid var(--front-border);
+  overflow:      hidden;
+  box-shadow:    var(--shadow-sm);
+  margin-bottom: 24px;
+}
+
+.groups-header {
+  padding:         16px 24px;
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  border-bottom:   1px solid var(--front-border);
+
+  h3 {
+    margin:      0;
+    font-size:   15px;
+    font-weight: 600;
+    color:       var(--text-primary);
+  }
+}
+
+.group-tree-row {
+  display:     flex;
+  align-items: center;
+  padding:     10px 24px;
+  gap:         10px;
+  border-bottom: 1px solid var(--bg-elevated);
+  cursor:      pointer;
+  transition:  background 0.15s ease;
+  font-size:   14px;
+
+  &:hover {
+    background: rgba(14, 116, 144, 0.04);
+  }
+
+  &.selected-group {
+    background: var(--primary-light);
+    color:      var(--primary-dark);
+    font-weight: 600;
+  }
+
+  &.child-group {
+    padding-left: 48px;
+  }
+
+  mat-icon {
+    font-size:  20px;
+    width:      20px;
+    height:     20px;
+    color:      var(--primary-muted);
+    flex-shrink: 0;
+  }
+}
+
+.group-name {
+  flex:        1;
+  font-weight: 500;
+}
+
+.group-count-chip {
+  background:    rgba(14, 116, 144, 0.08);
+  color:         var(--primary-dark);
+  border-radius: 20px;
+  padding:       2px 10px;
+  font-size:     11px;
+  font-weight:   700;
+  border:        1px solid rgba(14, 116, 144, 0.12);
+}
+
+.group-actions {
+  display:     flex;
+  align-items: center;
+  gap:         2px;
+  opacity:     0;
+  transition:  opacity 0.15s ease;
+}
+
+.group-tree-row:hover .group-actions {
+  opacity: 1;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .content-area {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .table-header {
+    flex-direction: column;
+    align-items:    flex-start;
+    gap:            12px;
+  }
 }

@@ -1,0 +1,308 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   PARTAGE DIALOG — sharing link creation/edit form (3 cards)
+   (form only — dialog shell from .pro-dialog-panel in styles.scss)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Dialog header ──────────────────────────────────────────────────────── */
+
+.pd-header {
+  padding:         20px 24px 14px;
+  background:      rgba(14, 116, 144, 0.04);
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  border-bottom:   1px solid rgba(14, 116, 144, 0.1);
+  flex-shrink:     0;
+}
+
+.pd-header-left {
+  display:     flex;
+  align-items: center;
+  gap:         14px;
+}
+
+.pd-header-icon {
+  width:           44px;
+  height:          44px;
+  border-radius:   var(--radius);
+  background:      var(--primary-light);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  flex-shrink:     0;
+  border:          1px solid rgba(14, 116, 144, 0.15);
+  box-shadow:      var(--shadow-xs);
+
+  mat-icon {
+    color:     var(--primary-dark);
+    font-size: 20px;
+    width:     20px;
+    height:    20px;
+  }
+}
+
+.pd-header-text {
+  display:        flex;
+  flex-direction: column;
+  gap:            2px;
+}
+
+.pd-title {
+  margin:         0;
+  font-size:      17px;
+  font-weight:    700;
+  color:          var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+.pd-subtitle {
+  margin:    0;
+  font-size: 12px;
+  color:     var(--text-secondary);
+}
+
+.pd-close-btn {
+  color:      var(--text-secondary) !important;
+  opacity:    0.7;
+  transition: color 0.2s ease, background 0.2s ease !important;
+
+  &:hover {
+    color:      var(--primary-dark) !important;
+    background: var(--primary-light) !important;
+    opacity:    1;
+  }
+}
+
+/* ── Body ───────────────────────────────────────────────────────────────── */
+
+.pd-body {
+  padding:    20px 24px !important;
+  overflow-y: auto !important;
+  margin:     0 !important;
+  background: transparent !important;
+}
+
+.pd-form-inner {
+  display:        flex;
+  flex-direction: column;
+  gap:            16px;
+}
+
+/* ── Section cards ──────────────────────────────────────────────────────── */
+
+.pd-card {
+  border:        1px solid var(--front-border);
+  border-radius: var(--radius);
+  padding:       16px 20px;
+  box-shadow:    var(--shadow-xs);
+  display:       flex;
+  flex-direction: column;
+  gap:           14px;
+  transition:    all 0.25s var(--ease);
+  background:    var(--bg-surface);
+
+  &:hover {
+    box-shadow:   var(--shadow-md);
+    transform:    translateY(-1px);
+    border-color: rgba(14, 116, 144, 0.2);
+  }
+}
+
+.card-gradient-1 {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(236, 254, 255, 0.6) 100%);
+}
+
+.card-gradient-2 {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(165, 243, 252, 0.15) 100%);
+}
+
+.card-gradient-3 {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(14, 116, 144, 0.06) 100%);
+}
+
+.pd-card-title {
+  display:        flex;
+  align-items:    center;
+  gap:            8px;
+  font-size:      11px;
+  font-weight:    700;
+  color:          var(--primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding-bottom: 10px;
+  border-bottom:  1px solid rgba(14, 116, 144, 0.08);
+  margin-bottom:  2px;
+
+  mat-icon {
+    font-size: 15px;
+    width:     15px;
+    height:    15px;
+    opacity:   0.85;
+  }
+}
+
+/* ── Two-column grid ────────────────────────────────────────────────────── */
+
+.form-grid {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   10px 20px;
+}
+
+/* ── Field groups ───────────────────────────────────────────────────────── */
+
+.field-container {
+  display:        flex;
+  flex-direction: column;
+  gap:            6px;
+}
+
+.field-label {
+  font-size:   13px;
+  font-weight: 600;
+  color:       var(--primary-dark);
+  letter-spacing: 0.01em;
+}
+
+.required-star {
+  color:       var(--error);
+  margin-left: 2px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .pd-body .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 !important;
+}
+
+::ng-deep .pd-body .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.6em 0 0.8em 0 !important;
+}
+
+/* ── Custom date + time rows ────────────────────────────────────────────── */
+
+.datetime-inputs {
+  display:     flex;
+  align-items: flex-start;
+  gap:         10px;
+  flex-wrap:   wrap;
+}
+
+.date-field {
+  flex:      2;
+  min-width: 160px;
+}
+
+.time-field {
+  flex:      1;
+  min-width: 100px;
+}
+
+.label-icon {
+  font-size:      15px;
+  width:          15px;
+  height:         15px;
+  vertical-align: middle;
+  margin-right:   4px;
+  opacity:        0.75;
+}
+
+/* ── Expiration toggle ──────────────────────────────────────────────────── */
+
+.exp-toggle-group {
+  width:      100%;
+  display:    flex;
+  gap:        8px;
+  background: transparent;
+}
+
+::ng-deep .exp-toggle-group.mat-button-toggle-group {
+  border:     none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .exp-toggle-group .mat-button-toggle {
+  flex:          1;
+  background:    rgba(255, 255, 255, 0.85);
+  color:         var(--text-secondary);
+  font-weight:   500;
+  font-size:     13px;
+  font-family:   'Sora', sans-serif !important;
+  border-radius: var(--radius-xl) !important;
+  border:        1px solid var(--front-border) !important;
+  box-shadow:    var(--shadow-xs);
+  transition:    all 0.2s ease;
+
+  &:hover {
+    background:   white;
+    border-color: rgba(14, 116, 144, 0.3) !important;
+    transform:    translateY(-1px);
+    box-shadow:   var(--shadow-sm);
+  }
+}
+
+::ng-deep .exp-toggle-group .mat-button-toggle-checked {
+  background:   var(--primary-dark) !important;
+  color:        white !important;
+  border-color: var(--primary-dark) !important;
+  box-shadow:   0 4px 12px rgba(14, 116, 144, 0.3);
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+
+.pd-footer {
+  display:         flex;
+  justify-content: flex-end;
+  gap:             10px;
+  padding:         14px 24px !important;
+  margin:          0 !important;
+  border-top:      1px solid var(--front-border);
+  background:      var(--bg-elevated);
+  flex-shrink:     0;
+}
+
+.btn-cancel {
+  color:         var(--text-secondary) !important;
+  border-radius: var(--radius-sm) !important;
+  padding:       0 18px !important;
+  height:        38px !important;
+  font-size:     14px !important;
+  font-weight:   500 !important;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
+}
+
+.btn-save {
+  background:   var(--primary-dark) !important;
+  color:        #ffffff !important;
+  font-weight:  600 !important;
+  border-radius: var(--radius-sm) !important;
+  padding:      0 24px !important;
+  height:       38px !important;
+  font-size:    14px !important;
+  display:      flex !important;
+  align-items:  center;
+  gap:          6px;
+  box-shadow:   0 4px 12px rgba(14, 116, 144, 0.3) !important;
+  transition:   all 0.2s ease !important;
+
+  mat-icon {
+    font-size: 17px;
+    width:     17px;
+    height:    17px;
+  }
+
+  &:hover:not([disabled]) {
+    box-shadow: 0 6px 18px rgba(14, 116, 144, 0.42) !important;
+  }
+
+  &[disabled] {
+    background: #cbd5e1 !important;
+    color:      #f8fafc !important;
+    box-shadow: none !important;
+  }
+}

@@ -1,0 +1,194 @@
+<!-- ── Dialog Header ── -->
+<div class="pd-header">
+  <div class="pd-header-left">
+    <div class="pd-header-icon">
+      <mat-icon>share</mat-icon>
+    </div>
+    <div class="pd-header-text">
+      <h2 class="pd-title">{{ data?.partage ? 'Modifier le partage' : 'Nouveau partage' }}</h2>
+      <p class="pd-subtitle">Configurez les paramètres de partage de véhicules</p>
+    </div>
+  </div>
+  <button mat-icon-button class="pd-close-btn" (click)="cancel()" matTooltip="Fermer">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<!-- ── Scrollable Body ── -->
+<mat-dialog-content class="pd-body">
+  <form [formGroup]="form" class="pd-form-inner">
+
+    <!-- ══ CARD 1 : Détail ══ -->
+    <div class="pd-card card-gradient-1">
+      <div class="pd-card-title">
+        <mat-icon>info_outline</mat-icon>
+        <span>Détail du partage</span>
+      </div>
+
+      <!-- Désignation -->
+      <div class="field-container">
+        <label class="field-label">
+          Désignation <span class="required-star">*</span>
+        </label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="designation" placeholder="Nom du partage…">
+          <mat-icon matSuffix>label</mat-icon>
+          <mat-error *ngIf="form.get('designation')?.hasError('required')">
+            Ce champ est requis
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Description -->
+      <div class="field-container">
+        <label class="field-label">Description</label>
+        <mat-form-field appearance="outline">
+          <textarea matInput formControlName="description" rows="2"
+                    placeholder="Description optionnelle…"></textarea>
+          <mat-icon matSuffix>notes</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- ══ CARD 2 : Expiration ══ -->
+    <div class="pd-card card-gradient-2">
+      <div class="pd-card-title">
+        <mat-icon>schedule</mat-icon>
+        <span>Expiration</span>
+      </div>
+
+      <div class="form-grid">
+        <!-- Expiration Toggle Group -->
+        <div class="field-container" style="grid-column: 1 / -1;">
+          <label class="field-label">Durée d'expiration <span class="required-star">*</span></label>
+          <mat-button-toggle-group formControlName="expiration" class="exp-toggle-group">
+            <mat-button-toggle value="30min">30 min</mat-button-toggle>
+            <mat-button-toggle value="1h">1 heure</mat-button-toggle>
+            <mat-button-toggle value="3h">3 heures</mat-button-toggle>
+            <mat-button-toggle value="24h">24 heures</mat-button-toggle>
+            <mat-button-toggle value="custom">Autre…</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <!-- Start & End date/time — visible only when "Autre…" is selected -->
+        <ng-container *ngIf="isCustomExpiration">
+
+          <!-- Start date/time -->
+          <div class="field-container" style="grid-column: 1 / -1;">
+            <label class="field-label">
+              <mat-icon class="label-icon">play_circle_outline</mat-icon>
+              Date de début <span class="required-star">*</span>
+            </label>
+            <div class="datetime-inputs">
+              <mat-form-field appearance="outline" class="date-field">
+                <input matInput [matDatepicker]="startPicker"
+                       formControlName="startDate"
+                       placeholder="Date de début…">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+                <mat-error *ngIf="form.get('startDate')?.hasError('required')">Date requise</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="time-field">
+                <mat-label>Heure</mat-label>
+                <mat-select formControlName="startHour">
+                  <mat-option *ngFor="let h of hours" [value]="h">{{ h | number:'2.0-0' }}h</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>schedule</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="time-field">
+                <mat-label>Minute</mat-label>
+                <mat-select formControlName="startMinute">
+                  <mat-option *ngFor="let m of minutes" [value]="m">{{ m | number:'2.0-0' }}min</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>more_time</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- End date/time -->
+          <div class="field-container" style="grid-column: 1 / -1;">
+            <label class="field-label">
+              <mat-icon class="label-icon">stop_circle</mat-icon>
+              Date de fin <span class="required-star">*</span>
+            </label>
+            <div class="datetime-inputs">
+              <mat-form-field appearance="outline" class="date-field">
+                <input matInput [matDatepicker]="endPicker"
+                       formControlName="endDate"
+                       placeholder="Date de fin…">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+                <mat-error *ngIf="form.get('endDate')?.hasError('required')">Date requise</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="time-field">
+                <mat-label>Heure</mat-label>
+                <mat-select formControlName="endHour">
+                  <mat-option *ngFor="let h of hours" [value]="h">{{ h | number:'2.0-0' }}h</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>schedule</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="time-field">
+                <mat-label>Minute</mat-label>
+                <mat-select formControlName="endMinute">
+                  <mat-option *ngFor="let m of minutes" [value]="m">{{ m | number:'2.0-0' }}min</mat-option>
+                </mat-select>
+                <mat-icon matSuffix>more_time</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- ══ CARD 3 : Groupes & Véhicules ══ -->
+    <div class="pd-card card-gradient-3">
+      <div class="pd-card-title">
+        <mat-icon>group</mat-icon>
+        <span>Groupes & Véhicules</span>
+      </div>
+
+      <div class="form-grid">
+        <!-- Affectation -->
+        <div class="field-container">
+          <label class="field-label">Affectation <span class="required-star">*</span></label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="affectation" placeholder="Sélectionner…">
+              <mat-option value="">— Aucune —</mat-option>
+              <mat-option *ngFor="let a of affectations" [value]="a">{{ a }}</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>business</mat-icon>
+            <mat-error *ngIf="form.get('affectation')?.hasError('required')">Ce champ est requis</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Véhicules multi-select -->
+        <div class="field-container">
+          <label class="field-label">Véhicules <span class="required-star">*</span></label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="vehicules" multiple placeholder="Sélectionner les véhicules…">
+              <mat-option *ngFor="let v of vehiculesList" [value]="v">{{ v }}</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>directions_car</mat-icon>
+            <mat-error *ngIf="form.get('vehicules')?.hasError('required')">Ce champ est requis</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<!-- ── Footer Actions ── -->
+<div mat-dialog-actions class="pd-footer">
+  <button mat-button class="btn-cancel" (click)="cancel()">Annuler</button>
+  <button mat-flat-button class="btn-save" (click)="save()"
+          [disabled]="form.invalid">
+    <mat-icon>check</mat-icon>
+    Enregistrer
+  </button>
+</div>

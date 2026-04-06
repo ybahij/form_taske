@@ -1,1 +1,2 @@
-/* All styles moved to src/styles.css for faster rendering without FOUC */
+/* All maintenance view styles live in src/styles.scss under "MAINTENANCE VIEW"
+   so they render without FOUC and are available globally. */

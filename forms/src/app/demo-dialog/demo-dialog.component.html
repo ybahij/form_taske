@@ -554,109 +554,37 @@
                 <!-- Left Column -->
                 <div class="inner-panel-card">
                   <div class="time-field-label">1 - Début au plus tôt</div>
-                  <div class="time-picker-group">
-                    <mat-form-field appearance="outline" class="hour-select">
-                      <mat-select formControlName="debutPlusTotH">
-                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('debutPlusTotH')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                    <span class="time-separator">:</span>
-                    <mat-form-field appearance="outline" class="minute-select">
-                      <mat-select formControlName="debutPlusTotM">
-                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('debutPlusTotM')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                  </div>
+                  <ngx-mat-timepicker formControlName="debutPlusTot"
+                    [showSeconds]="false" [showSpinners]="true" color="primary">
+                  </ngx-mat-timepicker>
 
                   <div class="time-field-label">2 - Fin au plus tôt</div>
-                  <div class="time-picker-group">
-                    <mat-form-field appearance="outline" class="hour-select">
-                      <mat-select formControlName="finPlusTotH">
-                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('finPlusTotH')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                    <span class="time-separator">:</span>
-                    <mat-form-field appearance="outline" class="minute-select">
-                      <mat-select formControlName="finPlusTotM">
-                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('finPlusTotM')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                  </div>
+                  <ngx-mat-timepicker formControlName="finPlusTot"
+                    [showSeconds]="false" [showSpinners]="true" color="primary">
+                  </ngx-mat-timepicker>
 
                   <div class="time-field-label">3 - Début de la conduite nocturne</div>
-                  <div class="time-picker-group">
-                    <mat-form-field appearance="outline" class="hour-select">
-                      <mat-select formControlName="debutNocturneH">
-                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('debutNocturneH')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                    <span class="time-separator">:</span>
-                    <mat-form-field appearance="outline" class="minute-select">
-                      <mat-select formControlName="debutNocturneM">
-                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('debutNocturneM')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                  </div>
+                  <ngx-mat-timepicker formControlName="debutNocturne"
+                    [showSeconds]="false" [showSpinners]="true" color="primary">
+                  </ngx-mat-timepicker>
                 </div>
 
                 <!-- Right Column -->
                 <div class="inner-panel-card">
                   <div class="time-field-label">1 - Début au plus tard</div>
-                  <div class="time-picker-group">
-                    <mat-form-field appearance="outline" class="hour-select">
-                      <mat-select formControlName="debutPlusTardH">
-                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('debutPlusTardH')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                    <span class="time-separator">:</span>
-                    <mat-form-field appearance="outline" class="minute-select">
-                      <mat-select formControlName="debutPlusTardM">
-                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('debutPlusTardM')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                  </div>
+                  <ngx-mat-timepicker formControlName="debutPlusTard"
+                    [showSeconds]="false" [showSpinners]="true" color="primary">
+                  </ngx-mat-timepicker>
 
                   <div class="time-field-label">2 - Fin au plus tard</div>
-                  <div class="time-picker-group">
-                    <mat-form-field appearance="outline" class="hour-select">
-                      <mat-select formControlName="finPlusTardH">
-                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('finPlusTardH')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                    <span class="time-separator">:</span>
-                    <mat-form-field appearance="outline" class="minute-select">
-                      <mat-select formControlName="finPlusTardM">
-                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('finPlusTardM')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                  </div>
+                  <ngx-mat-timepicker formControlName="finPlusTard"
+                    [showSeconds]="false" [showSpinners]="true" color="primary">
+                  </ngx-mat-timepicker>
 
                   <div class="time-field-label">3 - Fin de la conduite nocturne</div>
-                  <div class="time-picker-group">
-                    <mat-form-field appearance="outline" class="hour-select">
-                      <mat-select formControlName="finNocturneH">
-                        <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('finNocturneH')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                    <span class="time-separator">:</span>
-                    <mat-form-field appearance="outline" class="minute-select">
-                      <mat-select formControlName="finNocturneM">
-                        <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="infractionForm.get('finNocturneM')?.errors">Requis</mat-error>
-                    </mat-form-field>
-                  </div>
+                  <ngx-mat-timepicker formControlName="finNocturne"
+                    [showSeconds]="false" [showSpinners]="true" color="primary">
+                  </ngx-mat-timepicker>
                 </div>
               </div>
             </mat-expansion-panel>
@@ -689,60 +617,24 @@
                   <div class="two-column-grid">
                     <div class="column">
                       <div class="time-field-label">Temps de travail maximale</div>
-                      <div class="time-picker-group">
-                        <mat-form-field appearance="outline" class="hour-select">
-                          <mat-select formControlName="tempsTravailH">
-                            <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="infractionMaxForm.get('tempsTravailH')?.errors">Requis</mat-error>
-                        </mat-form-field>
-                        <span class="time-separator">:</span>
-                        <mat-form-field appearance="outline" class="minute-select">
-                          <mat-select formControlName="tempsTravailM">
-                            <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="infractionMaxForm.get('tempsTravailM')?.errors">Requis</mat-error>
-                        </mat-form-field>
-                      </div>
+                      <ngx-mat-timepicker formControlName="tempsTravail"
+                        [showSeconds]="false" [showSpinners]="true" color="primary">
+                      </ngx-mat-timepicker>
                     </div>
 
                     <div class="column">
                       <div class="time-field-label">Temps de conduite maximale / jour</div>
-                      <div class="time-picker-group">
-                        <mat-form-field appearance="outline" class="hour-select">
-                          <mat-select formControlName="tempsConduiteH">
-                            <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="infractionMaxForm.get('tempsConduiteH')?.errors">Requis</mat-error>
-                        </mat-form-field>
-                        <span class="time-separator">:</span>
-                        <mat-form-field appearance="outline" class="minute-select">
-                          <mat-select formControlName="tempsConduiteM">
-                            <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="infractionMaxForm.get('tempsConduiteM')?.errors">Requis</mat-error>
-                        </mat-form-field>
-                      </div>
+                      <ngx-mat-timepicker formControlName="tempsConduite"
+                        [showSeconds]="false" [showSpinners]="true" color="primary">
+                      </ngx-mat-timepicker>
                     </div>
                   </div>
 
                   <div class="one-column-row">
                     <div class="time-field-label">Temps de conduite continue maximale</div>
-                    <div class="time-picker-group" style="justify-content: flex-start;">
-                      <mat-form-field appearance="outline" class="hour-select">
-                        <mat-select formControlName="tempsContinueH">
-                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="infractionMaxForm.get('tempsContinueH')?.errors">Requis</mat-error>
-                      </mat-form-field>
-                      <span class="time-separator">:</span>
-                      <mat-form-field appearance="outline" class="minute-select">
-                        <mat-select formControlName="tempsContinueM">
-                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="infractionMaxForm.get('tempsContinueM')?.errors">Requis</mat-error>
-                      </mat-form-field>
-                    </div>
+                    <ngx-mat-timepicker formControlName="tempsContinue"
+                      [showSeconds]="false" [showSpinners]="true" color="primary">
+                    </ngx-mat-timepicker>
                   </div>
                 </div>
               </div>
@@ -768,40 +660,16 @@
                   <div class="two-column-grid" style="margin-top: 8px;">
                     <div class="column">
                       <div class="time-field-label">Seuil pour fusionner les infractions d'accélération</div>
-                      <div class="time-picker-group">
-                        <mat-form-field appearance="outline" class="hour-select">
-                          <mat-select formControlName="fusionAccelH">
-                            <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="infractionGForm.get('fusionAccelH')?.errors">Requis</mat-error>
-                        </mat-form-field>
-                        <span class="time-separator">:</span>
-                        <mat-form-field appearance="outline" class="minute-select">
-                          <mat-select formControlName="fusionAccelM">
-                            <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="infractionGForm.get('fusionAccelM')?.errors">Requis</mat-error>
-                        </mat-form-field>
-                      </div>
+                      <ngx-mat-timepicker formControlName="fusionAccel"
+                        [showSeconds]="false" [showSpinners]="true" color="primary">
+                      </ngx-mat-timepicker>
                     </div>
 
                     <div class="column">
                       <div class="time-field-label">Seuil pour fusionner les infractions de freinage</div>
-                      <div class="time-picker-group">
-                        <mat-form-field appearance="outline" class="hour-select">
-                          <mat-select formControlName="fusionFreinageH">
-                            <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="infractionGForm.get('fusionFreinageH')?.errors">Requis</mat-error>
-                        </mat-form-field>
-                        <span class="time-separator">:</span>
-                        <mat-form-field appearance="outline" class="minute-select">
-                          <mat-select formControlName="fusionFreinageM">
-                            <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="infractionGForm.get('fusionFreinageM')?.errors">Requis</mat-error>
-                        </mat-form-field>
-                      </div>
+                      <ngx-mat-timepicker formControlName="fusionFreinage"
+                        [showSeconds]="false" [showSpinners]="true" color="primary">
+                      </ngx-mat-timepicker>
                     </div>
                   </div>
                 </div>
@@ -826,28 +694,10 @@
                     </div>
 
                     <div class="time-field-label" style="margin-top: 8px;">Seuil pour fusionner les infractions de vitesse</div>
-                    <div class="time-picker-group">
-                      <mat-form-field appearance="outline" class="hour-select">
-                        <mat-select formControlName="vitesseFusionH">
-                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="infractionEcoForm.get('vitesseFusionH')?.errors">Requis</mat-error>
-                      </mat-form-field>
-                      <span class="time-separator">:</span>
-                      <mat-form-field appearance="outline" class="minute-select">
-                        <mat-select formControlName="vitesseFusionM">
-                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="infractionEcoForm.get('vitesseFusionM')?.errors">Requis</mat-error>
-                      </mat-form-field>
-                      <span class="time-separator">:</span>
-                      <mat-form-field appearance="outline" class="second-select">
-                        <mat-select formControlName="vitesseFusionS">
-                          <mat-option *ngFor="let s of secondOptions" [value]="s">{{s}}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="infractionEcoForm.get('vitesseFusionS')?.errors">Requis</mat-error>
-                      </mat-form-field>
-                    </div>
+                    <!-- showSeconds="true" → HH:MM:SS -->
+                    <ngx-mat-timepicker formControlName="vitesseFusion"
+                      [showSeconds]="true" [showSpinners]="true" color="primary">
+                    </ngx-mat-timepicker>
                   </div>
 
                   <div class="inner-panel-card">
@@ -860,28 +710,10 @@
                     </div>
 
                     <div class="time-field-label" style="margin-top: 8px;">Seuil pour fusionner les infractions de l'eco score</div>
-                    <div class="time-picker-group">
-                      <mat-form-field appearance="outline" class="hour-select">
-                        <mat-select formControlName="ecoScoreFusionH">
-                          <mat-option *ngFor="let h of hourOptions" [value]="h">{{h}}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="infractionEcoForm.get('ecoScoreFusionH')?.errors">Requis</mat-error>
-                      </mat-form-field>
-                      <span class="time-separator">:</span>
-                      <mat-form-field appearance="outline" class="minute-select">
-                        <mat-select formControlName="ecoScoreFusionM">
-                          <mat-option *ngFor="let m of minuteOptions" [value]="m">{{m}}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="infractionEcoForm.get('ecoScoreFusionM')?.errors">Requis</mat-error>
-                      </mat-form-field>
-                      <span class="time-separator">:</span>
-                      <mat-form-field appearance="outline" class="second-select">
-                        <mat-select formControlName="ecoScoreFusionS">
-                          <mat-option *ngFor="let s of secondOptions" [value]="s">{{s}}</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="infractionEcoForm.get('ecoScoreFusionS')?.errors">Requis</mat-error>
-                      </mat-form-field>
-                    </div>
+                    <!-- showSeconds="true" → HH:MM:SS -->
+                    <ngx-mat-timepicker formControlName="ecoScoreFusion"
+                      [showSeconds]="true" [showSpinners]="true" color="primary">
+                    </ngx-mat-timepicker>
                   </div>
                 </div>
               </div>

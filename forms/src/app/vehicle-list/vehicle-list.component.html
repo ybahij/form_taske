@@ -8,25 +8,6 @@
             <mat-icon>add</mat-icon>
             Nouveau Véhicule
           </button>
-          <!-- The input selection field -->
-<mat-form-field appearance="outline" style="width: 300px; margin-right: 16px;">
-  <mat-label>Choisissez le type de rapport</mat-label>
-  <mat-select [(ngModel)]="selectedReportType">
-    <mat-option value="Trajets">Rapport de Trajets</mat-option>
-    <mat-option value="Consommation">Rapport de Consommation</mat-option>
-    <mat-option value="Vitesse">Rapport de Vitesse</mat-option>
-  </mat-select>
-</mat-form-field>
-
-<!-- The Open Button -->
-<button mat-raised-button 
-        color="primary" 
-        class="btn-add-pro"
-        (click)="openReportDialog()"
-        [disabled]="!selectedReportType"> <!-- If selectedReportType is empty, button is disabled -->
-  <mat-icon>add</mat-icon>
-  New Report
-</button>
 
       </div>
     </div>
@@ -91,23 +72,123 @@
     </div>
   </div>
 
+  <!-- Groupes de Véhicules Section -->
+  <div class="maintenance-view-container" style="padding: 32px 0 0 0;">
+    <div class="page-header">
+      <div class="header-text">
+          <h1>Groupes de Véhicules</h1>
+          <p>Gérez les groupements et l'assignation de vos véhicules</p>
+      </div>
+      <button mat-raised-button class="btn-add-pro" (click)="openAddGroupDialog()">
+        <mat-icon>add</mat-icon>
+        Nouveau Groupe
+      </button>
+    </div>
+
+    <div class="split-layout" style="display: flex; gap: 24px; min-height: 400px;">
+      <!-- Master View (Left) -->
+      <div class="master-panel" style="flex: 1; border-right: 1px solid #e0e0e0; padding-right: 24px;" *ngIf="groups$ | async as groups">
+        <div class="no-records" *ngIf="groups.length === 0">
+            <mat-icon>group</mat-icon>
+            <p>Aucun groupe de véhicules pour le moment.</p>
+        </div>
+
+        <ng-template #groupTreeTemplate let-nodeGroups="nodeGroups" let-allGroups="allGroups">
+          <mat-accordion class="group-accordion" multi="false" *ngIf="nodeGroups.length > 0">
+            <mat-expansion-panel *ngFor="let group of nodeGroups" 
+                                 [hideToggle]="getChildGroups(group.id, allGroups).length === 0"
+                                 class="mat-elevation-z1" style="margin-bottom: 8px; border-radius: 8px;">
+              <mat-expansion-panel-header (click)="selectGroup(group, $event)">
+                <mat-panel-title style="align-items: center;">
+                  <mat-icon style="margin-right: 12px; color: #1976d2;">folder</mat-icon>
+                  <strong>{{ group.name }}</strong>
+                </mat-panel-title>
+                <mat-panel-description style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <span>{{ group.vehicleIds?.length || 0 }} Véhicules</span>
+                  <div class="action-buttons" (click)="$event.stopPropagation()">
+                    <button mat-icon-button [matMenuTriggerFor]="kebabMenu" color="primary"><mat-icon>more_vert</mat-icon></button>
+                    <mat-menu #kebabMenu="matMenu">
+                      <button mat-menu-item (click)="editGroup(group)">
+                        <mat-icon color="primary">edit</mat-icon>
+                        <span>Modifier</span>
+                      </button>
+                      <button mat-menu-item (click)="deleteGroup(group)">
+                        <mat-icon color="warn">delete</mat-icon>
+                        <span style="color: #f44336;">Supprimer</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <!-- Recursive Tree Call -->
+              <div class="child-groups-container" style="padding: 16px 0 8px 16px; border-top: 1px solid #f0f0f0;" *ngIf="getChildGroups(group.id, allGroups).length > 0">
+                <ng-container *ngTemplateOutlet="groupTreeTemplate; context:{ nodeGroups: getChildGroups(group.id, allGroups), allGroups: allGroups }"></ng-container>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-template>
+
+        <ng-container *ngIf="groups.length > 0">
+          <ng-container *ngTemplateOutlet="groupTreeTemplate; context:{ nodeGroups: getRootGroups(groups), allGroups: groups }"></ng-container>
+        </ng-container>
+      </div>
+
+      <!-- Detail View (Right) -->
+      <div class="detail-panel" style="flex: 1.5;">
+        <div class="no-selection" *ngIf="!selectedGroup" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #888;">
+          <mat-icon style="font-size: 64px; height: 64px; width: 64px; color: #ccc; margin-bottom: 16px;">library_books</mat-icon>
+          <p>Sélectionnez un groupe pour voir ses véhicules.</p>
+        </div>
+        
+        <div class="detail-content" *ngIf="selectedGroup">
+          <div class="detail-header" style="margin-bottom: 24px; border-bottom: 2px solid #e3f2fd; padding-bottom: 16px;">
+            <h3 style="margin: 0; font-size: 24px; color: #1976d2;">{{ selectedGroup.name }}</h3>
+            <p style="margin: 8px 0 0 0; color: #666;">{{ selectedGroup.description || 'Aucune description fournie.' }}</p>
+          </div>
+          
+          <div class="detail-vehicles-list">
+            <h4 style="margin-top: 0;">Véhicules assignés ({{ selectedGroup.vehicleIds?.length || 0 }})</h4>
+            
+            <div class="no-vehicles" *ngIf="!selectedGroup.vehicleIds || selectedGroup.vehicleIds.length === 0" style="padding: 24px; text-align: center; background: #f9f9f9; border-radius: 8px; color: #888;">
+              <mat-icon style="margin-bottom: 8px;">directions_car</mat-icon>
+              <p style="margin: 0;">Aucun véhicule assigné à ce groupe.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
+              <div class="vehicle-card-mini" *ngFor="let v of getVehiclesForGroup(selectedGroup.vehicleIds)" style="display: flex; align-items: center; padding: 12px; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <div class="vehicle-icon-bg" style="width: 40px; height: 40px; border-radius: 50%; background: #e3f2fd; color: #1976d2; display: flex; align-items: center; justify-content: center; margin-right: 16px;">
+                  <mat-icon>directions_car</mat-icon>
+                </div>
+                <div class="vehicle-info" style="display: flex; flex-direction: column;">
+                  <strong style="font-size: 14px;">{{ v.immatriculation }}</strong>
+                  <span class="dimmed-text" style="font-size: 12px; color: #666;">{{ v.marque }} {{ v.modele }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Merged Maintenance Section -->
   <div class="maintenance-view-container" style="padding: 32px 0 0 0;">
     <div class="page-header">
       <div class="header-text">
-          <h1>Historique de Maintenance</h1>
+          <h1>Historique des Interventions</h1>
           <p>Suivez les interventions et réparations effectuées sur votre flotte</p>
       </div>
       <button mat-raised-button class="btn-add-pro" (click)="openAddMaintenanceDialog()">
         <mat-icon>add</mat-icon>
-        Enregistrer une Maintenance
+        Enregistrer une Intervention
       </button>
     </div>
 
     <div class="maintenance-grid" *ngIf="maintenanceRecords$ | async as records">
       <div class="no-records" *ngIf="records.length === 0">
           <mat-icon>history</mat-icon>
-          <p>Aucun enregistrement de maintenance pour le moment.</p>
+          <p>Aucun enregistrement d'intervention pour le moment.</p>
       </div>
 
       <!-- Maintenance Cards -->

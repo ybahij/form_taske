@@ -1,0 +1,111 @@
+<div class="pl-container">
+
+  <!-- ── Page Header ── -->
+  <div class="pl-header">
+    <div class="pl-header-left">
+      <div class="pl-header-icon">
+        <mat-icon>share</mat-icon>
+      </div>
+      <div>
+        <h1 class="pl-title">Partage</h1>
+        <p class="pl-subtitle">Gérez vos liens de partage de véhicules</p>
+      </div>
+    </div>
+
+    <!-- ── THE BUTTON ── -->
+    <button mat-raised-button class="btn-new-partage" (click)="openNew()">
+      <mat-icon>add</mat-icon>
+      Nouveau partage
+    </button>
+  </div>
+
+  <!-- ── Table ── -->
+  <div class="pl-table-wrapper">
+
+    <!-- Empty state -->
+    <div *ngIf="partages.length === 0" class="pl-empty">
+      <mat-icon>share</mat-icon>
+      <h3>Aucun partage créé</h3>
+      <p>Cliquez sur <strong>Nouveau partage</strong> pour commencer.</p>
+      <button mat-raised-button class="btn-new-partage" (click)="openNew()">
+        <mat-icon>add</mat-icon>
+        Nouveau partage
+      </button>
+    </div>
+
+    <!-- Table with data -->
+    <table mat-table [dataSource]="partages" class="pl-table" *ngIf="partages.length > 0">
+
+      <!-- Désignation -->
+      <ng-container matColumnDef="designation">
+        <th mat-header-cell *matHeaderCellDef>Désignation</th>
+        <td mat-cell *matCellDef="let p">
+          <div class="cell-main">{{ p.designation }}</div>
+        </td>
+      </ng-container>
+
+      <!-- Description -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let p">
+          <span class="cell-muted">{{ p.description || '—' }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Expiration -->
+      <ng-container matColumnDef="expiration">
+        <th mat-header-cell *matHeaderCellDef>Expiration</th>
+        <td mat-cell *matCellDef="let p">
+          <span class="exp-badge">
+            <mat-icon>schedule</mat-icon>
+            {{ expirationLabel(p) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Véhicules -->
+      <ng-container matColumnDef="vehicules">
+        <th mat-header-cell *matHeaderCellDef>Véhicules</th>
+        <td mat-cell *matCellDef="let p">
+          <span class="count-badge" *ngIf="p.vehicules?.length > 0">
+            {{ p.vehicules.length }} véhicule(s)
+          </span>
+          <span class="cell-muted" *ngIf="!p.vehicules?.length">—</span>
+        </td>
+      </ng-container>
+
+      <!-- Date création -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Créé le</th>
+        <td mat-cell *matCellDef="let p">
+          <span class="cell-muted">{{ p.createdAt | date:'dd/MM/yyyy HH:mm':'':'fr' }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let p">
+          <div class="actions-wrap">
+            <button mat-icon-button class="btn-action-small" (click)="openDetails(p)"
+                    matTooltip="Voir les détails">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button class="btn-action-small" (click)="openEdit(p)"
+                    matTooltip="Modifier">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="btn-action-small delete" (click)="confirmDelete(p)"
+                    matTooltip="Supprimer">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="pl-row"></tr>
+    </table>
+  </div>
+
+</div>

@@ -16,14 +16,15 @@ export class MaintenanceDialogComponent implements OnInit {
   vehicles$: Observable<Vehicle[]>;
   conducteurs$: Observable<string[]>;
   isLoading = false;
-  maintenanceTypes: string[] = [
-    'Vidange moteur',
-    'Changement de freins',
-    'Remplacement de pneus',
-    'Révision générale',
-    'Réparation carrosserie',
-    'Contrôle technique',
-    'Nettoyage complet'
+
+  tagInput = '';
+  tags: string[] = [];
+
+  dateTypes = [
+    { value: 'jour', label: 'Jour' },
+    { value: 'semaine', label: 'Semaine' },
+    { value: 'mois', label: 'Mois' },
+    { value: 'annee', label: 'Année' }
   ];
 
   constructor(
@@ -34,7 +35,7 @@ export class MaintenanceDialogComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.vehicles$ = this.vehicleService.getVehicles();
-    
+
     this.conducteurs$ = this.vehicles$.pipe(
       map(vehicles => {
         const owners = vehicles
@@ -45,25 +46,68 @@ export class MaintenanceDialogComponent implements OnInit {
     );
 
     this.maintenanceForm = this.fb.group({
-      vehicle: ['', Validators.required],
-      conductor: ['', Validators.required],
-      type: ['', Validators.required],
-      date: [new Date(), Validators.required],
-      cost: [null, [Validators.min(0)]],
-      notes: ['']
+      vehicle:    ['', Validators.required],
+      conductor:  ['', Validators.required],
+      notes:      [''],
+      cost:       [null, [Validators.min(0)]],
+      date:       [new Date(), Validators.required],
+      nextOdometer:  [0],
+      engineHours:   [0],
+      // Recurrence
+      recurrenceEnabled: [false],
+      dateType:          ['jour'],
+      dateInterval:      [0],
+      dateRelative:      ['Oui'],
+      odometerInterval:  [0],
+      odometerRelative:  ['Oui'],
+      engineHoursInterval: [0],
+      engineHoursRelative: ['Oui']
     });
   }
 
   ngOnInit(): void {
     if (this.data) {
+      this.tags = this.data.tags ? [...this.data.tags] : [];
       this.maintenanceForm.patchValue({
-        vehicle: this.data.vehicleImmatriculation,
-        conductor: this.data.conductorName,
-        type: this.data.maintenanceType,
-        date: this.data.date,
-        cost: this.data.cost,
-        notes: this.data.notes
+        vehicle:           this.data.vehicleImmatriculation,
+        conductor:         this.data.conductorName,
+        notes:             this.data.notes,
+        cost:              this.data.cost,
+        date:              this.data.date,
+        nextOdometer:      this.data.nextOdometer ?? 0,
+        engineHours:       this.data.engineHours ?? 0,
+        recurrenceEnabled: this.data.recurrence?.enabled ?? false,
+        dateType:          this.data.recurrence?.dateType ?? 'jour',
+        dateInterval:      this.data.recurrence?.dateInterval ?? 0,
+        dateRelative:      this.data.recurrence?.dateRelative ? 'Oui' : 'Non',
+        odometerInterval:  this.data.recurrence?.odometerInterval ?? 0,
+        odometerRelative:  this.data.recurrence?.odometerRelative ? 'Oui' : 'Non',
+        engineHoursInterval: this.data.recurrence?.engineHoursInterval ?? 0,
+        engineHoursRelative: this.data.recurrence?.engineHoursRelative ? 'Oui' : 'Non'
       });
+    }
+  }
+
+  get recurrenceEnabled(): boolean {
+    return this.maintenanceForm.get('recurrenceEnabled')?.value === true;
+  }
+
+  addTag(): void {
+    const t = this.tagInput.trim();
+    if (t && !this.tags.includes(t)) {
+      this.tags.push(t);
+    }
+    this.tagInput = '';
+  }
+
+  removeTag(tag: string): void {
+    this.tags = this.tags.filter(t => t !== tag);
+  }
+
+  onTagInputKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' || event.key === ',') {
+      event.preventDefault();
+      this.addTag();
     }
   }
 
@@ -73,15 +117,31 @@ export class MaintenanceDialogComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    const formVal = this.maintenanceForm.value;
+    const v = this.maintenanceForm.value;
+
     const recordData: MaintenanceRecord = {
-      id: this.data ? this.data.id : Date.now().toString(36) + Math.random().toString(36).substring(2, 7),
-      vehicleImmatriculation: formVal.vehicle,
-      conductorName: formVal.conductor,
-      maintenanceType: formVal.type,
-      date: formVal.date,
-      cost: formVal.cost,
-      notes: formVal.notes
+      id: this.data
+        ? this.data.id
+        : Date.now().toString(36) + Math.random().toString(36).substring(2, 7),
+      vehicleImmatriculation: v.vehicle,
+      conductorName:          v.conductor,
+      maintenanceType:        v.dateType,
+      date:                   v.date,
+      cost:                   v.cost,
+      notes:                  v.notes,
+      tags:                   this.tags,
+      nextOdometer:           v.nextOdometer,
+      engineHours:            v.engineHours,
+      recurrence: {
+        enabled:              v.recurrenceEnabled,
+        dateType:             v.dateType,
+        dateInterval:         v.dateInterval,
+        dateRelative:         v.dateRelative === 'Oui',
+        odometerInterval:     v.odometerInterval,
+        odometerRelative:     v.odometerRelative === 'Oui',
+        engineHoursInterval:  v.engineHoursInterval,
+        engineHoursRelative:  v.engineHoursRelative === 'Oui'
+      }
     };
 
     if (this.data) {
@@ -90,7 +150,9 @@ export class MaintenanceDialogComponent implements OnInit {
       this.vehicleService.addMaintenanceRecord(recordData);
     }
     this.isLoading = false;
-    this.snackBar.open('Maintenance enregistrée avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'] });
+    this.snackBar.open('Intervention enregistrée avec succès', 'OK', {
+      duration: 2500, panelClass: ['snack-success']
+    });
     this.dialogRef.close(true);
   }
 

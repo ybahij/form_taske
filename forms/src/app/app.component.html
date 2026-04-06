@@ -1,20 +1,36 @@
-<div class="page-container">
-  
-  <header class="main-header">
-    <div class="header-content">
+<div class="shell" [class.collapsed]="sidenavCollapsed">
+
+  <!-- ── Side Navigation ─────────────────────────────────────────────────── -->
+  <aside class="sidenav">
+
+    <div class="sidenav-header">
       <div class="logo-area">
         <mat-icon class="logo-icon">directions_car</mat-icon>
-        <h1>Vehicle Manager</h1>
+        <span class="logo-text">Vehicle Manager</span>
       </div>
-      
-      <!-- Top nav removed (all functionality is on the main dashboard) -->
-
-      <div class="header-right">
-        <!-- Optional right-side content -->
-      </div>
+      <button class="collapse-btn" (click)="toggleSidenav()">
+        <mat-icon>{{ sidenavCollapsed ? 'menu' : 'menu_open' }}</mat-icon>
+      </button>
     </div>
-  </header>
 
+    <nav class="sidenav-nav">
+      <a routerLink="/vehicles" routerLinkActive="nav-active" class="nav-link" [title]="sidenavCollapsed ? 'Véhicules' : ''">
+        <mat-icon>directions_car</mat-icon>
+        <span class="nav-label">Véhicules</span>
+      </a>
+      <a routerLink="/partage" routerLinkActive="nav-active" class="nav-link" [title]="sidenavCollapsed ? 'Partage' : ''">
+        <mat-icon>share</mat-icon>
+        <span class="nav-label">Partage</span>
+      </a>
+      <a routerLink="/reports" routerLinkActive="nav-active" class="nav-link" [title]="sidenavCollapsed ? 'Rapports' : ''">
+        <mat-icon>assessment</mat-icon>
+        <span class="nav-label">Rapports</span>
+      </a>
+    </nav>
+
+  </aside>
+
+  <!-- ── Main Content ────────────────────────────────────────────────────── -->
   <main class="content-area-main">
     <router-outlet></router-outlet>
   </main>

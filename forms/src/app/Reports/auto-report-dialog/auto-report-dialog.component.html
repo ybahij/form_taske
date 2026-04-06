@@ -1,0 +1,148 @@
+<div class="pro-dialog-header">
+  <div class="header-main">
+    <mat-icon class="header-icon">auto_graph</mat-icon>
+    <div class="header-titles">
+      <h2>Nouveau Rapport Automatique</h2>
+      <p>Configurez et planifiez votre rapport automatique</p>
+    </div>
+  </div>
+  <button mat-icon-button class="close-btn" (click)="onCancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content-styled">
+
+  <!-- Step Indicator -->
+  <div class="step-indicator">
+    <div class="step" [class.active]="step >= 1" [class.completed]="step > 1">
+      <div class="circle">1</div>
+      <div class="label">Configuration</div>
+    </div>
+    <div class="line" [class.active]="step > 1"></div>
+    <div class="step" [class.active]="step === 2">
+      <div class="circle">2</div>
+      <div class="label">Application</div>
+    </div>
+  </div>
+
+  <!-- Étape 1 -->
+  <div *ngIf="step === 1" [formGroup]="step1Form" class="step-content">
+
+    <div class="field-container">
+      <label class="field-label">Description du rapport *</label>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="description" placeholder="Ex: Rapport mensuel des trajets">
+        <mat-icon matSuffix>description</mat-icon>
+        <mat-error *ngIf="step1Form.get('description')?.hasError('required')">La description est requise.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="radio-section">
+      <span class="section-label">Type de rapport</span>
+      <mat-radio-group formControlName="reportType" class="pro-radio-group">
+        <mat-radio-button value="system">Rapports Système</mat-radio-button>
+        <mat-radio-button value="custom">Rapports Personnalisés</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="grid-2-col">
+      <div class="field-container">
+        <label class="field-label">Tag d'intervalle *</label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="interval">
+            <mat-option *ngFor="let int of intervals" [value]="int.value">{{ int.label }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="step1Form.get('interval')?.hasError('required')">Requis</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="field-container">
+        <label class="field-label">Format d'exportation *</label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="format">
+            <mat-option *ngFor="let fmt of formats" [value]="fmt">{{ fmt }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="step1Form.get('format')?.hasError('required')">Requis</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="field-container">
+      <label class="field-label">Destinataires *</label>
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix class="prefix-icon">mail</mat-icon>
+        <input matInput formControlName="recipients" placeholder="utilisateur1@domaine.com, utilisateur2@domaine.com">
+        <mat-error *ngIf="step1Form.get('recipients')?.hasError('required')">Spécifiez au moins un destinataire.</mat-error>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <!-- Étape 2 -->
+  <div *ngIf="step === 2" [formGroup]="step2Form" class="step-content">
+
+    <div class="radio-section">
+      <span class="section-label">Cibler ce rapport sur :</span>
+      <mat-radio-group formControlName="applyTo" class="pro-radio-group">
+        <mat-radio-button value="group">Un groupe de véhicules</mat-radio-button>
+        <mat-radio-button value="car">Un véhicule spécifique</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="field-container" *ngIf="step2Form.get('applyTo')?.value === 'group'">
+      <label class="field-label">Sélectionner un groupe *</label>
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="selectedEntity">
+          <mat-option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</mat-option>
+        </mat-select>
+        <mat-icon matSuffix>group_work</mat-icon>
+        <mat-error *ngIf="step2Form.get('selectedEntity')?.hasError('required')">Un groupe doit être sélectionné.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="field-container" *ngIf="step2Form.get('applyTo')?.value === 'car'">
+      <label class="field-label">Sélectionner un véhicule *</label>
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="selectedEntity">
+          <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.immatriculation">
+            {{ vehicle.immatriculation }} — {{ vehicle.marque }} {{ vehicle.modele }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>directions_car</mat-icon>
+        <mat-error *ngIf="step2Form.get('selectedEntity')?.hasError('required')">Un véhicule doit être sélectionné.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="field-container">
+      <label class="field-label">Type de données</label>
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="reportSubtype">
+          <mat-option value="trajets">Trajets détaillés</mat-option>
+          <mat-option value="conso">Consommation & Carburant</mat-option>
+          <mat-option value="maintenance">Maintenance et Alertes</mat-option>
+          <mat-option value="vitesse">Excès de vitesse / Comportement</mat-option>
+        </mat-select>
+        <mat-icon matSuffix>analytics</mat-icon>
+        <mat-error *ngIf="step2Form.get('reportSubtype')?.hasError('required')">Choisissez le contenu du rapport.</mat-error>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+</mat-dialog-content>
+
+<div mat-dialog-actions class="dialog-actions-styled">
+  <button mat-button class="btn-cancel" (click)="onCancel()" *ngIf="step === 1">Annuler</button>
+  <button mat-button class="btn-cancel" (click)="prevStep()" *ngIf="step === 2">
+    <mat-icon>arrow_back</mat-icon> Retour
+  </button>
+
+  <button mat-flat-button color="primary" class="btn-save" (click)="nextStep()" *ngIf="step === 1">
+    Suivant <mat-icon>arrow_forward</mat-icon>
+  </button>
+
+  <button mat-flat-button color="primary" class="btn-save" (click)="onSubmit()" *ngIf="step === 2">
+    <mat-icon>done_all</mat-icon> Planifier le Rapport
+  </button>
+</div>

@@ -2,19 +2,19 @@
   
   <div class="page-header">
     <div class="header-text">
-        <h1>Historique de Maintenance</h1>
+        <h1>Historique des Interventions</h1>
         <p>Suivez les interventions et réparations effectuées sur votre flotte</p>
     </div>
     <button mat-raised-button class="btn-add-pro" (click)="openAddMaintenanceDialog()">
       <mat-icon>add</mat-icon>
-      Enregistrer une Maintenance
+      Enregistrer une Intervention
     </button>
   </div>
 
   <div class="maintenance-grid" *ngIf="maintenanceRecords$ | async as records">
     <div class="no-records" *ngIf="records.length === 0">
         <mat-icon>history</mat-icon>
-        <p>Aucun enregistrement de maintenance pour le moment.</p>
+        <p>Aucun enregistrement d'intervention pour le moment.</p>
     </div>
 
     <!-- Maintenance Cards -->

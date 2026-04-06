@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 export interface ReportType {
   id: string;
@@ -9,6 +9,16 @@ export interface ReportType {
 export interface ReportCategory {
   categoryName: string;
   reports: ReportType[];
+}
+
+export interface SavedReport {
+  id: string;
+  baseReportName: string;
+  descriptionOfReport?: string;
+  shareWithUsers?: string;
+  drivingOutsideCountry?: string;
+  listOfColumns?: string;
+  createdAt: Date;
 }
 
 @Injectable({
@@ -49,9 +59,36 @@ export class ReportService {
     }
   ];
 
-  constructor() { }
+  private savedReportsSubject = new BehaviorSubject<SavedReport[]>([]);
+  savedReports$ = this.savedReportsSubject.asObservable();
 
   getReportCategories(): Observable<ReportCategory[]> {
     return of(this.reportCategories);
+  }
+
+  addSavedReport(data: Partial<SavedReport>): void {
+    const report: SavedReport = {
+      id: Math.random().toString(36).slice(2) + Date.now().toString(36),
+      baseReportName: data.baseReportName || '',
+      descriptionOfReport: data.descriptionOfReport,
+      shareWithUsers: data.shareWithUsers,
+      drivingOutsideCountry: data.drivingOutsideCountry,
+      listOfColumns: data.listOfColumns,
+      createdAt: new Date()
+    };
+    this.savedReportsSubject.next([report, ...this.savedReportsSubject.value]);
+  }
+
+  updateSavedReport(id: string, data: Partial<SavedReport>): void {
+    const updated = this.savedReportsSubject.value.map(r =>
+      r.id === id ? { ...r, ...data } : r
+    );
+    this.savedReportsSubject.next(updated);
+  }
+
+  deleteSavedReport(id: string): void {
+    this.savedReportsSubject.next(
+      this.savedReportsSubject.value.filter(r => r.id !== id)
+    );
   }
 }

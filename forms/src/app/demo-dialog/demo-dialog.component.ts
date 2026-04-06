@@ -48,9 +48,33 @@ export class DemoDialogComponent implements OnInit, OnDestroy {
   repartitionOptions: string[] = ['Standard', 'Double Réservoir', 'Personnalisé'];
   profilOptions: string[] = ['Urbain', 'Routier', 'Mixte', 'Off-road'];
 
-  hourOptions: string[] = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
-  minuteOptions: string[] = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
-  secondOptions: string[] = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
+  /*
+   * timeToDate  — builds a Date whose H/M/S match the stored "HH:MM" or
+   *               "HH:MM:SS" string so the timepicker shows the right value.
+   *               The calendar date portion is irrelevant; only the time part
+   *               is read by ngx-mat-timepicker.
+   */
+  private timeToDate(h: string, m: string, s = '00'): Date {
+    const d = new Date();
+    d.setHours(+h, +m, +s, 0);
+    return d;
+  }
+
+  /*
+   * dateToTimeStr  — extracts HH:MM (or HH:MM:SS when withSeconds=true) from
+   *                  a Date object so it can be stored / sent to the API as a
+   *                  plain string, just like before.
+   */
+  private dateToTimeStr(d: Date | null, withSeconds = false): string {
+    if (!d) { return withSeconds ? '00:00:00' : '00:00'; }
+    const hh = d.getHours().toString().padStart(2, '0');
+    const mm = d.getMinutes().toString().padStart(2, '0');
+    if (withSeconds) {
+      const ss = d.getSeconds().toString().padStart(2, '0');
+      return `${hh}:${mm}:${ss}`;
+    }
+    return `${hh}:${mm}`;
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -126,34 +150,37 @@ export class DemoDialogComponent implements OnInit, OnDestroy {
       monday_friday: [true]
     });
 
+    // Each time field is now a single Date control.
+    // ngx-mat-timepicker reads/writes Date; only H/M(/S) matter — date part is ignored.
     this.infractionForm = this.fb.group({
-      debutPlusTotH: ['07', Validators.required], debutPlusTotM: ['00', Validators.required],
-      finPlusTotH: ['16', Validators.required], finPlusTotM: ['00', Validators.required],
-      debutNocturneH: ['22', Validators.required], debutNocturneM: ['00', Validators.required],
-      debutPlusTardH: ['09', Validators.required], debutPlusTardM: ['00', Validators.required],
-      finPlusTardH: ['18', Validators.required], finPlusTardM: ['00', Validators.required],
-      finNocturneH: ['06', Validators.required], finNocturneM: ['00', Validators.required]
+      debutPlusTot:  [this.timeToDate('07', '00'), Validators.required],
+      finPlusTot:    [this.timeToDate('16', '00'), Validators.required],
+      debutNocturne: [this.timeToDate('22', '00'), Validators.required],
+      debutPlusTard: [this.timeToDate('09', '00'), Validators.required],
+      finPlusTard:   [this.timeToDate('18', '00'), Validators.required],
+      finNocturne:   [this.timeToDate('06', '00'), Validators.required],
     });
 
     this.infractionMaxForm = this.fb.group({
-      distMaxJour: [-1],
-      seuilVitesse: [null, [Validators.min(0)]],
-      tempsTravailH: ['08', Validators.required], tempsTravailM: ['00', Validators.required],
-      tempsConduiteH: ['09', Validators.required], tempsConduiteM: ['00', Validators.required],
-      tempsContinueH: ['04', Validators.required], tempsContinueM: ['30', Validators.required]
+      distMaxJour:   [-1],
+      seuilVitesse:  [null, [Validators.min(0)]],
+      tempsTravail:  [this.timeToDate('08', '00'), Validators.required],
+      tempsConduite: [this.timeToDate('09', '00'), Validators.required],
+      tempsContinue: [this.timeToDate('04', '30'), Validators.required],
     });
 
     this.infractionGForm = this.fb.group({
-      accelMaxG: [0.3],
-      fusionAccelH: ['00', Validators.required], fusionAccelM: ['03', Validators.required],
-      fusionFreinageH: ['00', Validators.required], fusionFreinageM: ['03', Validators.required]
+      accelMaxG:     [0.3],
+      fusionAccel:   [this.timeToDate('00', '03'), Validators.required],
+      fusionFreinage:[this.timeToDate('00', '03'), Validators.required],
     });
 
+    // vitesseFusion & ecoScoreFusion include seconds → timeToDate('HH','MM','SS')
     this.infractionEcoForm = this.fb.group({
-      vitesseMaxEco: [-1],
-      vitesseFusionH: ['00', Validators.required], vitesseFusionM: ['00', Validators.required], vitesseFusionS: ['10', Validators.required],
-      ecoScoreMin: [-1],
-      ecoScoreFusionH: ['00', Validators.required], ecoScoreFusionM: ['00', Validators.required], ecoScoreFusionS: ['10', Validators.required]
+      vitesseMaxEco:  [-1],
+      vitesseFusion:  [this.timeToDate('00', '00', '10'), Validators.required],
+      ecoScoreMin:    [-1],
+      ecoScoreFusion: [this.timeToDate('00', '00', '10'), Validators.required],
     });
   }
 
@@ -178,62 +205,64 @@ export class DemoDialogComponent implements OnInit, OnDestroy {
         ecoScoreMin: this.data.ecoScoreMin
       });
       
+      // infractionMaxForm — convert stored "HH:MM" strings → Date objects
       if (this.data.tempsTravailMax) {
         const [h, m] = this.data.tempsTravailMax.split(':');
-        this.infractionMaxForm.patchValue({ tempsTravailH: h, tempsTravailM: m });
+        this.infractionMaxForm.patchValue({ tempsTravail: this.timeToDate(h, m) });
       }
       if (this.data.tempsConduiteMaxJour) {
         const [h, m] = this.data.tempsConduiteMaxJour.split(':');
-        this.infractionMaxForm.patchValue({ tempsConduiteH: h, tempsConduiteM: m });
+        this.infractionMaxForm.patchValue({ tempsConduite: this.timeToDate(h, m) });
       }
       if (this.data.tempsConduiteContinueMax) {
         const [h, m] = this.data.tempsConduiteContinueMax.split(':');
-        this.infractionMaxForm.patchValue({ tempsContinueH: h, tempsContinueM: m });
+        this.infractionMaxForm.patchValue({ tempsContinue: this.timeToDate(h, m) });
       }
 
+      // infractionGForm — convert stored "HH:MM" strings → Date objects
       if (this.data.seuilFusionAccel) {
         const [h, m] = this.data.seuilFusionAccel.split(':');
-        this.infractionGForm.patchValue({ fusionAccelH: h, fusionAccelM: m });
+        this.infractionGForm.patchValue({ fusionAccel: this.timeToDate(h, m) });
       }
       if (this.data.seuilFusionFreinage) {
         const [h, m] = this.data.seuilFusionFreinage.split(':');
-        this.infractionGForm.patchValue({ fusionFreinageH: h, fusionFreinageM: m });
+        this.infractionGForm.patchValue({ fusionFreinage: this.timeToDate(h, m) });
       }
 
+      // infractionEcoForm — convert stored "HH:MM:SS" strings → Date objects
       if (this.data.seuilFusionVitesse) {
         const [h, m, s] = this.data.seuilFusionVitesse.split(':');
-        this.infractionEcoForm.patchValue({ vitesseFusionH: h, vitesseFusionM: m, vitesseFusionS: s || '00' });
+        this.infractionEcoForm.patchValue({ vitesseFusion: this.timeToDate(h, m, s || '00') });
       }
       if (this.data.seuilFusionEcoScore) {
         const [h, m, s] = this.data.seuilFusionEcoScore.split(':');
-        this.infractionEcoForm.patchValue({ ecoScoreFusionH: h, ecoScoreFusionM: m, ecoScoreFusionS: s || '00' });
+        this.infractionEcoForm.patchValue({ ecoScoreFusion: this.timeToDate(h, m, s || '00') });
       }
 
-
-      // Parse time strings back to H/M controls
+      // infractionForm — convert stored "HH:MM" strings → Date objects
       if (this.data.debutPlusTot) {
         const [h, m] = this.data.debutPlusTot.split(':');
-        this.infractionForm.patchValue({ debutPlusTotH: h, debutPlusTotM: m });
+        this.infractionForm.patchValue({ debutPlusTot: this.timeToDate(h, m) });
       }
       if (this.data.finPlusTot) {
         const [h, m] = this.data.finPlusTot.split(':');
-        this.infractionForm.patchValue({ finPlusTotH: h, finPlusTotM: m });
+        this.infractionForm.patchValue({ finPlusTot: this.timeToDate(h, m) });
       }
       if (this.data.debutNocturne) {
         const [h, m] = this.data.debutNocturne.split(':');
-        this.infractionForm.patchValue({ debutNocturneH: h, debutNocturneM: m });
+        this.infractionForm.patchValue({ debutNocturne: this.timeToDate(h, m) });
       }
       if (this.data.debutPlusTard) {
         const [h, m] = this.data.debutPlusTard.split(':');
-        this.infractionForm.patchValue({ debutPlusTardH: h, debutPlusTardM: m });
+        this.infractionForm.patchValue({ debutPlusTard: this.timeToDate(h, m) });
       }
       if (this.data.finPlusTard) {
         const [h, m] = this.data.finPlusTard.split(':');
-        this.infractionForm.patchValue({ finPlusTardH: h, finPlusTardM: m });
+        this.infractionForm.patchValue({ finPlusTard: this.timeToDate(h, m) });
       }
       if (this.data.finNocturne) {
         const [h, m] = this.data.finNocturne.split(':');
-        this.infractionForm.patchValue({ finNocturneH: h, finNocturneM: m });
+        this.infractionForm.patchValue({ finNocturne: this.timeToDate(h, m) });
       }
     }
   }
@@ -288,43 +317,43 @@ export class DemoDialogComponent implements OnInit, OnDestroy {
   private getCombinedEcoLimits(): any {
     const f = this.infractionEcoForm.getRawValue();
     return {
-      vitesseMaxEco: f.vitesseMaxEco,
-      seuilFusionVitesse: `${f.vitesseFusionH}:${f.vitesseFusionM}:${f.vitesseFusionS}`,
-      ecoScoreMin: f.ecoScoreMin,
-      seuilFusionEcoScore: `${f.ecoScoreFusionH}:${f.ecoScoreFusionM}:${f.ecoScoreFusionS}`
+      vitesseMaxEco:       f.vitesseMaxEco,
+      // withSeconds=true → produces "HH:MM:SS"
+      seuilFusionVitesse:  this.dateToTimeStr(f.vitesseFusion,  true),
+      ecoScoreMin:         f.ecoScoreMin,
+      seuilFusionEcoScore: this.dateToTimeStr(f.ecoScoreFusion, true),
     };
   }
 
   private getCombinedGForceLimits(): any {
     const f = this.infractionGForm.getRawValue();
     return {
-      accelMaxG: f.accelMaxG,
-      seuilFusionAccel: `${f.fusionAccelH}:${f.fusionAccelM}`,
-      seuilFusionFreinage: `${f.fusionFreinageH}:${f.fusionFreinageM}`
+      accelMaxG:           f.accelMaxG,
+      seuilFusionAccel:    this.dateToTimeStr(f.fusionAccel),
+      seuilFusionFreinage: this.dateToTimeStr(f.fusionFreinage),
     };
   }
-
 
   private getCombinedMaxLimits(): any {
     const f = this.infractionMaxForm.getRawValue();
     return {
-      distMaxJour: f.distMaxJour,
-      seuilVitesse: f.seuilVitesse,
-      tempsTravailMax: `${f.tempsTravailH}:${f.tempsTravailM}`,
-      tempsConduiteMaxJour: `${f.tempsConduiteH}:${f.tempsConduiteM}`,
-      tempsConduiteContinueMax: `${f.tempsContinueH}:${f.tempsContinueM}`
+      distMaxJour:              f.distMaxJour,
+      seuilVitesse:             f.seuilVitesse,
+      tempsTravailMax:          this.dateToTimeStr(f.tempsTravail),
+      tempsConduiteMaxJour:     this.dateToTimeStr(f.tempsConduite),
+      tempsConduiteContinueMax: this.dateToTimeStr(f.tempsContinue),
     };
   }
 
   private getCombinedInfractions(): any {
     const f = this.infractionForm.getRawValue();
     return {
-      debutPlusTot: `${f.debutPlusTotH}:${f.debutPlusTotM}`,
-      finPlusTot: `${f.finPlusTotH}:${f.finPlusTotM}`,
-      debutNocturne: `${f.debutNocturneH}:${f.debutNocturneM}`,
-      debutPlusTard: `${f.debutPlusTardH}:${f.debutPlusTardM}`,
-      finPlusTard: `${f.finPlusTardH}:${f.finPlusTardM}`,
-      finNocturne: `${f.finNocturneH}:${f.finNocturneM}`
+      debutPlusTot:  this.dateToTimeStr(f.debutPlusTot),
+      finPlusTot:    this.dateToTimeStr(f.finPlusTot),
+      debutNocturne: this.dateToTimeStr(f.debutNocturne),
+      debutPlusTard: this.dateToTimeStr(f.debutPlusTard),
+      finPlusTard:   this.dateToTimeStr(f.finPlusTard),
+      finNocturne:   this.dateToTimeStr(f.finNocturne),
     };
   }
 
@@ -373,7 +402,7 @@ export class DemoDialogComponent implements OnInit, OnDestroy {
       this.isEdit = true;
     }
     this.data = updatedVehicle;
-    this.snackBar.open('Enregistré avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'] });
+    this.snackBar.open('Enregistré avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'], horizontalPosition: 'right', verticalPosition: 'bottom' });
   }
 
 
@@ -402,7 +431,7 @@ export class DemoDialogComponent implements OnInit, OnDestroy {
         this.isEdit = true;
       }
       this.data = updatedVehicle;
-      this.snackBar.open('Enregistré avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'] });
+      this.snackBar.open('Enregistré avec succès', 'OK', { duration: 2500, panelClass: ['snack-success'], horizontalPosition: 'right', verticalPosition: 'bottom' });
     } else {
       this.form.markAllAsTouched();
     }

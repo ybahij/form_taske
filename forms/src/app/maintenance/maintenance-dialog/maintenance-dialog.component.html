@@ -2,8 +2,8 @@
   <div class="header-main">
     <mat-icon class="header-icon">build</mat-icon>
     <div class="header-titles">
-      <h2>{{ data ? 'Modifier' : 'Nouvelle' }} Maintenance</h2>
-      <p>{{ data ? 'Mettre à jour les détails de l\'intervention' : 'Enregistrer une activité d\'entretien pour un véhicule' }}</p>
+      <h2>{{ data ? 'Modifier' : 'Nouvelle' }} Intervention</h2>
+      <p>{{ data ? 'Mettre à jour les détails de l\'intervention' : 'Enregistrer une activité d\'entretien' }}</p>
     </div>
   </div>
   <button mat-icon-button (click)="onCancel()" class="close-btn">
@@ -13,80 +13,210 @@
 
 <mat-dialog-content class="dialog-content-styled">
   <form [formGroup]="maintenanceForm" class="maintenance-form-inner">
-    <div class="form-grid">
-      
-      <!-- Vehicle Selection -->
+
+    <!-- ── Card 1: Main fields ─────────────────────────────────────────────── -->
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="field-container">
+          <label class="field-label">Véhicule</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="vehicle" placeholder="Choisir un véhicule">
+              <mat-option *ngFor="let v of vehicles$ | async" [value]="v.immatriculation">
+                {{ v.immatriculation }} — {{ v.marque }} {{ v.modele }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>directions_car</mat-icon>
+            <mat-error *ngIf="maintenanceForm.get('vehicle')?.hasError('required')">Requis</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="field-container">
+          <label class="field-label">Conducteur</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="conductor" placeholder="Choisir un conducteur">
+              <mat-option *ngFor="let c of conducteurs$ | async" [value]="c">{{ c }}</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="maintenanceForm.get('conductor')?.hasError('required')">Requis</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
       <div class="field-container">
-        <label class="field-label">Véhicule</label>
+        <label class="field-label">Note</label>
         <mat-form-field appearance="outline">
-          <mat-select formControlName="vehicle" placeholder="Choisir un véhicule">
-            <mat-option *ngFor="let v of vehicles$ | async" [value]="v.immatriculation">
-              {{ v.immatriculation }} - {{ v.marque }} {{ v.modele }}
-            </mat-option>
-          </mat-select>
-          <mat-icon matSuffix>directions_car</mat-icon>
-          <mat-error *ngIf="maintenanceForm.get('vehicle')?.hasError('required')">Véhicule requis</mat-error>
+          <textarea matInput formControlName="notes" rows="2" placeholder="Détails supplémentaires..."></textarea>
         </mat-form-field>
       </div>
 
-      <!-- Conductor Selection -->
-      <div class="field-container">
-        <label class="field-label">Conducteur</label>
-        <mat-form-field appearance="outline">
-          <mat-select formControlName="conductor" placeholder="Choisir un conducteur">
-            <mat-option *ngFor="let c of conducteurs$ | async" [value]="c">
-              {{ c }}
-            </mat-option>
-          </mat-select>
-          <mat-icon matSuffix>person</mat-icon>
-          <mat-error *ngIf="maintenanceForm.get('conductor')?.hasError('required')">Conducteur requis</mat-error>
-        </mat-form-field>
+      <div class="form-grid">
+        <div class="field-container">
+          <label class="field-label">Coût</label>
+          <mat-form-field appearance="outline">
+            <input matInput type="number" formControlName="cost" placeholder="0.00">
+            <mat-icon matSuffix>payments</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="field-container">
+          <label class="field-label">Étiquettes</label>
+          <div class="tags-input-wrap">
+            <div class="tags-chips">
+              <span class="tag-chip" *ngFor="let tag of tags">
+                {{ tag }}
+                <button type="button" class="tag-remove" (click)="removeTag(tag)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </span>
+            </div>
+            <input class="tag-input"
+                   [(ngModel)]="tagInput"
+                   [ngModelOptions]="{standalone: true}"
+                   placeholder="Ajouter une étiquette..."
+                   (keydown)="onTagInputKeydown($event)"
+                   (blur)="addTag()">
+          </div>
+        </div>
       </div>
 
-      <!-- Maintenance Type -->
-      <div class="field-container">
-        <label class="field-label">Type de Maintenance</label>
-        <mat-form-field appearance="outline">
-          <mat-select formControlName="type" placeholder="Type d'intervention">
-            <mat-option *ngFor="let type of maintenanceTypes" [value]="type">
-              {{ type }}
-            </mat-option>
-          </mat-select>
-          <mat-icon matSuffix>build</mat-icon>
-          <mat-error *ngIf="maintenanceForm.get('type')?.hasError('required')">Type requis</mat-error>
-        </mat-form-field>
-      </div>
+      <div class="form-grid-3">
+        <div class="field-container">
+          <label class="field-label">Date</label>
+          <mat-form-field appearance="outline">
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="maintenanceForm.get('date')?.hasError('required')">Requis</mat-error>
+          </mat-form-field>
+        </div>
 
-      <!-- Date -->
-      <div class="field-container">
-        <label class="field-label">Date</label>
-        <mat-form-field appearance="outline">
-          <input matInput [matDatepicker]="picker" formControlName="date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error *ngIf="maintenanceForm.get('date')?.hasError('required')">Date requise</mat-error>
-        </mat-form-field>
-      </div>
+        <div class="field-container">
+          <label class="field-label">Prochain Odométre</label>
+          <mat-form-field appearance="outline">
+            <input matInput type="number" formControlName="nextOdometer" placeholder="0">
+            <mat-icon matSuffix>speed</mat-icon>
+          </mat-form-field>
+        </div>
 
-      <!-- Cost -->
-      <div class="field-container">
-        <label class="field-label">Coût (€)</label>
-        <mat-form-field appearance="outline">
-          <input matInput type="number" formControlName="cost" placeholder="0.00">
-          <mat-icon matSuffix>payments</mat-icon>
-          <mat-error *ngIf="maintenanceForm.get('cost')?.hasError('min')">Le coût ne peut pas être négatif</mat-error>
-        </mat-form-field>
+        <div class="field-container">
+          <label class="field-label">Heures moteur</label>
+          <mat-form-field appearance="outline">
+            <input matInput type="number" formControlName="engineHours" placeholder="0">
+            <mat-icon matSuffix>timer</mat-icon>
+          </mat-form-field>
+        </div>
       </div>
-
     </div>
 
-    <!-- Notes -->
-    <div class="field-container full-width">
-      <label class="field-label">Notes & Observations</label>
-      <mat-form-field appearance="outline">
-        <textarea matInput formControlName="notes" rows="3" placeholder="Détails supplémentaires..."></textarea>
-      </mat-form-field>
+    <!-- ── Récurrence toggle (between cards) ─────────────────────────────── -->
+    <div class="between-card-toggle">
+      <div class="card-section-title">
+        <mat-icon>repeat</mat-icon>
+        <span>Récurrence</span>
+      </div>
+      <div class="toggle-group">
+        <span class="toggle-label" [class.active]="recurrenceEnabled">Avec récurrence</span>
+        <mat-slide-toggle formControlName="recurrenceEnabled" color="primary"></mat-slide-toggle>
+      </div>
     </div>
+
+    <!-- ── Card 2: Date ────────────────────────────────────────────────────── -->
+    <div class="form-card">
+      <div class="card-section-header no-toggle">
+        <div class="card-section-title">
+          <mat-icon>calendar_today</mat-icon>
+          <span>Date</span>
+        </div>
+      </div>
+      <div class="rec-fields">
+        <div class="form-grid-3">
+          <div class="field-container">
+            <label class="field-label">Type date</label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="dateType">
+                <mat-option *ngFor="let dt of dateTypes" [value]="dt.value">{{ dt.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="field-container">
+            <label class="field-label">Date d'intervalle</label>
+            <mat-form-field appearance="outline">
+              <input matInput type="number" formControlName="dateInterval" placeholder="0">
+            </mat-form-field>
+          </div>
+
+          <div class="field-container">
+            <label class="field-label">Relatif</label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="dateRelative">
+                <mat-option value="Oui">Oui</mat-option>
+                <mat-option value="Non">Non</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Card 3: Odométre ────────────────────────────────────────────────── -->
+    <div class="form-card">
+      <div class="card-section-header no-toggle">
+        <div class="card-section-title">
+          <mat-icon>speed</mat-icon>
+          <span>Odométre</span>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field-container">
+          <label class="field-label">Interval odomètre</label>
+          <mat-form-field appearance="outline">
+            <input matInput type="number" formControlName="odometerInterval" placeholder="0">
+          </mat-form-field>
+        </div>
+
+        <div class="field-container">
+          <label class="field-label">Relatif</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="odometerRelative">
+              <mat-option value="Oui">Oui</mat-option>
+              <mat-option value="Non">Non</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Card 4: Heures moteur ───────────────────────────────────────────── -->
+    <div class="form-card">
+      <div class="card-section-header no-toggle">
+        <div class="card-section-title">
+          <mat-icon>timer</mat-icon>
+          <span>Heures moteur</span>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field-container">
+          <label class="field-label">Interval des heures</label>
+          <mat-form-field appearance="outline">
+            <input matInput type="number" formControlName="engineHoursInterval" placeholder="0">
+          </mat-form-field>
+        </div>
+
+        <div class="field-container">
+          <label class="field-label">Relatif</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="engineHoursRelative">
+              <mat-option value="Oui">Oui</mat-option>
+              <mat-option value="Non">Non</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
   </form>
 </mat-dialog-content>
 

@@ -83,6 +83,27 @@ export interface MaintenanceRecord {
   date: Date;
   cost?: number;
   notes?: string;
+  tags?: string[];
+  nextOdometer?: number;
+  engineHours?: number;
+  recurrence?: {
+    enabled: boolean;
+    dateType?: string;
+    dateInterval?: number;
+    dateRelative?: boolean;
+    odometerInterval?: number;
+    odometerRelative?: boolean;
+    engineHoursInterval?: number;
+    engineHoursRelative?: boolean;
+  };
+}
+
+export interface VehicleGroup {
+  id: string;
+  name: string;
+  description: string;
+  parentGroupId?: string;
+  vehicleIds: string[];
 }
 
 @Injectable({
@@ -92,6 +113,8 @@ export class VehicleService {
   private vehiclesSubject = new BehaviorSubject<Vehicle[]>([
     // ... vehicles ...
   ]);
+
+  private vehicleGroupsSubject = new BehaviorSubject<VehicleGroup[]>([]);
 
   private maintenanceRecordsSubject = new BehaviorSubject<MaintenanceRecord[]>([
     {
@@ -205,5 +228,37 @@ export class VehicleService {
       updatedList[index] = updatedVehicle;
       this.vehiclesSubject.next(updatedList);
     }
+  }
+
+  getVehicleGroups(): Observable<VehicleGroup[]> {
+    return this.vehicleGroupsSubject.asObservable();
+  }
+
+  addVehicleGroup(group: VehicleGroup): void {
+    const currentGroups = this.vehicleGroupsSubject.value;
+    this.vehicleGroupsSubject.next([...currentGroups, group]);
+  }
+
+  updateVehicleGroup(updatedGroup: VehicleGroup): void {
+    const currentGroups = this.vehicleGroupsSubject.value;
+    const index = currentGroups.findIndex(g => g.id === updatedGroup.id);
+    if (index !== -1) {
+      const updatedList = [...currentGroups];
+      updatedList[index] = updatedGroup;
+      this.vehicleGroupsSubject.next(updatedList);
+    }
+  }
+
+  deleteVehicleGroup(id: string): void {
+    const currentGroups = this.vehicleGroupsSubject.value;
+    const idsToDelete = new Set<string>();
+    const collect = (groupId: string) => {
+      idsToDelete.add(groupId);
+      currentGroups
+        .filter(g => g.parentGroupId === groupId)
+        .forEach(child => collect(child.id));
+    };
+    collect(id);
+    this.vehicleGroupsSubject.next(currentGroups.filter(g => !idsToDelete.has(g.id)));
   }
 }

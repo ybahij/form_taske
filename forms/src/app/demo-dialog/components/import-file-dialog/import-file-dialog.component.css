@@ -1,71 +1,94 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   IMPORT FILE DIALOG — LLS file import with format selector and line config
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .import-dialog-container {
-  padding: 12px;
-  background: white;
-  max-height: 85vh;
-  display: flex;
+  padding:        16px;
+  background:     var(--bg-surface);
+  max-height:     85vh;
+  display:        flex;
   flex-direction: column;
+  font-family:    'Sora', sans-serif;
 }
 
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
 .import-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  display:       flex;
+  align-items:   center;
+  gap:           12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--front-border);
 }
 
 .step-badge {
-  background: #00897b;
-  color: white;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
+  background:      var(--primary-dark);
+  color:           white;
+  width:           26px;
+  height:          26px;
+  border-radius:   50%;
+  display:         flex;
+  align-items:     center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 13px;
+  font-weight:     700;
+  font-size:       13px;
+  flex-shrink:     0;
+  box-shadow:      0 2px 8px rgba(14, 116, 144, 0.3);
 }
 
 .import-title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-  color: #455a64;
+  margin:      0;
+  font-size:   15px;
+  font-weight: 600;
+  color:       var(--text-primary);
+  letter-spacing: -0.1px;
 }
 
+/* ── Body ───────────────────────────────────────────────────────────────── */
+
 .import-body {
-  flex: 1;
-  overflow-y: auto;
+  flex:         1;
+  overflow-y:   auto;
   padding-right: 4px;
 }
 
+/* ── Upload area ────────────────────────────────────────────────────────── */
+
 .upload-area {
-  border: 1px dashed #cfd8dc;
-  border-radius: 8px;
-  padding: 20px 16px;
-  margin-bottom: 16px;
-  background: rgba(0,0,0,0.01);
+  border:        2px dashed rgba(14, 116, 144, 0.25);
+  border-radius: var(--radius);
+  padding:       24px 16px;
+  margin-bottom: 20px;
+  background:    rgba(14, 116, 144, 0.02);
+  transition:    border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    border-color: rgba(14, 116, 144, 0.45);
+    background:   rgba(14, 116, 144, 0.04);
+  }
 }
 
 .upload-content {
-  display: flex;
+  display:        flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
+  align-items:    center;
+  gap:            14px;
 }
 
 .folder-icon {
-  font-size: 48px;
-  width: 48px;
-  height: 48px;
-  color: #ffb300;
-  margin-bottom: 4px;
+  font-size: 44px;
+  width:     44px;
+  height:    44px;
+  color:     #f59e0b;
 }
 
 .upload-controls {
-  display: flex;
+  display:     flex;
   align-items: center;
-  gap: 12px;
+  gap:         12px;
+  flex-wrap:   wrap;
+  justify-content: center;
 }
 
 .extension-select {
@@ -73,81 +96,117 @@
 }
 
 .file-button-wrapper {
-  display: flex;
+  display:     flex;
   align-items: center;
-  gap: 10px;
+  gap:         10px;
 }
 
 .choose-file-btn {
-  background: #f1f1f1 !important;
-  color: #333 !important;
-  border: 1px solid #ccc !important;
-  border-radius: 4px !important;
-  height: 32px !important;
-  padding: 0 12px !important;
+  background:    var(--bg-elevated) !important;
+  color:         var(--text-primary) !important;
+  border:        1px solid var(--border-strong) !important;
+  border-radius: var(--radius-sm) !important;
+  height:        34px !important;
+  padding:       0 14px !important;
+  font-family:   'Sora', sans-serif !important;
+  font-size:     13px !important;
+  font-weight:   500 !important;
+  transition:    all 0.15s ease !important;
+
+  &:hover {
+    background:   white !important;
+    border-color: var(--primary-dark) !important;
+    color:        var(--primary-dark) !important;
+  }
 }
 
 .file-name {
-  color: #607d8b;
+  color:     var(--text-secondary);
   font-size: 13px;
+  font-style: italic;
 }
+
+/* ── Line inputs ────────────────────────────────────────────────────────── */
 
 .line-inputs-row {
   display: flex;
-  gap: 16px;
-  width: 100%;
+  gap:     16px;
+  width:   100%;
+
+  mat-form-field {
+    flex: 1;
+  }
 }
 
-.line-inputs-row mat-form-field {
-  flex: 1;
-}
+/* ── Footer ─────────────────────────────────────────────────────────────── */
 
 .import-footer {
-  display: flex;
+  display:     flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  margin-top:  20px;
 }
 
 .example-text {
-  color: #607d8b;
-  font-size: 13px;
+  color:       var(--text-secondary);
+  font-size:   13px;
   font-weight: 500;
 }
 
 .format-icons {
   display: flex;
-  gap: 10px;
+  gap:     10px;
 }
 
 .format-badge mat-icon {
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
+  font-size: 22px;
+  width:     22px;
+  height:    22px;
+  color:     var(--text-muted);
 }
 
 .format-badge span {
-  font-size: 9px;
+  font-size:  9px;
+  font-weight: 700;
 }
 
+/* ── Actions ────────────────────────────────────────────────────────────── */
+
 .dialog-actions {
-  display: flex;
+  display:        flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 20px;
-  padding-top: 12px;
-  border-top: 1px solid #eee;
+  gap:            10px;
+  margin-top:     20px;
+  padding-top:    16px;
+  border-top:     1px solid var(--front-border);
 }
 
 .import-btn {
-  background: #00897b !important;
-  color: white !important;
+  background:    var(--primary-dark) !important;
+  color:         white !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight:   600 !important;
+  height:        36px !important;
+  padding:       0 20px !important;
+  box-shadow:    0 4px 12px rgba(14, 116, 144, 0.3) !important;
+
+  &:hover {
+    box-shadow: 0 6px 18px rgba(14, 116, 144, 0.4) !important;
+  }
+}
+
+mat-form-field {
+  width: 100%;
 }
 
 ::ng-deep .import-dialog-container .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: #cfd8dc !important;
+  color: var(--front-border) !important;
 }
 
 ::ng-deep .import-dialog-container .mat-form-field-flex {
-  padding: 0 0.75em 0 0.75em !important;
+  padding: 0 0.75em !important;
+}
+
+::ng-deep .import-dialog-container .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 !important;
 }
